@@ -62,7 +62,13 @@ $(document).ready(function() {
     url: prefix + '/api/v1/bot/instances',
     headers: {
       'Authorization': 'bearer ' + window.localStorage.token
+    },
+    statusCode: {
+    401: function() {
+      alert('You are unauthorized!');
+      window.location = getRootUrl();
     }
+  }
   }).done(function(data) {
     data.forEach(function(instance) {
       // When clicking an entry, we post a request to the script interface and return the result
@@ -185,4 +191,7 @@ function enddownload(url) {
     $('#alertdcss > #text').text("Please select an instance.");
     $('#alertdcss').fadeIn(400).delay(2000).fadeOut(400);
   }
+}
+function getRootUrl() {
+	return window.location.origin?window.location.origin+'/':window.location.protocol+'/'+window.location.host+'/';
 }
