@@ -1,4 +1,4 @@
-var prefix = "", maxResults = 2, nextPageToken;
+var prefix = "", maxResults = 8, nextPageToken;
 
 function tplawesome(e, t) {
     res = e;
@@ -26,6 +26,7 @@ $(function() {
         request.execute(function(response) {
             var result = response.result;
             nextPageToken = result.nextPageToken;
+            console.log("nextPageToken: " + nextPageToken);
             $("#results").html("");
             $.each(result.items, function(index, item) {
                 $.get("src/yt.html", function(data) {
@@ -57,7 +58,7 @@ function init() {
 //YT END Start Sinusbot Connection
 
 $(document).ready(function() {
-	var instanceList = $('#dropdown');
+var instanceList = $('#dropdown');
 	// Get the list of instances using the currently logged in user account
 	$.ajax({ url: prefix + '/api/v1/bot/instances', headers: { 'Authorization': 'bearer ' + window.localStorage.token }}).done(function(data) {
 		data.forEach(function(instance) {
@@ -66,8 +67,11 @@ $(document).ready(function() {
                 instanceid = instance.uuid;
 			});
 		});
+    $('.dropd1 > li > a').click(function() {
+    $("#dropdb1").html($(this).text() + ' <span class="caret"></span>');
+    });
 	});
-    
+
     $("#loadmore").click(function () {
         var request = gapi.client.youtube.search.list({
             part: "snippet",
@@ -76,13 +80,14 @@ $(document).ready(function() {
                     .val())
                 .replace(/%20/g, "+"),
             maxResults: maxResults,
-            nextPageToken: nextPageToken,
+            pageToken: nextPageToken,
             order: "relevance"
         });
         // execute the request
         request.execute(function(response) {
             var result = response.result;
             nextPageToken = result.nextPageToken;
+            console.log("nextPageToken: " + nextPageToken);
             $.each(result.items, function(index, item) {
                 $.get("src/yt.html", function(data) {
                     $("#results")
@@ -94,10 +99,6 @@ $(document).ready(function() {
             });
             resetVideoHeight();
         });
-    });
-    
-    $('.dropd1 > li > a').click(function() {
-        $("#dropdb1").html($(this).text() + ' <span class="caret"></span>');
     });
 });
 
