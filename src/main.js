@@ -6,11 +6,6 @@ function start() {
         yCount = this.innerHTML;
         console.log("1");
     });
-//        $('#dropd2 li > a').click(function() {
-//        $(".btn2").html($(this).text() + ' <span class="caret"></span>');
-//        yCount = this.innerHTML;
-//        console.log("2");
-//    });
 }
 function tplawesome(e, t) {
     res = e;

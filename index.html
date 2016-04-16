@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html>
-
 <head>
     <meta charset="UTF-8">
     <title>Sinusbot | YouTube</title>
@@ -18,7 +17,6 @@
     <script src="https://apis.google.com/js/client.js?onload=init"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
 </head>
-
 <body onload="start()">
     <div class="container">
         <div class="jumbotron">
@@ -27,20 +25,11 @@
         </div>
         <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-              <h2>Instances</h2>
-            	<ul id="instances"></ul>
                 <form action="#">
                     <div class="input-group"> <input type="text" class="form-control" id="search" placeholder="Suchbegriff...">
                         <div class="input-group-btn">
-                         <button type="button" class="btn btn-defaul dropdown-toggle" data-toggle="dropdown" id="dropdb1">Anzahl<span class="caret"></span></button>
-                            <ul class="dropdown-menu dropdown-menu-right dropd1" id="dropdown" role="menu">
-                                <li><a href="#">5</a></li>
-                                <li><a href="#">10</a></li>
-                                <li><a href="#">25</a></li>
-                                <li><a href="#">50</a></li>
-                            </ul>
-
-
+                         <button type="button" class="btn btn-defaul dropdown-toggle" data-toggle="dropdown" id="dropdb1">Instance<span class="caret"></span></button>
+                            <ul class="dropdown-menu dropdown-menu-right dropd1" id="dropdown" role="menu"></ul>
                         </div> <!-- /input-group-btn -->
 
                     </div> <!-- /input-group -->
@@ -50,11 +39,10 @@
             <div id="results"></div>
         </div>
     </div>
-    </div>
     <footer class="footer">
         <div class="container">
-            <p class="text-muted">
-                <hr>We are not from the Sinusbot Team.</p>
+            <hr><p class="text-muted">
+            We are not from the Sinusbot Team.</p><br>
         </div>
     </footer>
 </body>
