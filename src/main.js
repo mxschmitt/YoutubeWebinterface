@@ -1,5 +1,8 @@
-var prefix = "", maxResults = 6, nextPageToken;
-
+//-------------CONFIG-START------------
+var ytkey = 'AIzaSyC87fSxWOAp8hzKTBCWF8dpqUYMHVfbWNo';
+var maxResults  = 6;
+//-------------CONFIG-END--------------
+var prefix = "", nextPageToken;
 function tplawesome(e, t) {
     res = e;
     for (var n = 0; n < t.length; n++) {
@@ -50,7 +53,7 @@ function resetVideoHeight() {
 }
 
 function init() {
-    gapi.client.setApiKey("AIzaSyC87fSxWOAp8hzKTBCWF8dpqUYMHVfbWNo");
+    gapi.client.setApiKey(ytkey);
     gapi.client.load("youtube", "v3", function() {
     });
 }
@@ -58,7 +61,7 @@ function init() {
 //YT END Start Sinusbot Connection
 
 $(document).ready(function() {
-	var instanceList = $('#dropdown');
+var instanceList = $('#dropdown');
 	// Get the list of instances using the currently logged in user account
 	$.ajax({ url: prefix + '/api/v1/bot/instances', headers: { 'Authorization': 'bearer ' + window.localStorage.token }}).done(function(data) {
 		data.forEach(function(instance) {
@@ -67,12 +70,12 @@ $(document).ready(function() {
                 instanceid = instance.uuid;
 			});
 		});
-        $('.dropd1 > li > a').click(function() {
-            $("#dropdb1").html($(this).text() + ' <span class="caret"></span>');
-        });
+    $('.dropd1 > li > a').click(function() {
+    $("#dropdb1").html($(this).text() + ' <span class="caret"></span>');
+    });
 	});
-    
-    $('#loadmore').click(function () {
+
+    $("#loadmore").click(function () {
         $('#loadmore').html('<i class="fa fa-spinner fa-pulse fa-fw"></i>Loading...');
         var request = gapi.client.youtube.search.list({
             part: "snippet",
@@ -105,7 +108,7 @@ $(document).ready(function() {
 });
 
 function endplay(url) {
-    if (instanceid) {
+    if (typeof instanceid === 'undefined') {
         $.ajax({
           url: prefix + '/api/v1/bot/i/' + instanceid + '/scriptEvent/ytplay',
           method: 'POST',
@@ -129,7 +132,7 @@ function endplay(url) {
 }
 
 function endenqueue(url) {
-    if (instanceid) {
+    if (typeof instanceid === 'undefined') {
         $.ajax({
           url: prefix + '/api/v1/bot/i/' + instanceid + '/scriptEvent/ytenq',
           method: 'POST',
@@ -153,7 +156,7 @@ function endenqueue(url) {
 }
 
 function enddownload(url) {
-    if (instanceid) {
+    if (typeof instanceid === 'undefined') {
         $.ajax({
           url: prefix + '/api/v1/bot/i/' + instanceid + '/scriptEvent/ytdl',
           method: 'POST',
