@@ -1,4 +1,4 @@
-var prefix = "", nextPageToken;
+var prefix = "", maxResults = 2, nextPageToken;
 
 function tplawesome(e, t) {
     res = e;
@@ -19,7 +19,7 @@ $(function() {
             q: encodeURIComponent($("#search")
                     .val())
                 .replace(/%20/g, "+"),
-            maxResults: 8,
+            maxResults: maxResults,
             order: "relevance"
         });
         // execute the request
@@ -75,7 +75,7 @@ $(document).ready(function() {
             q: encodeURIComponent($("#search")
                     .val())
                 .replace(/%20/g, "+"),
-            maxResults: 6,
+            maxResults: maxResults,
             nextPageToken: nextPageToken,
             order: "relevance"
         });
@@ -83,7 +83,6 @@ $(document).ready(function() {
         request.execute(function(response) {
             var result = response.result;
             nextPageToken = result.nextPageToken;
-            $("#results").html("");
             $.each(result.items, function(index, item) {
                 $.get("src/yt.html", function(data) {
                     $("#results")
