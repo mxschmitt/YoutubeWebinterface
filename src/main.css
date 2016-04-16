@@ -6,7 +6,7 @@
     background-color: #f3331F;
     background-position: 99% 95%
 }
-        
+
 #copyright {
     display: inline;
 }
@@ -18,5 +18,13 @@
 #yt {
     font-family: yt;
     margin-top: -10px;
-    margin-left: 20px; 
+    margin-left: 20px;
+}
+.none {
+    display: none;
+}
+#loadmore {
+    display: none;
+    margin: 0px auto;
+    clear: both;
 }

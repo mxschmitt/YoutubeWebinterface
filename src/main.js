@@ -29,7 +29,6 @@ $(function() {
     request.execute(function(response) {
       var result = response.result;
       nextPageToken = result.nextPageToken;
-      console.log("nextPageToken: " + nextPageToken);
       $("#results").html("");
       $.each(result.items, function(index, item) {
         $.get("src/yt.html", function(data) {
@@ -40,7 +39,7 @@ $(function() {
         });
       });
       resetVideoHeight();
-      $("#loadmore").removeClass("none");
+      $("#loadmore").css("display", "block");
     });
   });
   $(window).on("resize", resetVideoHeight);
@@ -94,7 +93,6 @@ $(document).ready(function() {
     request.execute(function(response) {
       var result = response.result;
       nextPageToken = result.nextPageToken;
-      console.log("nextPageToken: " + nextPageToken);
       $.each(result.items, function(index, item) {
         $.get("src/yt.html", function(data) {
           $("#results").append(tplawesome(data, [{
