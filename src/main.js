@@ -78,6 +78,12 @@ $(document).ready(function() {
     $('.dropd1 > li > a').click(function() {
       $("#dropdb1").html($(this).text() + ' <span class="caret"></span>');
     });
+      $(".dropd1").html(
+            $(".dropd1").children("li").sort(function (a, b) {
+                return $(a).text().toUpperCase().localeCompare(
+                $(b).text().toUpperCase());
+            })
+        );
   });
   $("#loadmore").click(function() {
     $("#loadmorecss").addClass("fa-pulse fa-fw");
