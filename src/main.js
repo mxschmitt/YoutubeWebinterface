@@ -33,7 +33,7 @@ $(function() {
                 var result = response.result;
                 nextPageToken = result.nextPageToken;
                 $("#results").html("");
-                $.each(results.items, function(index, item) {
+                $.each(result.items, function(index, item) {
                     $.get("src/yt.html", function(data) {
                         $("#results")
                             .append(tplawesome(data, [{
