@@ -30,7 +30,7 @@ $(function() {
             });
             // execute the request
             request.execute(function(response) {
-                var results = response.result;
+                var result = response.result;
                 nextPageToken = result.nextPageToken;
                 $("#results").html("");
                 $.each(results.items, function(index, item) {
