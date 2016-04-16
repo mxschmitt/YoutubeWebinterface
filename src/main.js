@@ -3,8 +3,6 @@ var prefix = "";
 function start() {
     $('.dropd1 > li > a').click(function() {
         $("#dropdb1").html($(this).text() + ' <span class="caret"></span>');
-        yCount = this.innerHTML;
-        console.log("1");
     });
 }
 function tplawesome(e, t) {
@@ -27,7 +25,7 @@ $(function() {
                 q: encodeURIComponent($("#search")
                         .val())
                     .replace(/%20/g, "+"),
-                maxResults: yCount,
+                maxResults: 15,
                 order: "relevance",
             });
             // execute the request
@@ -80,6 +78,7 @@ $(document).ready(function() {
 });
 
 function endplay(url) {
+    if (instan)
             $.ajax({
               url: prefix + '/api/v1/bot/i/' + instanceid + '/scriptEvent/ytplay',
               method: 'POST',
@@ -95,8 +94,9 @@ function endplay(url) {
               data.forEach(function(answer) {
                 $('<li/>').appendTo(answerList).text(answer.script + ' returned ' + JSON.stringify(answer.data));
               });
+                $('.alert').text("Test");
+                $('.none' ).fadeIn( 400 ).delay( 2000 ).fadeOut( 400 );
             });
-
 }
 
 function endenqueue(url) {
