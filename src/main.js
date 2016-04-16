@@ -31,7 +31,7 @@ $(function() {
             // execute the request
             request.execute(function(response) {
                 var results = response.result;
-                nextPageToken = result.nextPageToken);
+                nextPageToken = result.nextPageToken;
                 $("#results").html("");
                 $.each(results.items, function(index, item) {
                     $.get("src/yt.html", function(data) {
@@ -139,6 +139,6 @@ function enddownload(url) {
               });
               $('.alert > #title').text("Success!");
               $('.alert > #text').text("The video, will be successfully downloaded.");
-              $('.none' ).fadeIn( 400 ).delay( 2000 ).fadeOut( 400 );  
+              $('.none' ).fadeIn( 400 ).delay( 2000 ).fadeOut( 400 );
             });
 }
