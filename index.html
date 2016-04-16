@@ -9,14 +9,15 @@
     <link rel="icon" type="image/png" sizes="96x96" href="src/favicon-96x96.png">
     <link rel="icon" type="image/png" sizes="16x16" href="src/favicon-16x16.png">
     <link rel="apple-touch-icon" href="src/sinusbot-quad.png"/>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+    <!----------------------CSS---------------------->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="src/main.css">
-    <script src="src/main.js"></script>
-    <script src="https://apis.google.com/js/client.js?onload=init"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
+    <link rel="stylesheet" href="src/main.css">
+    <!-------------------JavaScript------------------->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+     <script src="src/main.js"></script>
+    <script src="https://apis.google.com/js/client.js?onload=init"></script>
+    <!-------------------JavaScript------------------->
 </head>
 <body>
     <div class="container">
@@ -38,7 +39,11 @@
             </div>
 
             <div id="results"></div>
-            <button type="button" class="btn btn-info" id="loadmore">Load more</button>
+            <div style="width: 100%">
+            <center><button type="button" class="btn btn-default" id="loadmore">
+                <span class="fa fa-spinner" id="loadmorecss"></span> Load more
+            </button></center>
+            </div>
         </div>
     </div>
     <footer class="footer">
@@ -47,5 +52,8 @@
             We are not from the Sinusbot Team.</p><br>
         </div>
     </footer>
+    <!-------------------JavaScript------------------->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+    <!-------------------JavaScript------------------->
 </body>
 </html>

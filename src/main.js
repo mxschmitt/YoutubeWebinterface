@@ -76,7 +76,7 @@ var instanceList = $('#dropdown');
 	});
 
     $("#loadmore").click(function () {
-        $('#loadmore').html('<i class="fa fa-spinner fa-pulse fa-fw"></i>Loading...');
+        $("#loadmorecss").addClass("fa-pulse fa-fw");
         var request = gapi.client.youtube.search.list({
             part: "snippet",
             type: "video",
@@ -102,13 +102,13 @@ var instanceList = $('#dropdown');
                 });
             });
             resetVideoHeight();
-            $('#loadmore').html('Load more');
+            $("#loadmorecss").removeClass("fa-pulse fa-fw");
         });
     });
 });
 
 function endplay(url) {
-    if (typeof instanceid === 'undefined') {
+    if (instanceid) {
         $.ajax({
           url: prefix + '/api/v1/bot/i/' + instanceid + '/scriptEvent/ytplay',
           method: 'POST',
@@ -132,7 +132,7 @@ function endplay(url) {
 }
 
 function endenqueue(url) {
-    if (typeof instanceid === 'undefined') {
+    if (instanceid) {
         $.ajax({
           url: prefix + '/api/v1/bot/i/' + instanceid + '/scriptEvent/ytenq',
           method: 'POST',
