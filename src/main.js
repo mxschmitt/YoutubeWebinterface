@@ -41,6 +41,7 @@ $(function() {
                 });
             });
             resetVideoHeight();
+            $("#loadmore").removeClass("none");
         });
     });
     $(window).on("resize", resetVideoHeight);
@@ -128,6 +129,8 @@ function endplay(url) {
           $('.alert > #text').text("The video, will be successfully played.");
           $('.none' ).fadeIn( 400 ).delay( 2000 ).fadeOut( 400 );
         });
+    } else {
+
     }
 }
 
@@ -152,11 +155,17 @@ function endenqueue(url) {
           $('.alert > #text').text("The video, will be successfully enqueued.");
           $('.none' ).fadeIn( 400 ).delay( 2000 ).fadeOut( 400 );
         });
+    } else {
+        $("#loadmorecss").addClass("fa-pulse fa-fw");
+        $("#loadmorecss").removeClass("fa-pulse fa-fw");
+        $('.alert > #title').text("Failed!");
+        $('.alert > #text').text("Please select an instance.");
+        $('.none' ).fadeIn( 400 ).delay( 2000 ).fadeOut( 400 );
     }
 }
 
 function enddownload(url) {
-    if (typeof instanceid === 'undefined') {
+    if (instanceid) {
         $.ajax({
           url: prefix + '/api/v1/bot/i/' + instanceid + '/scriptEvent/ytdl',
           method: 'POST',
@@ -176,5 +185,7 @@ function enddownload(url) {
           $('.alert > #text').text("The video, will be successfully downloaded.");
           $('.none' ).fadeIn( 400 ).delay( 2000 ).fadeOut( 400 );
         });
+    } else {
+
     }
 }

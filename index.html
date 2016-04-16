@@ -27,20 +27,22 @@
         </div>
         <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+              <div class="alert alert-success none">
+                  <strong id="title"></strong>&nbsp;<span id="text"> </span>
+              </div>
                 <form action="#">
                     <div class="input-group"> <input type="text" class="form-control" id="search" placeholder="Suchbegriff...">
                         <div class="input-group-btn">
-                         <button type="button" class="btn btn-defaul dropdown-toggle" data-toggle="dropdown" id="dropdb1">Instance<span class="caret"></span></button>
+                         <button type="button" class="btn btn-defaul dropdown-toggle" data-toggle="dropdown" id="dropdb1">Instance&nbsp;<span class="caret"></span></button>
                             <ul class="dropdown-menu dropdown-menu-right dropd1" id="dropdown" role="menu"></ul>
-                        </div> <!-- /input-group-btn -->
-
-                    </div> <!-- /input-group -->
+                        </div>
+                    </div>
                     <p style="margin-top: 15px;"><input type="submit" value="Suchen" class="form-control btn btn-primary"></p></form>
             </div>
 
             <div id="results"></div>
             <div style="width: 100%">
-            <center><button type="button" class="btn btn-default" id="loadmore">
+            <center><button type="button" class="btn btn-default none" id="loadmore">
                 <span class="fa fa-spinner" id="loadmorecss"></span> Load more
             </button></center>
             </div>
