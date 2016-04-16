@@ -1,4 +1,4 @@
-var prefix = "";
+var prefix = "", nextPageToken;
 
 function start() {
     $('.dropd1 > li > a').click(function() {
@@ -31,10 +31,9 @@ $(function() {
             // execute the request
             request.execute(function(response) {
                 var results = response.result;
-                $("#results")
-                    .html("");
+                nextPageToken = result.nextPageToken);
+                $("#results").html("");
                 $.each(results.items, function(index, item) {
-                    console.log("nextPageToken: " + result.nextPageToken);
                     $.get("src/yt.html", function(data) {
                         $("#results")
                             .append(tplawesome(data, [{
