@@ -1,10 +1,5 @@
 var prefix = "", nextPageToken;
 
-function start() {
-    $('.dropd1 > li > a').click(function() {
-        $("#dropdb1").html($(this).text() + ' <span class="caret"></span>');
-    });
-}
 function tplawesome(e, t) {
     res = e;
     for (var n = 0; n < t.length; n++) {
@@ -15,38 +10,36 @@ function tplawesome(e, t) {
     return res
 }
 $(function() {
-    $("form")
-        .on("submit", function(e) {
-            e.preventDefault();
-            // prepare the request
-            var request = gapi.client.youtube.search.list({
-                part: "snippet",
-                type: "video",
-                q: encodeURIComponent($("#search")
-                        .val())
-                    .replace(/%20/g, "+"),
-                maxResults: 15,
-                order: "relevance",
-            });
-            // execute the request
-            request.execute(function(response) {
-                var result = response.result;
-                nextPageToken = result.nextPageToken;
-                $("#results").html("");
-                $.each(result.items, function(index, item) {
-                    $.get("src/yt.html", function(data) {
-                        $("#results")
-                            .append(tplawesome(data, [{
-                                "title": item.snippet.title,
-                                "videoid": item.id.videoId
-                            }]));
-                    });
-                });
-                resetVideoHeight();
-            });
+    $("form").on("submit", function(e) {
+        e.preventDefault();
+        // prepare the request
+        var request = gapi.client.youtube.search.list({
+            part: "snippet",
+            type: "video",
+            q: encodeURIComponent($("#search")
+                    .val())
+                .replace(/%20/g, "+"),
+            maxResults: 8,
+            order: "relevance"
         });
-    $(window)
-        .on("resize", resetVideoHeight);
+        // execute the request
+        request.execute(function(response) {
+            var result = response.result;
+            nextPageToken = result.nextPageToken;
+            $("#results").html("");
+            $.each(result.items, function(index, item) {
+                $.get("src/yt.html", function(data) {
+                    $("#results")
+                        .append(tplawesome(data, [{
+                            "title": item.snippet.title,
+                            "videoid": item.id.videoId
+                        }]));
+                });
+            });
+            resetVideoHeight();
+        });
+    });
+    $(window).on("resize", resetVideoHeight);
 });
 
 function resetVideoHeight() {
@@ -74,71 +67,109 @@ $(document).ready(function() {
 			});
 		});
 	});
+    
+    $("#loadmore").click(function () {
+        var request = gapi.client.youtube.search.list({
+            part: "snippet",
+            type: "video",
+            q: encodeURIComponent($("#search")
+                    .val())
+                .replace(/%20/g, "+"),
+            maxResults: 6,
+            nextPageToken: nextPageToken,
+            order: "relevance"
+        });
+        // execute the request
+        request.execute(function(response) {
+            var result = response.result;
+            nextPageToken = result.nextPageToken;
+            $("#results").html("");
+            $.each(result.items, function(index, item) {
+                $.get("src/yt.html", function(data) {
+                    $("#results")
+                        .append(tplawesome(data, [{
+                            "title": item.snippet.title,
+                            "videoid": item.id.videoId
+                        }]));
+                });
+            });
+            resetVideoHeight();
+        });
+    });
+    
+    $('.dropd1 > li > a').click(function() {
+        $("#dropdb1").html($(this).text() + ' <span class="caret"></span>');
+    });
 });
 
 function endplay(url) {
-    if (instan)
-            $.ajax({
-              url: prefix + '/api/v1/bot/i/' + instanceid + '/scriptEvent/ytplay',
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'bearer ' + window.localStorage.token
-              },
-              data: JSON.stringify(url)
-            }).done(function(data) {
-              // The result will be an array with answers from the script
-              var answerList = $('#answers')
-              answerList.html('');
-              data.forEach(function(answer) {
-                $('<li/>').appendTo(answerList).text(answer.script + ' returned ' + JSON.stringify(answer.data));
-              });
-              $('.alert > #title').text("Success!");
-              $('.alert > #text').text("The video, will be successfully played.");
-              $('.none' ).fadeIn( 400 ).delay( 2000 ).fadeOut( 400 );
-            });
+    if (instanceid) {
+        $.ajax({
+          url: prefix + '/api/v1/bot/i/' + instanceid + '/scriptEvent/ytplay',
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'bearer ' + window.localStorage.token
+          },
+          data: JSON.stringify(url)
+        }).done(function(data) {
+          // The result will be an array with answers from the script
+          var answerList = $('#answers')
+          answerList.html('');
+          data.forEach(function(answer) {
+            $('<li/>').appendTo(answerList).text(answer.script + ' returned ' + JSON.stringify(answer.data));
+          });
+          $('.alert > #title').text("Success!");
+          $('.alert > #text').text("The video, will be successfully played.");
+          $('.none' ).fadeIn( 400 ).delay( 2000 ).fadeOut( 400 );
+        });
+    }
 }
 
 function endenqueue(url) {
-            $.ajax({
-              url: prefix + '/api/v1/bot/i/' + instanceid + '/scriptEvent/ytenq',
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'bearer ' + window.localStorage.token
-              },
-              data: JSON.stringify(url)
-            }).done(function(data) {
-              // The result will be an array with answers from the script
-              var answerList = $('#answers')
-              answerList.html('');
-              data.forEach(function(answer) {
-                $('<li/>').appendTo(answerList).text(answer.script + ' returned ' + JSON.stringify(answer.data));
-              });
-              $('.alert > #title').text("Success!");
-              $('.alert > #text').text("The video, will be successfully enqueued.");
-              $('.none' ).fadeIn( 400 ).delay( 2000 ).fadeOut( 400 );
-            });
+    if (instanceid) {
+        $.ajax({
+          url: prefix + '/api/v1/bot/i/' + instanceid + '/scriptEvent/ytenq',
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'bearer ' + window.localStorage.token
+          },
+          data: JSON.stringify(url)
+        }).done(function(data) {
+          // The result will be an array with answers from the script
+          var answerList = $('#answers')
+          answerList.html('');
+          data.forEach(function(answer) {
+            $('<li/>').appendTo(answerList).text(answer.script + ' returned ' + JSON.stringify(answer.data));
+          });
+          $('.alert > #title').text("Success!");
+          $('.alert > #text').text("The video, will be successfully enqueued.");
+          $('.none' ).fadeIn( 400 ).delay( 2000 ).fadeOut( 400 );
+        });
+    }
 }
 
 function enddownload(url) {
-            $.ajax({
-              url: prefix + '/api/v1/bot/i/' + instanceid + '/scriptEvent/ytdl',
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'bearer ' + window.localStorage.token
-              },
-              data: JSON.stringify(url)
-            }).done(function(data) {
-              // The result will be an array with answers from the script
-              var answerList = $('#answers')
-              answerList.html('');
-              data.forEach(function(answer) {
-                $('<li/>').appendTo(answerList).text(answer.script + ' returned ' + JSON.stringify(answer.data));
-              });
-              $('.alert > #title').text("Success!");
-              $('.alert > #text').text("The video, will be successfully downloaded.");
-              $('.none' ).fadeIn( 400 ).delay( 2000 ).fadeOut( 400 );
-            });
+    if (instanceid) {
+        $.ajax({
+          url: prefix + '/api/v1/bot/i/' + instanceid + '/scriptEvent/ytdl',
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'bearer ' + window.localStorage.token
+          },
+          data: JSON.stringify(url)
+        }).done(function(data) {
+          // The result will be an array with answers from the script
+          var answerList = $('#answers')
+          answerList.html('');
+          data.forEach(function(answer) {
+            $('<li/>').appendTo(answerList).text(answer.script + ' returned ' + JSON.stringify(answer.data));
+          });
+          $('.alert > #title').text("Success!");
+          $('.alert > #text').text("The video, will be successfully downloaded.");
+          $('.none' ).fadeIn( 400 ).delay( 2000 ).fadeOut( 400 );
+        });
+    }
 }
