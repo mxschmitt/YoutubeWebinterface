@@ -10,11 +10,6 @@
 #copyright {
     display: inline;
 }
-
-@font-face {
-    font-family: "yt";
-    src: url(yt.ttf) format("truetype");
-}
 #yt {
     font-family: yt;
     margin-top: -10px;
