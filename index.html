@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Sinusbot | YouTube</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Sinusbot Youtube Search Webinterface">
+    <link rel="icon" type="image/png" sizes="32x32" href="src/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="src/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="src/favicon-16x16.png">
+    <link rel="apple-touch-icon" href="src/sinusbot-quad.png"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="src/main.css">
+    <script src="src/main.js"></script>
+    <script src="https://apis.google.com/js/client.js?onload=init"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+</head>
+
+<body onload="start()">
+    <div class="container">
+        <div class="jumbotron">
+            <h1 id="yt">Youtube Search:</h1>
+            <p id="copyright" style="padding-button">Youtube search for Sinusbot</p>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <h2>Instances</h2>
+                    <ul id="instances"></ul><br>
+                <form action="#">
+                    <div class="input-group"> <input type="text" class="form-control" id="search" placeholder="Suchbegriff...">
+                        <div class="input-group-btn">
+                         <button type="button" class="btn btn-defaul dropdown-toggle" data-toggle="dropdown" id="dropdb1">Anzahl<span class="caret"></span></button>
+                            <ul class="dropdown-menu dropdown-menu-right dropd1" id="dropdown" role="menu">
+                                <li><a href="#">5</a></li>
+                                <li><a href="#">10</a></li>
+                                <li><a href="#">25</a></li>
+                                <li><a href="#">50</a></li>
+                            </ul>
+                            
+                            
+                        </div> <!-- /input-group-btn -->
+
+                    </div> <!-- /input-group -->
+                    <p style="margin-top: 15px;"><input type="submit" value="Suchen" class="form-control btn btn-primary"></p></form>
+            </div>
+            
+            <div id="results"></div>
+        </div>
+    </div>
+    </div>
+    <footer class="footer">
+        <div class="container">
+            <p class="text-muted">
+                <hr>We are not from the Sinusbot Team.</p>
+        </div>
+    </footer>
+</body>
+
+</html>

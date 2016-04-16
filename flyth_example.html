@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Script Demo</title>
+	<!-- Import jQuery -->
+	<script type="text/javascript" src="/js/main.js"></script>
+	<!-- Import default design -->
+	<link rel="stylesheet" href="/themes/simplex.css" />
+</head>
+<body>
+
+<div class="container">
+	<h1>Script Website Demo</h1>
+	<p>This script demonstrates how to build a simple script interface that communicates with the bot and the actual scripts via JavaScript.</p>
+	<p>Below is a list of all instances. If you click on them, we send a message "help" to the bot that you can reply to by registering a callback inside your script like so:</p>
+<pre>
+sinusbot.on('api:help', function(ev) {
+	return 'This is a simple response.';
+});
+</pre>
+	<h2>Instances</h2>
+	<ul id="instances"></ul>
+	<h3>Answers</h3>
+	<ul id="answers"></ul>
+</div>
+<script type="text/javascript">
+$(document).ready(function() {
+	var instanceList = $('#instances');
+	// Get the list of instances using the currently logged in user account
+	$.ajax({ url: '/api/v1/bot/instances', headers: { 'Authorization': 'bearer ' + window.localStorage.token }}).done(function(data) {
+		data.forEach(function(instance) {
+			// When clicking an entry, we post a request to the script interface and return the result
+			$('<li/>').appendTo(instanceList).text(instance.nick + ' (' + instance.uuid + ')').click(function() {
+				$.ajax({ url: '/api/v1/bot/i/' + instance.uuid + '/scriptEvent/help', method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': 'bearer ' + window.localStorage.token }, data: JSON.stringify({}) }).done(function(data) {
+
+					// The result will be an array with answers from the script
+					var answerList = $('#answers')
+					answerList.html('');
+					data.forEach(function(answer) {
+						$('<li/>').appendTo(answerList).text(answer.script + ' returned ' + JSON.stringify(answer.data));
+					});
+				});
+			});
+		});
+	});
+});
+</script>
+</body>
+</html>
