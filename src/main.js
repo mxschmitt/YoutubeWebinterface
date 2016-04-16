@@ -34,7 +34,7 @@ $(function() {
                 $("#results")
                     .html("");
                 $.each(results.items, function(index, item) {
-                    console.log("nextPageToken: " + data.nextPageToken);
+                    console.log("nextPageToken: " + result.nextPageToken);
                     $.get("src/yt.html", function(data) {
                         $("#results")
                             .append(tplawesome(data, [{
