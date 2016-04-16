@@ -1,4 +1,4 @@
-var prefix = "", maxResults = 2, nextPageToken;
+var prefix = "", maxResults = 6, nextPageToken;
 
 function tplawesome(e, t) {
     res = e;
@@ -26,6 +26,7 @@ $(function() {
         request.execute(function(response) {
             var result = response.result;
             nextPageToken = result.nextPageToken;
+            console.log("nextPageToken: " + nextPageToken);
             $("#results").html("");
             $.each(result.items, function(index, item) {
                 $.get("src/yt.html", function(data) {
@@ -66,9 +67,13 @@ $(document).ready(function() {
                 instanceid = instance.uuid;
 			});
 		});
+        $('.dropd1 > li > a').click(function() {
+            $("#dropdb1").html($(this).text() + ' <span class="caret"></span>');
+        });
 	});
     
-    $("#loadmore").click(function () {
+    $('#loadmore').click(function () {
+        $('#loadmore').html('<i class="fa fa-spinner fa-pulse fa-fw"></i>Loading...');
         var request = gapi.client.youtube.search.list({
             part: "snippet",
             type: "video",
@@ -76,13 +81,14 @@ $(document).ready(function() {
                     .val())
                 .replace(/%20/g, "+"),
             maxResults: maxResults,
-            nextPageToken: nextPageToken,
+            pageToken: nextPageToken,
             order: "relevance"
         });
         // execute the request
         request.execute(function(response) {
             var result = response.result;
             nextPageToken = result.nextPageToken;
+            console.log("nextPageToken: " + nextPageToken);
             $.each(result.items, function(index, item) {
                 $.get("src/yt.html", function(data) {
                     $("#results")
@@ -93,11 +99,8 @@ $(document).ready(function() {
                 });
             });
             resetVideoHeight();
+            $('#loadmore').html('Load more');
         });
-    });
-    
-    $('.dropd1 > li > a').click(function() {
-        $("#dropdb1").html($(this).text() + ' <span class="caret"></span>');
     });
 });
 
