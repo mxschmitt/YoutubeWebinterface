@@ -1,3 +1,5 @@
+var prefix = "";
+
 function start() {
     $('.dropd1 > li > a').click(function() {
         $("#dropdb1").html($(this).text() + ' <span class="caret"></span>');
@@ -34,6 +36,7 @@ $(function() {
                 $("#results")
                     .html("");
                 $.each(results.items, function(index, item) {
+                    console.log("nextPageToken: " + nextPageToken);
                     $.get("src/yt.html", function(data) {
                         $("#results")
                             .append(tplawesome(data, [{
@@ -66,7 +69,7 @@ function init() {
 $(document).ready(function() {
 	var instanceList = $('#dropdown');
 	// Get the list of instances using the currently logged in user account
-	$.ajax({ url: '/api/v1/bot/instances', headers: { 'Authorization': 'bearer ' + window.localStorage.token }}).done(function(data) {
+	$.ajax({ url: prefix + '/api/v1/bot/instances', headers: { 'Authorization': 'bearer ' + window.localStorage.token }}).done(function(data) {
 		data.forEach(function(instance) {
 			// When clicking an entry, we post a request to the script interface and return the result
 			$('<li/>').appendTo(instanceList).html('<a href="#">' + instance.nick + '</a>').click(function() {
@@ -78,7 +81,7 @@ $(document).ready(function() {
 
 function endplay(url) {
             $.ajax({
-              url: '/api/v1/bot/i/' + instanceid + '/scriptEvent/ytplay',
+              url: prefix + '/api/v1/bot/i/' + instanceid + '/scriptEvent/ytplay',
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
@@ -98,7 +101,7 @@ function endplay(url) {
 
 function endenqueue(url) {
             $.ajax({
-              url: '/api/v1/bot/i/' + instanceid + '/scriptEvent/ytenq',
+              url: prefix + '/api/v1/bot/i/' + instanceid + '/scriptEvent/ytenq',
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
@@ -118,7 +121,7 @@ function endenqueue(url) {
 
 function enddownload(url) {
             $.ajax({
-              url: '/api/v1/bot/i/' + instanceid + '/scriptEvent/ytdl',
+              url: prefix + '/api/v1/bot/i/' + instanceid + '/scriptEvent/ytdl',
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
