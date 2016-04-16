@@ -1,49 +1,53 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Script Demo</title>
-	<!-- Import jQuery -->
-	<script type="text/javascript" src="/js/main.js"></script>
-	<!-- Import default design -->
-	<link rel="stylesheet" href="/themes/simplex.css" />
+    <meta charset="UTF-8">
+    <title>Sinusbot | YouTube</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Sinusbot Youtube Search Webinterface">
+    <link rel="icon" type="image/png" sizes="32x32" href="src/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="src/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="src/favicon-16x16.png">
+    <link rel="apple-touch-icon" href="src/sinusbot-quad.png"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="src/main.css">
+    <script src="src/main.js"></script>
+    <script src="https://apis.google.com/js/client.js?onload=init"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
 </head>
-<body>
+<body onload="start()">
+    <div class="container">
+        <div class="jumbotron">
+            <h1 id="yt">Youtube Search:</h1>
+            <p id="copyright" style="padding-button">Youtube search for Sinusbot</p>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <h2>Instances</h2>
+                    <ul id="instances"></ul><br>
+                <form action="#">
+                    <div class="input-group"> <input type="text" class="form-control" id="search" placeholder="Suchbegriff...">
+                        <div class="input-group-btn">
+                         <button type="button" class="btn btn-defaul dropdown-toggle" data-toggle="dropdown" id="dropdb1">Anzahl<span class="caret"></span></button>
+                            <ul class="dropdown-menu dropdown-menu-right dropd1" id="dropdown" role="menu"></ul>
+                        </div> <!-- /input-group-btn -->
 
-<div class="container">
-	<h1>Script Website Demo</h1>
-	<p>This script demonstrates how to build a simple script interface that communicates with the bot and the actual scripts via JavaScript.</p>
-	<p>Below is a list of all instances. If you click on them, we send a message "help" to the bot that you can reply to by registering a callback inside your script like so:</p>
-<pre>
-sinusbot.on('api:help', function(ev) {
-	return 'This is a simple response.';
-});
-</pre>
-	<h2>Instances</h2>
-	<ul id="instances"></ul>
-	<h3>Answers</h3>
-	<ul id="answers"></ul>
-</div>
-<script type="text/javascript">
-$(document).ready(function() {
-	var instanceList = $('#instances');
-	// Get the list of instances using the currently logged in user account
-	$.ajax({ url: '/api/v1/bot/instances', headers: { 'Authorization': 'bearer ' + window.localStorage.token }}).done(function(data) {
-		data.forEach(function(instance) {
-			// When clicking an entry, we post a request to the script interface and return the result
-			$('<li/>').appendTo(instanceList).text(instance.nick + ' (' + instance.uuid + ')').click(function() {
-				$.ajax({ url: '/api/v1/bot/i/' + instance.uuid + '/scriptEvent/help', method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': 'bearer ' + window.localStorage.token }, data: JSON.stringify({}) }).done(function(data) {
+                    </div> <!-- /input-group -->
+                    <p style="margin-top: 15px;"><input type="submit" value="Suchen" class="form-control btn btn-primary"></p></form>
+            </div>
 
-					// The result will be an array with answers from the script
-					var answerList = $('#answers')
-					answerList.html('');
-					data.forEach(function(answer) {
-						$('<li/>').appendTo(answerList).text(answer.script + ' returned ' + JSON.stringify(answer.data));
-					});
-				});
-			});
-		});
-	});
-});
-</script>
+            <div id="results"></div>
+        </div>
+    </div>
+    </div>
+    <footer class="footer">
+        <div class="container">
+            <p class="text-muted">
+                <hr>We are not from the Sinusbot Team.</p>
+        </div>
+    </footer>
 </body>
+
 </html>

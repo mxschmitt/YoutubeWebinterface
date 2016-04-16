@@ -71,12 +71,12 @@ function init() {
 //YT END Start Sinusbot Connection
 
 $(document).ready(function() {
-	var instanceList = $('#instances');
+	var instanceList = $('#dropdown');
 	// Get the list of instances using the currently logged in user account
 	$.ajax({ url: '/api/v1/bot/instances', headers: { 'Authorization': 'bearer ' + window.localStorage.token }}).done(function(data) {
 		data.forEach(function(instance) {
 			// When clicking an entry, we post a request to the script interface and return the result
-			$('<li/>').appendTo(instanceList).text(instance.nick + ' (' + instance.uuid + ')').click(function() {
+			$('<li/>').appendTo(instanceList).html('<a href="#">' + instance.nick + '</a>').click(function() {
                 instanceid = instance.uuid;
 				$.ajax({ url: '/api/v1/bot/i/' + instance.uuid + '/scriptEvent/help', method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': 'bearer ' + window.localStorage.token }, data: JSON.stringify({}) }).done(function(data) {
 					// The result will be an array with answers from the script
@@ -108,7 +108,7 @@ function endplay(url) {
                 $('<li/>').appendTo(answerList).text(answer.script + ' returned ' + JSON.stringify(answer.data));
               });
             });
-    
+
 }
 
 function endenqueue(url) {
@@ -128,7 +128,7 @@ function endenqueue(url) {
                 $('<li/>').appendTo(answerList).text(answer.script + ' returned ' + JSON.stringify(answer.data));
               });
             });
-    
+
 }
 
 function enddownload(url) {
@@ -148,5 +148,5 @@ function enddownload(url) {
                 $('<li/>').appendTo(answerList).text(answer.script + ' returned ' + JSON.stringify(answer.data));
               });
             });
-    
+
 }
