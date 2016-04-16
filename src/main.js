@@ -1,5 +1,3 @@
-var yCount;
-
 function start() {
     $('.dropd1 > li > a').click(function() {
         $("#dropdb1").html($(this).text() + ' <span class="caret"></span>');
@@ -73,14 +71,6 @@ $(document).ready(function() {
 			// When clicking an entry, we post a request to the script interface and return the result
 			$('<li/>').appendTo(instanceList).html('<a href="#">' + instance.nick + '</a>').click(function() {
                 instanceid = instance.uuid;
-				$.ajax({ url: '/api/v1/bot/i/' + instance.uuid + '/scriptEvent/help', method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': 'bearer ' + window.localStorage.token }, data: JSON.stringify({}) }).done(function(data) {
-					// The result will be an array with answers from the script
-					var answerList = $('#answers')
-					answerList.html('');
-					data.forEach(function(answer) {
-						$('<li/>').appendTo(answerList).text(answer.script + ' returned ' + JSON.stringify(answer.data));
-					});
-				});
 			});
 		});
 	});
