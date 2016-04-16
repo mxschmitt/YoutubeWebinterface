@@ -2,7 +2,7 @@
 var ytkey = 'AIzaSyC87fSxWOAp8hzKTBCWF8dpqUYMHVfbWNo';
 var maxResults  = 6;
 //-------------CONFIG-END--------------
-var prefix = "", nextPageToken;
+var prefix = "", nextPageToken, instanceid = '';
 function tplawesome(e, t) {
     res = e;
     for (var n = 0; n < t.length; n++) {
@@ -109,7 +109,7 @@ var instanceList = $('#dropdown');
 });
 
 function endplay(url) {
-    if (instanceid) {
+    if (instanceid !== '') {
         $.ajax({
           url: prefix + '/api/v1/bot/i/' + instanceid + '/scriptEvent/ytplay',
           method: 'POST',
@@ -125,17 +125,19 @@ function endplay(url) {
           data.forEach(function(answer) {
             $('<li/>').appendTo(answerList).text(answer.script + ' returned ' + JSON.stringify(answer.data));
           });
-          $('.alert > #title').text("Success!");
-          $('.alert > #text').text("The video, will be successfully played.");
-          $('.none' ).fadeIn( 400 ).delay( 2000 ).fadeOut( 400 );
+          $('#alertscss > #title').text("Success!");
+          $('#alertscss > #text').text("The video, will be successfully played.");
+          $('#alertscss').fadeIn( 400 ).delay( 2000 ).fadeOut( 400 );
         });
     } else {
-
+      $('#alertdcss > #title').text("Failed!");
+      $('#alertdcss > #text').text("Please select an instance.");
+      $('#alertdcss' ).fadeIn( 400 ).delay( 2000 ).fadeOut( 400 );
     }
 }
 
 function endenqueue(url) {
-    if (instanceid) {
+    if (instanceid !== '') {
         $.ajax({
           url: prefix + '/api/v1/bot/i/' + instanceid + '/scriptEvent/ytenq',
           method: 'POST',
@@ -151,21 +153,19 @@ function endenqueue(url) {
           data.forEach(function(answer) {
             $('<li/>').appendTo(answerList).text(answer.script + ' returned ' + JSON.stringify(answer.data));
           });
-          $('.alert > #title').text("Success!");
-          $('.alert > #text').text("The video, will be successfully enqueued.");
-          $('.none' ).fadeIn( 400 ).delay( 2000 ).fadeOut( 400 );
+          $('#alertscss > #title').text("Success!");
+          $('#alertscss > #text').text("The video, will be successfully enqueued.");
+          $('#alertscss' ).fadeIn( 400 ).delay( 2000 ).fadeOut( 400 );
         });
     } else {
-        $("#loadmorecss").addClass("fa-pulse fa-fw");
-        $("#loadmorecss").removeClass("fa-pulse fa-fw");
-        $('.alert > #title').text("Failed!");
-        $('.alert > #text').text("Please select an instance.");
-        $('.none' ).fadeIn( 400 ).delay( 2000 ).fadeOut( 400 );
+        $('#alertdcss > #title').text("Failed!");
+        $('#alertdcss > #text').text("Please select an instance.");
+        $('#alertdcss' ).fadeIn( 400 ).delay( 2000 ).fadeOut( 400 );
     }
 }
 
 function enddownload(url) {
-    if (instanceid) {
+    if (instanceid !== '') {
         $.ajax({
           url: prefix + '/api/v1/bot/i/' + instanceid + '/scriptEvent/ytdl',
           method: 'POST',
@@ -181,11 +181,13 @@ function enddownload(url) {
           data.forEach(function(answer) {
             $('<li/>').appendTo(answerList).text(answer.script + ' returned ' + JSON.stringify(answer.data));
           });
-          $('.alert > #title').text("Success!");
-          $('.alert > #text').text("The video, will be successfully downloaded.");
-          $('.none' ).fadeIn( 400 ).delay( 2000 ).fadeOut( 400 );
+          $('#alertscss > #title').text("Success!");
+          $('#alertscss > #text').text("The video, will be successfully downloaded.");
+          $('#alertscss').fadeIn( 400 ).delay( 2000 ).fadeOut( 400 );
         });
     } else {
-
+      $('#alertdcss > #title').text("Failed!");
+      $('#alertdcss > #text').text("Please select an instance.");
+      $('#alertdcss' ).fadeIn( 400 ).delay( 2000 ).fadeOut( 400 );
     }
 }
