@@ -94,8 +94,9 @@ function endplay(url) {
               data.forEach(function(answer) {
                 $('<li/>').appendTo(answerList).text(answer.script + ' returned ' + JSON.stringify(answer.data));
               });
-                $('.alert').text("Test");
-                $('.none' ).fadeIn( 400 ).delay( 2000 ).fadeOut( 400 );
+              $('.alert > #title').text("Success!");
+              $('.alert > #text').text("The video, will be successfully played.");
+              $('.none' ).fadeIn( 400 ).delay( 2000 ).fadeOut( 400 );
             });
 }
 
@@ -115,8 +116,10 @@ function endenqueue(url) {
               data.forEach(function(answer) {
                 $('<li/>').appendTo(answerList).text(answer.script + ' returned ' + JSON.stringify(answer.data));
               });
+              $('.alert > #title').text("Success!");
+              $('.alert > #text').text("The video, will be successfully enqueued.");
+              $('.none' ).fadeIn( 400 ).delay( 2000 ).fadeOut( 400 );
             });
-
 }
 
 function enddownload(url) {
@@ -135,6 +138,8 @@ function enddownload(url) {
               data.forEach(function(answer) {
                 $('<li/>').appendTo(answerList).text(answer.script + ' returned ' + JSON.stringify(answer.data));
               });
+              $('.alert > #title').text("Success!");
+              $('.alert > #text').text("The video, will be successfully downloaded.");
+              $('.none' ).fadeIn( 400 ).delay( 2000 ).fadeOut( 400 );  
             });
-
 }
