@@ -1,5 +1,8 @@
-var prefix = "", maxResults = 8, nextPageToken;
-
+//-------------CONFIG-START------------
+var ytkey = 'AIzaSyC87fSxWOAp8hzKTBCWF8dpqUYMHVfbWNo';
+var maxResults  = 6;
+//-------------CONFIG-END--------------
+var prefix = "", nextPageToken;
 function tplawesome(e, t) {
     res = e;
     for (var n = 0; n < t.length; n++) {
@@ -50,7 +53,7 @@ function resetVideoHeight() {
 }
 
 function init() {
-    gapi.client.setApiKey("AIzaSyC87fSxWOAp8hzKTBCWF8dpqUYMHVfbWNo");
+    gapi.client.setApiKey(ytkey);
     gapi.client.load("youtube", "v3", function() {
     });
 }
@@ -73,6 +76,7 @@ var instanceList = $('#dropdown');
 	});
 
     $("#loadmore").click(function () {
+        $("#loadmorecss").addClass("fa-pulse fa-fw");
         var request = gapi.client.youtube.search.list({
             part: "snippet",
             type: "video",
@@ -98,6 +102,7 @@ var instanceList = $('#dropdown');
                 });
             });
             resetVideoHeight();
+            $("#loadmorecss").removeClass("fa-pulse fa-fw");
         });
     });
 });
