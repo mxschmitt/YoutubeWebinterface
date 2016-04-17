@@ -23,3 +23,11 @@
     margin: 0px auto;
     clear: both;
 }
+#results {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+.videos {
+    width: calc(50% - 10px);
+    margin: 5px;
+}

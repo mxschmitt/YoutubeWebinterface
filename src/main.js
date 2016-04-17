@@ -133,9 +133,7 @@ function endplay(url) {
       $('#alertscss').fadeIn(400).delay(2000).fadeOut(400);
     });
   } else {
-    $('#alertdcss > #title').text("Failed!");
-    $('#alertdcss > #text').text("Please select an instance.");
-    $('#alertdcss').fadeIn(400).delay(2000).fadeOut(400);
+      selectInstance();
   }
 }
 
@@ -165,9 +163,7 @@ function endenqueue(url) {
       $('#alertscss').fadeIn(400).delay(2000).fadeOut(400);
     });
   } else {
-    $('#alertdcss > #title').text("Failed!");
-    $('#alertdcss > #text').text("Please select an instance.");
-    $('#alertdcss').fadeIn(400).delay(2000).fadeOut(400);
+      selectInstance();
   }
 }
 
@@ -197,9 +193,7 @@ function enddownload(url) {
       $('#alertscss').fadeIn(400).delay(2000).fadeOut(400);
     });
   } else {
-    $('#alertdcss > #title').text("Failed!");
-    $('#alertdcss > #text').text("Please select an instance.");
-    $('#alertdcss').fadeIn(400).delay(2000).fadeOut(400);
+      selectInstance();
   }
 }
 
@@ -245,4 +239,7 @@ function dynamicSort(property) {
 
 function enablePlugin() {
   sweetAlert('Failed...', "Be sure, that you've enabled the script in your Webinterface!", 'error')
+}
+function selectInstance() {
+  sweetAlert('Failed...', "Be sure, that you select an instance!", 'error')
 }
