@@ -28,6 +28,19 @@
     padding-right: 15px;
 }
 .videos {
-    width: calc(50% - 10px);
     margin: 5px;
+    padding: 0 20px;
+}
+
+@media (max-width: 992px) {
+    .videos {
+	width: calc(100% - 10px);
+    min-height: 700px;
+        }
+}
+@media (min-width: 992px) {
+    .videos {
+	width: calc(50% - 10px);
+    height: 700px;
+        }
 }
