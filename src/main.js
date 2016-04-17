@@ -63,12 +63,12 @@ $(document).ready(function() {
       'Authorization': 'bearer ' + window.localStorage.token
     },
     statusCode: {
-    401: function() {
-      alert('You are unauthorized!');
-      window.location = getRootUrl();
+      401: function() {
+        makeError();
+      }
     }
-  }
   }).done(function(data) {
+    data = data.sort(dynamicSort("nick"));
     data.forEach(function(instance) {
       // When clicking an entry, we post a request to the script interface and return the result
       $('<li/>').appendTo(instanceList).html('<a href="#">' + instance.nick + '</a>').click(function() {
@@ -78,12 +78,8 @@ $(document).ready(function() {
     $('.dropd1 > li > a').click(function() {
       $("#dropdb1").html($(this).text() + ' <span class="caret"></span>');
     });
-      $(".dropd1").html(
-            $(".dropd1").children("li").sort(function (a, b) {
-                return $(a).text().toUpperCase().localeCompare(
-                $(b).text().toUpperCase());
-            })
-        );
+    console.log(data);
+    //    SortUL('dropd1');
   });
   $("#loadmore").click(function() {
     $("#loadmorecss").addClass("fa-pulse fa-fw");
@@ -196,6 +192,43 @@ function enddownload(url) {
     $('#alertdcss').fadeIn(400).delay(2000).fadeOut(400);
   }
 }
+
 function getRootUrl() {
-	return window.location.origin?window.location.origin+'/':window.location.protocol+'/'+window.location.host+'/';
+  return window.location.origin ? window.location.origin + '/' : window.location.protocol + '/' + window.location.host + '/';
+}
+
+function makeError() {
+  swal({
+    title: 'Oops...',
+    text: "For the Webinterface, you must be logged in with your Account into the Sinusbot Webinterface!",
+    type: 'warning',
+    confirmButtonColor: '#D9230F',
+    confirmButtonText: 'to the Webinterface',
+    cancelButtonText: 'Webinterface',
+    closeOnConfirm: false,
+  }).then(function(isConfirm) {
+    if(isConfirm === true) {
+      swal('Redirect!', 'You will be redirected to you Webinterface.', 'success');
+      setTimeout(function() {
+        window.location = getRootUrl();
+      }, 1600);
+    } else {
+      swal('Cancelled', 'You will be redirected to you Webinterface.', 'error');
+      setTimeout(function() {
+        window.location = getRootUrl();
+      }, 1600);
+    }
+  });
+}
+
+function dynamicSort(property) {
+  var sortOrder = 1;
+  if(property[0] === "-") {
+    sortOrder = -1;
+    property = property.substr(1);
+  }
+  return function(a, b) {
+    var result = (a[property] < b[property]) ? -1 : (a[property] > b[property]) ? 1 : 0;
+    return result * sortOrder;
+  }
 }
