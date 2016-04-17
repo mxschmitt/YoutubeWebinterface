@@ -78,8 +78,6 @@ $(document).ready(function() {
     $('.dropd1 > li > a').click(function() {
       $("#dropdb1").html($(this).text() + ' <span class="caret"></span>');
     });
-    console.log(data);
-    //    SortUL('dropd1');
   });
   $("#loadmore").click(function() {
     $("#loadmorecss").addClass("fa-pulse fa-fw");
@@ -120,6 +118,10 @@ function endplay(url) {
       },
       data: JSON.stringify(url)
     }).done(function(data) {
+      if(data.length == 0) {
+        enablePlugin();
+        return;
+      }
       // The result will be an array with answers from the script
       var answerList = $('#answers')
       answerList.html('');
@@ -148,6 +150,10 @@ function endenqueue(url) {
       },
       data: JSON.stringify(url)
     }).done(function(data) {
+      if(data.length == 0) {
+        enablePlugin();
+        return;
+      }
       // The result will be an array with answers from the script
       var answerList = $('#answers')
       answerList.html('');
@@ -176,6 +182,10 @@ function enddownload(url) {
       },
       data: JSON.stringify(url)
     }).done(function(data) {
+      if(data.length == 0) {
+        enablePlugin();
+        return;
+      }
       // The result will be an array with answers from the script
       var answerList = $('#answers')
       answerList.html('');
@@ -231,4 +241,8 @@ function dynamicSort(property) {
     var result = (a[property] < b[property]) ? -1 : (a[property] > b[property]) ? 1 : 0;
     return result * sortOrder;
   }
+}
+
+function enablePlugin() {
+  sweetAlert('Failed...', "Be sure, that you've enabled the script in your Webinterface!", 'error')
 }
