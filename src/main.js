@@ -81,7 +81,7 @@ $(document).ready(function() {
     checkForInstance(data);
   });
   $("#loadmore").click(function() {
-    $("#loadmorecss").addClass("fa-pulse fa-fw");
+    $("#loadmorecss").removeClass("none");
     var request = gapi.client.youtube.search.list({
       part: "snippet",
       type: "video",
@@ -103,7 +103,7 @@ $(document).ready(function() {
         });
       });
       resetVideoHeight();
-      $("#loadmorecss").removeClass("fa-pulse fa-fw");
+      $("#loadmorecss").addClass("none");
     });
   });
 });
