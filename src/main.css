@@ -6,7 +6,6 @@
     background-color: #f3331F;
     background-position: 99% 95%
 }
-
 #copyright {
     display: inline;
 }
@@ -31,16 +30,23 @@
     margin: 5px;
     padding: 0 20px;
 }
-
+.ytframe {
+    margin-top: 15px;
+    padding-bottom: 15px;
+    height: 360px;
+}
 @media (max-width: 992px) {
     .videos {
-	width: calc(100% - 10px);
-    min-height: 700px;
-        }
+        width: calc(100% - 10px);
+        min-height: 650px;
+    }
 }
 @media (min-width: 992px) {
     .videos {
-	width: calc(50% - 10px);
-    height: 700px;
-        }
+        width: calc(50% - 10px);
+        height: 500px;
+    }
+    .ytframe {
+      height: 289px;
+    }
 }
