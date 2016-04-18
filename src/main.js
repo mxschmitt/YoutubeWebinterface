@@ -2,8 +2,7 @@
 var ytkey = 'AIzaSyC87fSxWOAp8hzKTBCWF8dpqUYMHVfbWNo';
 var maxResults = 6;
 //-------------CONFIG-END--------------
-var prefix = "",
-  nextPageToken, instanceid = '';
+var prefix = "", nextPageToken, instanceid = '';
 
 function tplawesome(e, t) {
   res = e;
@@ -73,11 +72,13 @@ $(document).ready(function() {
       // When clicking an entry, we post a request to the script interface and return the result
       $('<li/>').appendTo(instanceList).html('<a href="#">' + instance.nick + '</a>').click(function() {
         instanceid = instance.uuid;
+        setCookie('instanceid',instanceid,7);
       });
     });
     $('.dropd1 > li > a').click(function() {
       $("#dropdb1").html($(this).text() + ' <span class="caret"></span>');
     });
+    checkForInstance(data);
   });
   $("#loadmore").click(function() {
     $("#loadmorecss").addClass("fa-pulse fa-fw");
@@ -225,6 +226,21 @@ function makeError() {
   });
 }
 
+function checkForInstance(data) {
+    if (checkCookie('instanceid') == true) {
+        i = 0;
+        data.forEach(function(instance) {
+            if (instance.uuid == getCookie('instanceid')) {
+                console.log(i);
+                instanceid = data[i].nick;
+                console.log(data[i].nick);
+                $("#dropdb1").html(data[i].nick);
+            }
+            i++;
+        });
+    }
+}
+
 function dynamicSort(property) {
   var sortOrder = 1;
   if(property[0] === "-") {
@@ -242,4 +258,28 @@ function enablePlugin() {
 }
 function selectInstance() {
   sweetAlert('Failed...', "Be sure, that you select an instance!", 'error')
+}
+function setCookie(cname,cvalue,exdays) {
+    var d = new Date();
+    d.setTime(d.getTime() + (exdays*24*60*60*1000));
+    var expires = "expires=" + d.toGMTString();
+    document.cookie = cname+"="+cvalue+"; "+expires;
+}
+function getCookie(cname) {
+    var name = cname + "=";
+    var ca = document.cookie.split(';');
+    for(var i=0; i<ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0)==' ') c = c.substring(1);
+        if (c.indexOf(name) == 0) return c.substring(name.length, c.length);
+    }
+    return "";
+}
+function checkCookie(cname) {
+    var user = getCookie(cname);
+    if (user != "") {
+       return true;
+    } else {
+        return false;
+    }
 }
