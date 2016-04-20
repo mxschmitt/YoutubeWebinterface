@@ -2,7 +2,7 @@
 var ytkey = 'AIzaSyC87fSxWOAp8hzKTBCWF8dpqUYMHVfbWNo';
 var maxResults = 6;
 //-------------CONFIG-END--------------
-var prefix = '', nextPageToken, instanceid = '', firstloaded = 0;
+var prefix = '', nextPageToken, instanceid = '';
 
 function tplawesome(e, t) {
   res = e;
@@ -40,7 +40,6 @@ $(function() {
       resetVideoHeight();
       $("#loadmore").css("display", "block");
     });
-    firstloaded = 1;
   });
   $(window).on("resize", resetVideoHeight);
 });
@@ -83,13 +82,13 @@ $(document).ready(function() {
   });
     $(window).scroll(function(){
     if ($(window).scrollTop() == $(document).height() - $(window).height()) {
-        if (firstloaded == 1) {
-        moreVideos();
-            }
+        if (typeof nextPageToken !== 'undefined') {
+            moreVideos();
+        }
     }
     });
     $("#loadmore").click(function() {
-        if (firstloaded == 1) {
+        if (typeof nextPageToken !== 'undefined') {
             moreVideos();
         }
     });
