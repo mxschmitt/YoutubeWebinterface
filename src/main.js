@@ -2,7 +2,7 @@
 var ytkey = 'AIzaSyC87fSxWOAp8hzKTBCWF8dpqUYMHVfbWNo';
 var maxResults = 6;
 //-------------CONFIG-END--------------
-var prefix = "", nextPageToken, instanceid = '';
+var prefix = '', nextPageToken, instanceid = '', firstloaded = 0;
 
 function tplawesome(e, t) {
   res = e;
@@ -40,6 +40,7 @@ $(function() {
       resetVideoHeight();
       $("#loadmore").css("display", "block");
     });
+    firstloaded = 1;
   });
   $(window).on("resize", resetVideoHeight);
 });
@@ -80,33 +81,19 @@ $(document).ready(function() {
     });
     checkForInstance(data);
   });
-  $("#loadmore").click(function() {
-    $("#loadmorecss").removeClass("none");
-    var request = gapi.client.youtube.search.list({
-      part: "snippet",
-      type: "video",
-      q: encodeURIComponent($("#search").val()).replace(/%20/g, "+"),
-      maxResults: maxResults,
-      pageToken: nextPageToken,
-      order: "relevance"
+    $(window).scroll(function(){
+    if ($(window).scrollTop() == $(document).height() - $(window).height()) {
+        if (firstloaded == 1) {
+        moreVideos();
+            }
+    }
     });
-    // execute the request
-    request.execute(function(response) {
-      var result = response.result;
-      nextPageToken = result.nextPageToken;
-      $.each(result.items, function(index, item) {
-        $.get("src/yt.html", function(data) {
-          $("#results").append(tplawesome(data, [{
-            "title": item.snippet.title,
-            "videoid": item.id.videoId
-          }]));
-        });
-      });
-      resetVideoHeight();
-      $("#loadmorecss").addClass("none");
+    $("#loadmore").click(function() {
+        if (firstloaded == 1) {
+            moreVideos();
+        }
     });
-  });
-});
+}); //Document Ready End
 
 function endplay(url) {
   if(instanceid !== '') {
@@ -239,6 +226,34 @@ function checkForInstance(data) {
             i++;
         });
     }
+}
+
+function moreVideos() {
+        $("#loadmorecss").removeClass("none");
+    var request = gapi.client.youtube.search.list({
+      part: "snippet",
+      type: "video",
+      q: encodeURIComponent($("#search").val()).replace(/%20/g, "+"),
+      maxResults: maxResults,
+      pageToken: nextPageToken,
+      order: "relevance"
+    });
+    // execute the request
+    request.execute(function(response) {
+      var result = response.result;
+      nextPageToken = result.nextPageToken;
+      $.each(result.items, function(index, item) {
+        $.get("src/yt.html", function(data) {
+          $("#results").append(tplawesome(data, [{
+            "title": item.snippet.title,
+            "videoid": item.id.videoId
+          }]));
+        });
+      });
+      resetVideoHeight();
+      $("#loadmorecss").addClass("none");
+    });
+
 }
 
 function dynamicSort(property) {
