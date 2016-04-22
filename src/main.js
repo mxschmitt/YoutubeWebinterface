@@ -16,7 +16,7 @@ function tplawesome(e, t) {
 $(function() {
   $("form").on("submit", function(e) {
     e.preventDefault();
-    
+
     if ($("#search").val()) {
       // prepare the request
       var request = gapi.client.youtube.search.list({
@@ -222,9 +222,9 @@ function checkForInstance(data) {
         i = 0;
         data.forEach(function(instance) {
             if (instance.uuid == getCookie('instanceid')) {
-                console.log(i);
+//                console.log(i);
                 instanceid = data[i].uuid;
-                console.log(data[i].nick);
+//                console.log(data[i].nick);
                 $("#dropdb1").html(data[i].nick);
             }
             i++;
