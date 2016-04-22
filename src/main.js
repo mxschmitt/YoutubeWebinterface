@@ -219,7 +219,7 @@ function checkForInstance(data) {
         data.forEach(function(instance) {
             if (instance.uuid == getCookie('instanceid')) {
                 console.log(i);
-                instanceid = data[i].nick;
+                instanceid = data[i].uuid;
                 console.log(data[i].nick);
                 $("#dropdb1").html(data[i].nick);
             }
