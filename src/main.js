@@ -278,6 +278,9 @@ function enablePlugin() {
 function selectInstance() {
   sweetAlert('Failed...', "Be sure, that you select an instance!", 'error')
 }
+function noSelectedVideo() {
+  sweetAlert('Failed...', "Be sure, that you´ve entered a search term!", 'error')
+}
 function setCookie(cname,cvalue,exdays) {
     var d = new Date();
     d.setTime(d.getTime() + (exdays*24*60*60*1000));
