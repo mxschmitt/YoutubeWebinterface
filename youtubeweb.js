@@ -1,7 +1,7 @@
 registerPlugin({
     name: 'Youtube Webinterface!',
     version: '1.0',
-    description: 'Youtube Webinterface for playing and queuing YouTube Tracks.',
+    description: 'Youtube Webinterface for playing and downloading YouTube Tracks.',
     author: ' MaxS <info@schmitt-max.com>',
     vars: {},
     enableWeb: true
@@ -13,8 +13,10 @@ sinusbot.log("YTWeb Webinterface Ready");
         
 });
     sinusbot.on('api:ytenq', function(ev) {
-    sinusbot.log('YTWeb Triggered with "enque" at '+ ev.data);    
-        return 'The Video will be sucessfully enqueued now.';   
+    // sinusbot.log('YTWeb Triggered with "enque" at '+ ev.data);    
+    // return 'The Video will be sucessfully enqueued now.';   
+        sinusbot.log('YTWeb Enqueuing is not available yet');    
+        return 'YTWeb Enqueuing is not available yet';   
         
 });
     sinusbot.on('api:ytdl', function(ev) {
