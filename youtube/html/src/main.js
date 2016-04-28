@@ -72,6 +72,7 @@ $(document).ready(function() {
       // When clicking an entry, we post a request to the script interface and return the result
       $('<li/>').appendTo(instanceList).html('<a href="#">' + instance.nick + '</a>').click(function() {
         setCookie('instanceid',instance.uuid,7);
+        instanceid = instance.uuid;
       });
       
       $.ajax({
@@ -237,9 +238,7 @@ function checkForInstance(data) {
         i = 0;
         data.forEach(function(instance) {
             if (instance.uuid == getCookie('instanceid')) {
-//                console.log(i);
                 instanceid = data[i].uuid;
-//                console.log(data[i].nick);
                 $("#dropdb1").html(data[i].nick);
             }
             i++;
