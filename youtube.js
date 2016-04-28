@@ -8,7 +8,8 @@ registerPlugin({
 }, function(sinusbot,config, info){
 sinusbot.log("YTWeb Webinterface Ready");
     sinusbot.on('api:ytplay', function(ev) {
-    sinusbot.log('YTWeb Triggered with "played" at '+ ev.data);    
+    sinusbot.log('YTWeb Triggered with "played" at '+ ev.data);  
+    sinusbot.yt(ev.data);  
         return 'The Video will be sucessfully played now.';
         
 });
@@ -21,6 +22,7 @@ sinusbot.log("YTWeb Webinterface Ready");
 });
     sinusbot.on('api:ytdl', function(ev) {
     sinusbot.log('YTWeb Triggered with "downloaded" at '+ ev.data); 
+    sinusbot.ytdl(ev.data); 
         return 'The Video will be sucessfully downloaded now.';
         
 });
