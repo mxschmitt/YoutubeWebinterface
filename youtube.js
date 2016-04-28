@@ -3,7 +3,12 @@ registerPlugin({
     version: '1.0',
     description: 'Youtube Webinterface for playing and downloading YouTube Tracks.',
     author: ' MaxS <info@schmitt-max.com>',
-    vars: {},
+    vars: {
+        ytkey: {
+            title: 'Youtube API Key (see the tutorial for instructions)',
+            type: 'string'
+        }
+    },
     enableWeb: true
 }, function(sinusbot,config, info){
 sinusbot.log("YTWeb Webinterface Ready");
@@ -26,4 +31,8 @@ sinusbot.log("YTWeb Webinterface Ready");
         return 'The Video will be sucessfully downloaded now.';
         
 });
+    sinusbot.on('api:ytkey', function(ev) {
+        return config.ytkey;
+        
+});    
 });
