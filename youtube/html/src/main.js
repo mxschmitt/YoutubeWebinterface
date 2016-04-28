@@ -75,19 +75,19 @@ $(document).ready(function() {
       });
       
       $.ajax({
-          url: '/api/v1/bot/i/' + instance.uuid + '/scriptEvent/ytkey',
-          method: 'POST',
-          headers: {
-              'Content-Type': 'application/json',
-              'Authorization': 'bearer ' + window.localStorage.token
-          },
-          data: "{}"
+        url: '/api/v1/bot/i/' + instance.uuid + '/scriptEvent/ytkey',
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'bearer ' + window.localStorage.token
+        },
+        data: "{}"
       }).done(function(data) {
         data.forEach(function(answer) {
-            if (answer.data.length == 39) {
-                gapi.client.setApiKey(answer.data);
-                gapi.client.load("youtube", "v3", function() {});
-            }
+          if (answer.data.length == 39) {
+            gapi.client.setApiKey(answer.data);
+            gapi.client.load("youtube", "v3", function() {});
+          }
         });
       });
     });
