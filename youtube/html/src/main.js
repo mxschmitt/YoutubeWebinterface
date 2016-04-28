@@ -1,5 +1,5 @@
 //-------------CONFIG-START------------
-var ytkey = 'AIzaSyC87fSxWOAp8hzKTBCWF8dpqUYMHVfbWNo';
+var ytkey = '';
 var maxResults = 6;
 //-------------CONFIG-END--------------
 var prefix = '', nextPageToken, instanceid = '';
