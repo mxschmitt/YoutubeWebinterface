@@ -1,5 +1,4 @@
 //-------------CONFIG-START------------
-var ytkey = '';
 var maxResults = 6;
 //-------------CONFIG-END--------------
 var prefix = '', nextPageToken, instanceid = '';
@@ -53,10 +52,6 @@ function resetVideoHeight() {
   $(".video").css("height", $("#results").width() * 9 / 16);
 }
 
-function init() {
-  gapi.client.setApiKey(ytkey);
-  gapi.client.load("youtube", "v3", function() {});
-}
 //YT END Start Sinusbot Connection
 $(document).ready(function() {
   var instanceList = $('#dropdown');
@@ -76,27 +71,48 @@ $(document).ready(function() {
     data.forEach(function(instance) {
       // When clicking an entry, we post a request to the script interface and return the result
       $('<li/>').appendTo(instanceList).html('<a href="#">' + instance.nick + '</a>').click(function() {
-        instanceid = instance.uuid;
-        setCookie('instanceid',instanceid,7);
+        setCookie('instanceid',instance.uuid,7);
+      });
+      
+      $.ajax({
+          url: '/api/v1/bot/i/' + instance.uuid + '/scriptEvent/ytkey',
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+              'Authorization': 'bearer ' + window.localStorage.token
+          },
+          data: "{}"
+      }).done(function(data) {
+        data.forEach(function(answer) {
+            var result = JSON.stringify(answer.data);
+            if (result.length == 39) {
+                gapi.client.setApiKey(result);
+                gapi.client.load("youtube", "v3", function() {});
+            }
+        });
       });
     });
+    
     $('.dropd1 > li > a').click(function() {
       $("#dropdb1").html($(this).text() + ' <span class="caret"></span>');
     });
+    
     checkForInstance(data);
   });
-    $(window).scroll(function(){
+  
+  $(window).scroll(function(){
     if ($(window).scrollTop() == $(document).height() - $(window).height()) {
-        if (typeof nextPageToken !== 'undefined') {
-            moreVideos();
-        }
+      if (typeof nextPageToken !== 'undefined') {
+        moreVideos();
+      }
     }
-    });
-    $("#loadmore").click(function() {
-        if (typeof nextPageToken !== 'undefined') {
-            moreVideos();
-        }
-    });
+  });
+  
+  $("#loadmore").click(function() {
+    if (typeof nextPageToken !== 'undefined') {
+      moreVideos();
+    }
+  });
 }); //Document Ready End
 
 function endplay(url) {
