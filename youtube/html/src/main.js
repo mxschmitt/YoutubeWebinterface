@@ -85,7 +85,7 @@ $(document).ready(function() {
         data: "{}"
       }).done(function(data) {
         data.forEach(function(answer) {
-          if (answer.data.length == 39) {
+          if (answer.data.length > 30) {
             gapi.client.setApiKey(answer.data);
             gapi.client.load("youtube", "v3", function() {});
           }
