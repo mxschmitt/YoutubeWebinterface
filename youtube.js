@@ -1,6 +1,6 @@
 registerPlugin({
     name: 'Youtube Webinterface!',
-    version: '1.0',
+    version: '1.1',
     description: 'Youtube Webinterface for playing and downloading YouTube Tracks.',
     author: ' MaxS <info@schmitt-max.com>',
     vars: {
@@ -19,7 +19,7 @@ sinusbot.log("YTWeb Webinterface Ready");
         
 });
     sinusbot.on('api:ytenq', function(ev) {
-        qyt(ev.data);
+        sinusbot.qyt(ev.data);
         sinusbot.log('YTWeb Triggered with "enque" at '+ ev.data);    
         return 'The Video will be sucessfully enqueued now.';   
         
