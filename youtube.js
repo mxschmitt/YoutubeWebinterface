@@ -9,17 +9,17 @@ registerPlugin({
             type: 'string'
         },
         play: {
-            title: 'Support notification type', 
+            title: 'enable playing', 
             type: 'select', 
             options: ['on','off']
         },
         dl: {
-            title: 'Support notification type',
+            title: 'enable downloading',
             type: 'select',
             options: ['on','off']
         },
         enq: {
-            title: 'Support notification type',
+            title: 'enable enqueuing',
             type: 'select',
             options: ['on','off']
         }
@@ -49,7 +49,7 @@ sinusbot.log("YTWeb Webinterface Ready");
         }
         
 });
-    sinusbot.on('api:dl', function(ev) {
+    sinusbot.on('api:ytdl', function(ev) {
         if (config.play != 1) {
         sinusbot.log('YTWeb Triggered with "downloaded" at '+ ev.data); 
         sinusbot.ytdl(ev.data); 

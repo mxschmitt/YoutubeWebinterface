@@ -136,7 +136,11 @@ function endplay(url) {
       data.forEach(function(answer) {
         $('<li/>').appendTo(answerList).text(answer.script + ' returned ' + JSON.stringify(answer.data));
       });
-  alert('success',data[0].data);
+        if (data[0].data.includes('not enabled')) {
+          createAlertBox('failure',data[0].data);
+      } else {
+          createAlertBox('success',data[0].data);
+      }
     });
   } else {
       selectInstance();
@@ -164,7 +168,11 @@ function endenqueue(url) {
       data.forEach(function(answer) {
         $('<li/>').appendTo(answerList).text(answer.script + ' returned ' + JSON.stringify(answer.data));
       });
-  alert('success',data[0].data);
+      if (data[0].data.includes('not enabled')) {
+          createAlertBox('failure',data[0].data);
+      } else {
+          createAlertBox('success',data[0].data);
+      }
     });
   } else {
       selectInstance();
@@ -192,7 +200,11 @@ function enddownload(url) {
       data.forEach(function(answer) {
         $('<li/>').appendTo(answerList).text(answer.script + ' returned ' + JSON.stringify(answer.data));
       });
-      alert('success',data[0].data);
+            if (data[0].data.includes('not enabled')) {
+          createAlertBox('failure',data[0].data);
+      } else {
+          createAlertBox('success',data[0].data);
+      }
     });
   } else {
       selectInstance();
@@ -313,7 +325,7 @@ function checkCookie(cname) {
         return false;
     }
 }
-function alert(type,text) {
+function createAlertBox(type,text) {
 if (type == 'success') {
   $('div > #alertscss').removeClass("alert-danger");
   $('div > #alertscss').removeClass("alert-warning");
@@ -326,7 +338,7 @@ if (type == 'success') {
   $('div > #alertscss').removeClass("alert-success");
   $('div > #alertscss').addClass("alert-danger");
   $('#alertscss > #title').text("Failure!");
-  $('#alertscss > #text').text("The video, will be successfully enqueued.");
+  $('#alertscss > #text').text(text);
   $('#alertscss').fadeIn(400).delay(2000).fadeOut(400);
 } else if (type == 'warning') {
   $('div > #alertscss').removeClass("alert-danger");
