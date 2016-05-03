@@ -29,39 +29,35 @@ registerPlugin({
 sinusbot.log("YTWeb Webinterface Ready");
     sinusbot.on('api:ytplay', function(ev) {
         if (config.play != 1) {
-        sinusbot.yt(ev.data);
-        sinusbot.log('YTWeb Triggered with "played" at '+ ev.data);    
-        return 'The Video will be sucessfully played now.';
+            sinusbot.yt(ev.data);
+            sinusbot.log('YTWeb Triggered with "played" at '+ ev.data);    
+            return 'The Video will be sucessfully played now.';
         } else {
             sinusbot.log('YTWeb tried to play '+ ev.data + ' but it was deactivated.'); 
             return 'Playing is not enabled.';            
-        }
-        
-});
+        }    
+    });
     sinusbot.on('api:ytenq', function(ev) {
         if (config.enq != 1) {
-        qyt(ev.data);
-        sinusbot.log('YTWeb Triggered with "enque" at '+ ev.data);    
-        return 'The Video will be sucessfully enqueued now.';
+            sinusbot.qyt(ev.data);
+            sinusbot.log('YTWeb Triggered with "enque" at '+ ev.data);    
+            return 'The Video will be sucessfully enqueued now.';
         } else {
             sinusbot.log('YTWeb tried to play '+ ev.data + ' but it was deactivated.'); 
             return 'Enqueuing is not enabled.';
         }
-        
-});
+    });
     sinusbot.on('api:ytdl', function(ev) {
-        if (config.play != 1) {
-        sinusbot.log('YTWeb Triggered with "downloaded" at '+ ev.data); 
-        sinusbot.ytdl(ev.data); 
-        return 'The Video will be sucessfully downloaded now.';
+        if (config.dl != 1) {
+            sinusbot.log('YTWeb Triggered with "downloaded" at '+ ev.data);
+            sinusbot.ytdl(ev.data);
+            return 'The Video will be sucessfully downloaded now.';
         } else {
-            sinusbot.log('YTWeb tried to play '+ ev.data + ' but it was deactivated.'); 
+            sinusbot.log('YTWeb tried to download '+ ev.data + ' but it was deactivated.');
             return 'Downloading is not enabled.';
         }
-        
-});
+    });
     sinusbot.on('api:ytkey', function(ev) {
         return config.ytkey;
-        
-});    
+    });
 });
