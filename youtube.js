@@ -57,6 +57,11 @@ sinusbot.log("YTWeb Webinterface Ready");
             return 'Downloading is not enabled.';
         }
     });
+    sinusbot.on('api:ytwebconfig', function(ev) {
+        return '{play: ' + (config.play != 1 ? 'true' : 'false') +
+            ', enqueue: ' + (config.enq != 1 ? 'true' : 'false') +
+            ', download: ' + (config.dl != 1 ? 'true' : 'false') + '}';
+    });
     sinusbot.on('api:ytkey', function(ev) {
         return config.ytkey;
     });
