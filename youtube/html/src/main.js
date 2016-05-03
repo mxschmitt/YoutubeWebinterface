@@ -1,7 +1,7 @@
 //-------------CONFIG-START------------
 var maxResults = 6;
 //-------------CONFIG-END--------------
-var nextPageToken, instanceid = '';
+var nextPageToken, instanceid;
 
 function tplawesome(e, t) {
   res = e;
@@ -125,7 +125,7 @@ $(document).ready(function() {
 }); //Document Ready End
 
 function endplay(url) {
-  if(instanceid !== '') {
+  if(typeof instanceid !== 'undefined') {
     $.ajax({
       url: '/api/v1/bot/i/' + instanceid + '/scriptEvent/ytplay',
       method: 'POST',
@@ -153,7 +153,7 @@ function endplay(url) {
 }
 
 function endenqueue(url) {
-  if(instanceid !== '') {
+  if(typeof instanceid !== 'undefined') {
     $.ajax({
       url: '/api/v1/bot/i/' + instanceid + '/scriptEvent/ytenq',
       method: 'POST',
@@ -181,7 +181,7 @@ function endenqueue(url) {
 }
 
 function enddownload(url) {
-  if(instanceid !== '') {
+  if(typeof instanceid !== 'undefined') {
     $.ajax({
       url: '/api/v1/bot/i/' + instanceid + '/scriptEvent/ytdl',
       method: 'POST',
