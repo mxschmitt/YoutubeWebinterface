@@ -136,9 +136,7 @@ function endplay(url) {
       data.forEach(function(answer) {
         $('<li/>').appendTo(answerList).text(answer.script + ' returned ' + JSON.stringify(answer.data));
       });
-      $('#alertscss > #title').text("Success!");
-      $('#alertscss > #text').text("The video, will be successfully played.");
-      $('#alertscss').fadeIn(400).delay(2000).fadeOut(400);
+  alert('success',data[0].data);
     });
   } else {
       selectInstance();
@@ -166,9 +164,7 @@ function endenqueue(url) {
       data.forEach(function(answer) {
         $('<li/>').appendTo(answerList).text(answer.script + ' returned ' + JSON.stringify(answer.data));
       });
-      $('#alertscss > #title').text("Success!");
-      $('#alertscss > #text').text("The video, will be successfully enqueued.");
-      $('#alertscss').fadeIn(400).delay(2000).fadeOut(400);
+  alert('success',data[0].data);
     });
   } else {
       selectInstance();
@@ -196,9 +192,7 @@ function enddownload(url) {
       data.forEach(function(answer) {
         $('<li/>').appendTo(answerList).text(answer.script + ' returned ' + JSON.stringify(answer.data));
       });
-      $('#alertscss > #title').text("Success!");
-      $('#alertscss > #text').text("The video, will be successfully downloaded.");
-      $('#alertscss').fadeIn(400).delay(2000).fadeOut(400);
+      alert('success',data[0].data);
     });
   } else {
       selectInstance();
@@ -318,4 +312,30 @@ function checkCookie(cname) {
     } else {
         return false;
     }
+}
+function alert(type,text) {
+if (type == 'success') {
+  $('div > #alertscss').removeClass("alert-danger");
+  $('div > #alertscss').removeClass("alert-warning");
+  $('div > #alertscss').addClass("alert-success");
+  $('#alertscss > #title').text("Success!");
+  $('#alertscss > #text').text(text);
+  $('#alertscss').fadeIn(400).delay(2000).fadeOut(400);
+} else if (type == 'failure') {
+  $('div > #alertscss').removeClass("alert-warning");
+  $('div > #alertscss').removeClass("alert-success");
+  $('div > #alertscss').addClass("alert-danger");
+  $('#alertscss > #title').text("Failure!");
+  $('#alertscss > #text').text("The video, will be successfully enqueued.");
+  $('#alertscss').fadeIn(400).delay(2000).fadeOut(400);
+} else if (type == 'warning') {
+  $('div > #alertscss').removeClass("alert-danger");
+  $('div > #alertscss').removeClass("alert-success");
+  $('div > #alertscss').addClass("alert-warning");
+  $('#alertscss > #title').text("Warning!");
+  $('#alertscss > #text').text(text);
+  $('#alertscss').fadeIn(400).delay(2000).fadeOut(400);
+} else {
+  return false;
+}
 }
