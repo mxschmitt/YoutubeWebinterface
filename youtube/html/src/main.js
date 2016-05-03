@@ -1,16 +1,16 @@
 //-------------CONFIG-START------------
 var maxResults = 6;
 //-------------CONFIG-END--------------
-var prefix = '', nextPageToken, instanceid = '';
+var nextPageToken, instanceid;
 
 function tplawesome(e, t) {
   res = e;
-  for(var n = 0; n < t.length; n++) {
+  for (var n = 0; n < t.length; n++) {
     res = res.replace(/\{\{(.*?)\}\}/g, function(e, r) {
-      return t[n][r]
+      return t[n][r];
     });
   }
-  return res
+  return res;
 }
 $(function() {
   $("form").on("submit", function(e) {
@@ -57,13 +57,22 @@ $(document).ready(function() {
   var instanceList = $('#dropdown');
   // Get the list of instances using the currently logged in user account
   $.ajax({
-    url: prefix + '/api/v1/bot/instances',
+    url: '/api/v1/bot/instances',
     headers: {
       'Authorization': 'bearer ' + window.localStorage.token
     },
     statusCode: {
       401: function() {
-        makeError();
+        swal({
+          title: 'Error',
+          text: "For the Webinterface, you must be logged in with your Account into the Sinusbot Webinterface!",
+          type: 'warning',
+          confirmButtonColor: '#D9230F',
+          confirmButtonText: 'Webinterface',
+          closeOnConfirm: false,
+        }).then(function() {
+          window.location = getRootUrl();
+        });
       }
     }
   }).done(function(data) {
@@ -116,9 +125,9 @@ $(document).ready(function() {
 }); //Document Ready End
 
 function endplay(url) {
-  if(instanceid !== '') {
+  if(typeof instanceid !== 'undefined') {
     $.ajax({
-      url: prefix + '/api/v1/bot/i/' + instanceid + '/scriptEvent/ytplay',
+      url: '/api/v1/bot/i/' + instanceid + '/scriptEvent/ytplay',
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -148,9 +157,9 @@ function endplay(url) {
 }
 
 function endenqueue(url) {
-  if(instanceid !== '') {
+  if(typeof instanceid !== 'undefined') {
     $.ajax({
-      url: prefix + '/api/v1/bot/i/' + instanceid + '/scriptEvent/ytenq',
+      url: '/api/v1/bot/i/' + instanceid + '/scriptEvent/ytenq',
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -180,9 +189,9 @@ function endenqueue(url) {
 }
 
 function enddownload(url) {
-  if(instanceid !== '') {
+  if(typeof instanceid !== 'undefined') {
     $.ajax({
-      url: prefix + '/api/v1/bot/i/' + instanceid + '/scriptEvent/ytdl',
+      url: '/api/v1/bot/i/' + instanceid + '/scriptEvent/ytdl',
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -215,30 +224,6 @@ function getRootUrl() {
   return window.location.origin ? window.location.origin + '/' : window.location.protocol + '/' + window.location.host + '/';
 }
 
-function makeError() {
-  swal({
-    title: 'Oops...',
-    text: "For the Webinterface, you must be logged in with your Account into the Sinusbot Webinterface!",
-    type: 'warning',
-    confirmButtonColor: '#D9230F',
-    confirmButtonText: 'to the Webinterface',
-    cancelButtonText: 'Webinterface',
-    closeOnConfirm: false,
-  }).then(function(isConfirm) {
-    if(isConfirm === true) {
-      swal('Redirect!', 'You will be redirected to you Webinterface.', 'success');
-      setTimeout(function() {
-        window.location = getRootUrl();
-      }, 1600);
-    } else {
-      swal('Cancelled', 'You will be redirected to you Webinterface.', 'error');
-      setTimeout(function() {
-        window.location = getRootUrl();
-      }, 1600);
-    }
-  });
-}
-
 function checkForInstance(data) {
     if (checkCookie('instanceid') == true) {
         i = 0;
@@ -253,7 +238,7 @@ function checkForInstance(data) {
 }
 
 function moreVideos() {
-        $("#loadmorecss").removeClass("none");
+    $("#loadmorecss").removeClass("none");
     var request = gapi.client.youtube.search.list({
       part: "snippet",
       type: "video",
@@ -277,7 +262,6 @@ function moreVideos() {
       resetVideoHeight();
       $("#loadmorecss").addClass("none");
     });
-
 }
 
 function dynamicSort(property) {
@@ -325,6 +309,7 @@ function checkCookie(cname) {
         return false;
     }
 }
+<<<<<<< HEAD
 function createAlertBox(type,text) {
 if (type == 'success') {
   $('div > #alertscss').removeClass("alert-danger");
@@ -350,4 +335,31 @@ if (type == 'success') {
 } else {
   return false;
 }
+=======
+function alert(type,text) {
+    if (type == 'success') {
+      $('div > #alertscss').removeClass("alert-danger");
+      $('div > #alertscss').removeClass("alert-warning");
+      $('div > #alertscss').addClass("alert-success");
+      $('#alertscss > #title').text("Success!");
+      $('#alertscss > #text').text(text);
+      $('#alertscss').fadeIn(400).delay(2000).fadeOut(400);
+    } else if (type == 'failure') {
+      $('div > #alertscss').removeClass("alert-warning");
+      $('div > #alertscss').removeClass("alert-success");
+      $('div > #alertscss').addClass("alert-danger");
+      $('#alertscss > #title').text("Failure!");
+      $('#alertscss > #text').text("The video, will be successfully enqueued.");
+      $('#alertscss').fadeIn(400).delay(2000).fadeOut(400);
+    } else if (type == 'warning') {
+      $('div > #alertscss').removeClass("alert-danger");
+      $('div > #alertscss').removeClass("alert-success");
+      $('div > #alertscss').addClass("alert-warning");
+      $('#alertscss > #title').text("Warning!");
+      $('#alertscss > #text').text(text);
+      $('#alertscss').fadeIn(400).delay(2000).fadeOut(400);
+    } else {
+      return false;
+    }
+>>>>>>> e1afbcc9d2ffbf7a6f4f3d91caf34b02ac90f9b7
 }
