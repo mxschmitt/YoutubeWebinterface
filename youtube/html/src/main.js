@@ -136,7 +136,9 @@ function endplay(url) {
       data.forEach(function(answer) {
         $('<li/>').appendTo(answerList).text(answer.script + ' returned ' + JSON.stringify(answer.data));
       });
-  alert('success',data[0].data);
+      $('#alertscss > #title').text("Success!");
+      $('#alertscss > #text').text("The video, will be successfully played.");
+      $('#alertscss').fadeIn(400).delay(2000).fadeOut(400);
     });
   } else {
       selectInstance();
@@ -164,7 +166,9 @@ function endenqueue(url) {
       data.forEach(function(answer) {
         $('<li/>').appendTo(answerList).text(answer.script + ' returned ' + JSON.stringify(answer.data));
       });
-  alert('success',data[0].data);
+      $('#alertscss > #title').text("Success!");
+      $('#alertscss > #text').text("The video, will be successfully enqueued.");
+      $('#alertscss').fadeIn(400).delay(2000).fadeOut(400);
     });
   } else {
       selectInstance();
@@ -192,7 +196,9 @@ function enddownload(url) {
       data.forEach(function(answer) {
         $('<li/>').appendTo(answerList).text(answer.script + ' returned ' + JSON.stringify(answer.data));
       });
-      alert('success',data[0].data);
+      $('#alertscss > #title').text("Success!");
+      $('#alertscss > #text').text("The video, will be successfully downloaded.");
+      $('#alertscss').fadeIn(400).delay(2000).fadeOut(400);
     });
   } else {
       selectInstance();
@@ -313,7 +319,7 @@ function checkCookie(cname) {
         return false;
     }
 }
-function alert(type,text) {
+function alert (type,text) {
 if (type == 'success') {
   $('div > #alertscss').removeClass("alert-danger");
   $('div > #alertscss').removeClass("alert-warning");
