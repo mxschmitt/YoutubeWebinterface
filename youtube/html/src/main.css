@@ -16,6 +16,11 @@
 .none {
     display: none;
 }
+
+.play .enqueue .download {
+    margin-left: 15px;
+}
+
 #loadmore {
     display: none;
     margin: 0px auto;

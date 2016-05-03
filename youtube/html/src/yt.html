@@ -1,7 +1,7 @@
 <div class="thumbnail col-xs-12 col-sm-12 col-md-6 col-lg-6 videos">
     <h2 style="margin-left: 10px;">{{title}}</h2>
-    <button type="button" class="btn btn-danger" style="margin-left: 15px;" onclick="endplay('https://www.youtube.com/watch?v={{videoid}}'); ">Play Now</button>
-    <button type="button" class="btn btn-success" style="margin-left: 15px;" onclick="endenqueue('https://www.youtube.com/watch?v={{videoid}}'); ">Enqueue</button>
-    <button style="margin-left: 15px;" type="button" class="btn btn-warning"onclick="enddownload('https://www.youtube.com/watch?v={{videoid}}'); ">Download</button>
+    <button type="button" class="play btn-danger" onclick="endplay('https://www.youtube.com/watch?v={{videoid}}'); ">Play Now</button>
+    <button type="button" class="enqueue btn-success" onclick="endenqueue('https://www.youtube.com/watch?v={{videoid}}'); ">Enqueue</button>
+    <button type="button" class="download btn-warning" onclick="enddownload('https://www.youtube.com/watch?v={{videoid}}'); ">Download</button>
     <iframe class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ytframe" src="//www.youtube.com/embed/{{videoid}}" frameborder="0" allowfullscreen></iframe>
 </div>
