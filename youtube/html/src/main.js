@@ -1,7 +1,7 @@
 //-------------CONFIG-START------------
 var maxResults = 6;
 //-------------CONFIG-END--------------
-var nextPageToken, instanceid;
+var nextPageToken, instanceid, config;
 
 function tplawesome(e, t) {
   res = e;
@@ -85,7 +85,7 @@ $(document).ready(function() {
       });
       
       $.ajax({
-        url: '/api/v1/bot/i/' + instance.uuid + '/scriptEvent/ytkey',
+        url: '/api/v1/bot/i/' + instance.uuid + '/scriptEvent/ytwebconfig',
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -94,9 +94,15 @@ $(document).ready(function() {
         data: "{}"
       }).done(function(data) {
         data.forEach(function(answer) {
-          if (answer.data.length > 30) {
-            gapi.client.setApiKey(answer.data);
+          config = answer.data;
+          console.log("config:");
+          console.log(config);
+          
+          if (config.ytkey.length == 39) {
+            gapi.client.setApiKey(config.ytkey);
             gapi.client.load("youtube", "v3", function() {});
+          } else {
+            console.log("invalid api key!");
           }
         });
       });
