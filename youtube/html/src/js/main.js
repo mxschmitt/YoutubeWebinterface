@@ -76,7 +76,7 @@ $(document).ready(function() {
         data: "{}"
       }).done(function(data) {
         data.forEach(function(answer) {
-          if(typeof config.apikey != 'undefined') {
+          if(typeof config.apikey == 'undefined') {
             console.log("answer:");
             console.log(answer.data);
             config = answer.data;
