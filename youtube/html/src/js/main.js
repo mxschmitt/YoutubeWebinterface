@@ -330,31 +330,30 @@ function checkCookie(cname) {
 }
 
 function createAlertBox(type, text) {
+  // reset classes
+  $('div > #alertscss').removeClass("alert-success");
+  $('div > #alertscss').removeClass("alert-danger");
+  $('div > #alertscss').removeClass("alert-warning");
+
   if(type == 'success') {
-    $('div > #alertscss').removeClass("alert-danger");
-    $('div > #alertscss').removeClass("alert-warning");
     $('div > #alertscss').addClass("alert-success");
     $('#alertscss > #title').text("Success!");
-    $('#alertscss > #text').text(text);
-    $('#alertscss').fadeIn(400).delay(2000).fadeOut(400);
   } else if(type == 'failure') {
-    $('div > #alertscss').removeClass("alert-warning");
-    $('div > #alertscss').removeClass("alert-success");
     $('div > #alertscss').addClass("alert-danger");
     $('#alertscss > #title').text("Failure!");
-    $('#alertscss > #text').text(text);
-    $('#alertscss').fadeIn(400).delay(2000).fadeOut(400);
   } else if(type == 'warning') {
-    $('div > #alertscss').removeClass("alert-danger");
-    $('div > #alertscss').removeClass("alert-success");
     $('div > #alertscss').addClass("alert-warning");
     $('#alertscss > #title').text("Warning!");
-    $('#alertscss > #text').text(text);
-    $('#alertscss').fadeIn(400).delay(2000).fadeOut(400);
   } else {
     return false;
   }
+
+  // add text and animate
+  $('#alertscss > #text').text(text);
+  $('#alertscss').fadeIn(400).delay(2000).fadeOut(400);
+  return true;
 }
+
 function injectStyles(rule) {
   var div = $("<div />", {
     html: '&shy;<style>' + rule + '</style>'
