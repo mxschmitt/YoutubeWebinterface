@@ -335,3 +335,4 @@ if (type == 'success') {
 } else {
   return false;
 }
+}
