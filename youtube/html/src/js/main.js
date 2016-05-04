@@ -266,7 +266,7 @@ function moreVideos() {
     var result = response.result;
     nextPageToken = result.nextPageToken;
     $.each(result.items, function(index, item) {
-      $.get("src/yt.html", function(data) {
+      $.get("src/template/yt.html", function(data) {
         $("#results").append(tplawesome(data, [{
           "title": item.snippet.title,
           "videoid": item.id.videoId
