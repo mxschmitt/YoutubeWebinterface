@@ -27,11 +27,7 @@ registerPlugin({
     enableWeb: true
 }, function(sinusbot,config, info){
     sinusbot.log("YTWeb Webinterface Ready");
-    var ytwebconfig = {};
-    ytwebconfig.play = (config.play != 1 ? 'true' : 'false');
-    ytwebconfig.enqueue = (config.enq != 1 ? 'true' : 'false');
-    ytwebconfig.download = (config.dl != 1 ? 'true' : 'false');
-    ytwebconfig.apikey = (config.dl != 1 ? 'false' : config.ytkey);
+    
     sinusbot.on('api:ytplay', function(ev) {
         if (config.play != 1) {
             sinusbot.yt(ev.data);
@@ -63,6 +59,11 @@ registerPlugin({
         }
     });
     sinusbot.on('api:ytwebconfig', function(ev) {
+        var ytwebconfig = {};
+        ytwebconfig.play = (config.play != 1);
+        ytwebconfig.enqueue = (config.enq != 1);
+        ytwebconfig.download = (config.dl != 1);
+        ytwebconfig.apikey = config.ytkey;
         return ytwebconfig;
     });
     sinusbot.on('api:ytkey', function(ev) {
