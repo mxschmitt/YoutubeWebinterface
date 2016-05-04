@@ -85,7 +85,7 @@ $(document).ready(function() {
       });
       
       $.ajax({
-        url: '/api/v1/bot/i/' + instance.uuid + '/scriptEvent/ytkey',
+        url: '/api/v1/bot/i/' + instance.uuid + '/scriptEvent/ytwebconfig',
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -94,8 +94,8 @@ $(document).ready(function() {
         data: "{}"
       }).done(function(data) {
         data.forEach(function(answer) {
-          if (answer.data.length > 30) {
-            gapi.client.setApiKey(answer.data);
+          if (answer.data.apikey.length > 30) {
+            gapi.client.setApiKey(answer.data.apikey);
             gapi.client.load("youtube", "v3", function() {});
           }
         });
