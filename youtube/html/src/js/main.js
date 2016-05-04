@@ -159,10 +159,10 @@ function endplay(url) {
       data.forEach(function(answer) {
         $('<li/>').appendTo(answerList).text(answer.script + ' returned ' + JSON.stringify(answer.data));
       });
-      if(data[0].data.includes('not enabled')) {
-        createAlertBox('failure', data[0].data);
-      } else {
+      if (config.play == true) {
         createAlertBox('success', data[0].data);
+      } else {
+        createAlertBox('failure', data[0].data);
       }
     });
   } else {
@@ -191,10 +191,10 @@ function endenqueue(url) {
       data.forEach(function(answer) {
         $('<li/>').appendTo(answerList).text(answer.script + ' returned ' + JSON.stringify(answer.data));
       });
-      if(data[0].data.includes('not enabled')) {
-        createAlertBox('failure', data[0].data);
-      } else {
+      if (config.enqueue == true) {
         createAlertBox('success', data[0].data);
+      } else {
+        createAlertBox('failure', data[0].data);
       }
     });
   } else {
@@ -223,10 +223,10 @@ function enddownload(url) {
       data.forEach(function(answer) {
         $('<li/>').appendTo(answerList).text(answer.script + ' returned ' + JSON.stringify(answer.data));
       });
-      if(data[0].data.includes('not enabled')) {
-        createAlertBox('failure', data[0].data);
-      } else {
+      if (config.download == true) {
         createAlertBox('success', data[0].data);
+      } else {
+        createAlertBox('failure', data[0].data);
       }
     });
   } else {
@@ -266,7 +266,7 @@ function moreVideos() {
     var result = response.result;
     nextPageToken = result.nextPageToken;
     $.each(result.items, function(index, item) {
-      $.get("src/yt.html", function(data) {
+      $.get("src/template/yt.html", function(data) {
         $("#results").append(tplawesome(data, [{
           "title": item.snippet.title,
           "videoid": item.id.videoId
