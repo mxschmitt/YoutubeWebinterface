@@ -1,5 +1,5 @@
 var maxResults = 6;
-var nextPageToken, instanceid, config;
+var nextPageToken, instanceid, config, ytapi_ready = false;
 
 function tplawesome(e, t) {
   res = e;
@@ -16,12 +16,22 @@ function resetVideoHeight() {
 }
 
 function ytinit() {
-  if (config.apikey.length == 39) {
-    gapi.client.setApiKey(config.apikey);
-    gapi.client.load("youtube", "v3", function() {});
-    delete config.apikey;
+  ytapi_ready = true;
+
+  console.log("config:");
+  console.log(config);
+
+  if (typeof config != 'undefined') {
+    if (config.apikey.length == 39) {
+      gapi.client.setApiKey(config.apikey);
+      gapi.client.load("youtube", "v3", function() {});
+      delete config.apikey;
+      console.log("youtube api initialized.");
+    } else {
+      console.log("invalid api key!");
+    }
   } else {
-    console.log("invalid api key!");
+    console.log("config is undefined, trying again later.");
   }
 }
 
@@ -67,7 +77,15 @@ $(document).ready(function() {
         data: "{}"
       }).done(function(data) {
         data.forEach(function(answer) {
+          console.log("answer:");
+          console.log(answer.data);
+
           config = answer.data;
+
+          if (ytapi_ready) {
+            console.log("init #2");
+            ytinit();
+          }
         });
       });
     });
