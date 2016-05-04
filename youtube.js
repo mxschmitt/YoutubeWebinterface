@@ -25,7 +25,7 @@ registerPlugin({
         }
     },
     enableWeb: true
-}, function(sinusbot,config, info){
+}, function(sinusbot, config, info){
     sinusbot.log("YTWeb Webinterface Ready");
     
     sinusbot.on('api:ytplay', function(ev) {
@@ -65,8 +65,5 @@ registerPlugin({
         ytwebconfig.download = (config.dl != 1);
         ytwebconfig.apikey = config.apikey;
         return ytwebconfig;
-    });
-    sinusbot.on('api:ytkey', function(ev) {
-        return config.apikey;
     });
 });

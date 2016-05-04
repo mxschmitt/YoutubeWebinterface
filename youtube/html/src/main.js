@@ -52,6 +52,16 @@ function resetVideoHeight() {
   $(".video").css("height", $("#results").width() * 9 / 16);
 }
 
+function yt_init() {
+  if (config.apikey.length == 39) {
+    gapi.client.setApiKey(config.apikey);
+    gapi.client.load("youtube", "v3", function() {});
+    delete config.apikey;
+  } else {
+    console.log("invalid api key!");
+  }
+}
+
 //YT END Start Sinusbot Connection
 $(document).ready(function() {
   var instanceList = $('#dropdown');
@@ -95,13 +105,6 @@ $(document).ready(function() {
       }).done(function(data) {
         data.forEach(function(answer) {
           config = answer.data;
-          if (config.apikey.length == 39) {
-            gapi.client.setApiKey(config.apikey);
-            gapi.client.load("youtube", "v3", function() {});
-            delete config.apikey;
-          } else {
-            console.log("invalid api key!");
-          }
         });
       });
     });
