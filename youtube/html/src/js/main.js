@@ -15,7 +15,7 @@ function resetVideoHeight() {
   $(".video").css("height", $("#results").width() * 9 / 16);
 }
 
-function yt_init() {
+function ytinit() {
   if (config.apikey.length == 39) {
     gapi.client.setApiKey(config.apikey);
     gapi.client.load("youtube", "v3", function() {});
