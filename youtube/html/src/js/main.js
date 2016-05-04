@@ -1,6 +1,4 @@
-//-------------CONFIG-START------------
 var maxResults = 6;
-//-------------CONFIG-END--------------
 var nextPageToken, instanceid, config;
 
 function tplawesome(e, t) {
@@ -12,41 +10,6 @@ function tplawesome(e, t) {
   }
   return res;
 }
-$(function() {
-  $("form").on("submit", function(e) {
-    e.preventDefault();
-
-    if ($("#search").val()) {
-      // prepare the request
-      var request = gapi.client.youtube.search.list({
-        part: "snippet",
-        type: "video",
-        q: encodeURIComponent($("#search").val()).replace(/%20/g, "+"),
-        maxResults: maxResults,
-        order: "relevance"
-      });
-      // execute the request
-      request.execute(function(response) {
-        var result = response.result;
-        nextPageToken = result.nextPageToken;
-        $("#results").html("");
-        $.each(result.items, function(index, item) {
-          $.get("src/yt.html", function(data) {
-            $("#results").append(tplawesome(data, [{
-              "title": item.snippet.title,
-              "videoid": item.id.videoId
-            }]));
-          });
-        });
-        resetVideoHeight();
-        $("#loadmore").css("display", "block");
-      });
-    } else {
-        noSelectedVideo();
-    }
-  });
-  $(window).on("resize", resetVideoHeight);
-});
 
 function resetVideoHeight() {
   $(".video").css("height", $("#results").width() * 9 / 16);
@@ -129,6 +92,42 @@ $(document).ready(function() {
       moreVideos();
     }
   });
+
+  $("form").on("submit", function(e) {
+    e.preventDefault();
+
+    if ($("#search").val()) {
+      // prepare the request
+      var request = gapi.client.youtube.search.list({
+        part: "snippet",
+        type: "video",
+        q: encodeURIComponent($("#search").val()).replace(/%20/g, "+"),
+        maxResults: maxResults,
+        order: "relevance"
+      });
+      // execute the request
+      request.execute(function(response) {
+        var result = response.result;
+        nextPageToken = result.nextPageToken;
+        $("#results").html("");
+        $.each(result.items, function(index, item) {
+          $.get("src/yt.html", function(data) {
+            $("#results").append(tplawesome(data, [{
+              "title": item.snippet.title,
+              "videoid": item.id.videoId
+            }]));
+          });
+        });
+        resetVideoHeight();
+        $("#loadmore").css("display", "block");
+      });
+    } else {
+        noSelectedVideo();
+    }
+  });
+  
+  $(window).on("resize", resetVideoHeight);
+
 }); //Document Ready End
 
 function endplay(url) {
