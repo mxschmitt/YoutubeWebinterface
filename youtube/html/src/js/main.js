@@ -355,3 +355,9 @@ function createAlertBox(type, text) {
     return false;
   }
 }
+function injectStyles(rule) {
+  var div = $("<div />", {
+    html: '&shy;<style>' + rule + '</style>'
+  }).appendTo("body");    
+}
+//injectStyles('a:hover { color: red; }');
