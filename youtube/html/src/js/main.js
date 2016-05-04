@@ -48,7 +48,7 @@ $(document).ready(function() {
       401: function() {
         swal({
           title: 'Error',
-          text: "For the Webinterface, you must be logged in with your Account into the Sinusbot Webinterface!",
+          text: "In order for you to access this you have to be logged in.",
           type: 'warning',
           confirmButtonColor: '#D9230F',
           confirmButtonText: 'Webinterface',
@@ -160,7 +160,7 @@ function endplay(url) {
         $('<li/>').appendTo(answerList).text(answer.script + ' returned ' + JSON.stringify(answer.data));
       });
       if(data[0].data.includes('not enabled')) {
-        createAlertBox('failure', data[0].data);
+        createAlertBox('error', data[0].data);
       } else {
         createAlertBox('success', data[0].data);
       }
@@ -192,7 +192,7 @@ function endenqueue(url) {
         $('<li/>').appendTo(answerList).text(answer.script + ' returned ' + JSON.stringify(answer.data));
       });
       if(data[0].data.includes('not enabled')) {
-        createAlertBox('failure', data[0].data);
+        createAlertBox('error', data[0].data);
       } else {
         createAlertBox('success', data[0].data);
       }
@@ -224,7 +224,7 @@ function enddownload(url) {
         $('<li/>').appendTo(answerList).text(answer.script + ' returned ' + JSON.stringify(answer.data));
       });
       if(data[0].data.includes('not enabled')) {
-        createAlertBox('failure', data[0].data);
+        createAlertBox('error', data[0].data);
       } else {
         createAlertBox('success', data[0].data);
       }
@@ -338,9 +338,9 @@ function createAlertBox(type, text) {
   if(type == 'success') {
     $('div > #alertscss').addClass("alert-success");
     $('#alertscss > #title').text("Success!");
-  } else if(type == 'failure') {
+  } else if(type == 'error') {
     $('div > #alertscss').addClass("alert-danger");
-    $('#alertscss > #title').text("Failure!");
+    $('#alertscss > #title').text("Error!");
   } else if(type == 'warning') {
     $('div > #alertscss').addClass("alert-warning");
     $('#alertscss > #title').text("Warning!");
