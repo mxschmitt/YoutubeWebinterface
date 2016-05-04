@@ -2,7 +2,7 @@ var maxResults = 6;
 var nextPageToken, instanceid, config, ytapi_ready = false;
 
 function tplawesome(e, t) {
-  res = e;
+  var res = e;
   for(var n = 0; n < t.length; n++) {
     res = res.replace(/\{\{(.*?)\}\}/g, function(e, r) {
       return t[n][r];
@@ -19,6 +19,7 @@ function ytinit() {
   ytapi_ready = true;
   console.log("config:");
   console.log(config);
+
   if(typeof config != 'undefined') {
     if(typeof config.apikey != 'undefined') {
       if(config.apikey.length == 39) {
@@ -133,7 +134,7 @@ $(document).ready(function() {
         $("#loadmore").css("display", "block");
       });
     } else {
-      noSelectedVideo();
+      sweetAlert('Failed...', "Be sure, that you´ve entered a search term!", 'error');
     }
   });
   $(window).on("resize", resetVideoHeight);
@@ -296,10 +297,6 @@ function enablePlugin() {
 
 function selectInstance() {
   sweetAlert('Failed...', "Be sure, that you select an instance!", 'error');
-}
-
-function noSelectedVideo() {
-  sweetAlert('Failed...', "Be sure, that you´ve entered a search term!", 'error');
 }
 
 function setCookie(cname, cvalue, exdays) {
