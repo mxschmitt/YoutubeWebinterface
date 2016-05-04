@@ -20,13 +20,16 @@ function ytinit() {
   console.log("config:");
   console.log(config);
   if(typeof config != 'undefined') {
-    if(config.apikey.length == 39) {
-      gapi.client.setApiKey(config.apikey);
-      gapi.client.load("youtube", "v3", function() {});
-      delete config.apikey;
-      console.log("youtube api initialized.");
+    if(typeof config.apikey != 'undefined') {
+      if(config.apikey.length == 39) {
+        gapi.client.setApiKey(config.apikey);
+        gapi.client.load("youtube", "v3", function() {});
+        console.log("youtube api initialized.");
+      } else {
+        console.log("invalid api key!");
+      }
     } else {
-      console.log("invalid api key!");
+        console.log("no api key set");
     }
   } else {
     console.log("config is undefined, trying again later.");
@@ -73,12 +76,14 @@ $(document).ready(function() {
         data: "{}"
       }).done(function(data) {
         data.forEach(function(answer) {
-          console.log("answer:");
-          console.log(answer.data);
-          config = answer.data;
-          if(ytapi_ready) {
-            console.log("init #2");
-            ytinit();
+          if(typeof config.apikey != 'undefined') {
+            console.log("answer:");
+            console.log(answer.data);
+            config = answer.data;
+            if(ytapi_ready) {
+              console.log("init #2");
+              ytinit();
+            }
           }
         });
       });
