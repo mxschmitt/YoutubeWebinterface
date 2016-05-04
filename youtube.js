@@ -26,7 +26,12 @@ registerPlugin({
     },
     enableWeb: true
 }, function(sinusbot,config, info){
-sinusbot.log("YTWeb Webinterface Ready");
+    sinusbot.log("YTWeb Webinterface Ready");
+    var ytwebconfig = {};
+    ytwebconfig.play = (config.play != 1 ? 'true' : 'false');
+    ytwebconfig.enqueue = (config.enq != 1 ? 'true' : 'false');
+    ytwebconfig.download = (config.dl != 1 ? 'true' : 'false');
+    ytwebconfig.apikey = (config.dl != 1 ? 'false' : config.ytkey);
     sinusbot.on('api:ytplay', function(ev) {
         if (config.play != 1) {
             sinusbot.yt(ev.data);
@@ -58,9 +63,7 @@ sinusbot.log("YTWeb Webinterface Ready");
         }
     });
     sinusbot.on('api:ytwebconfig', function(ev) {
-        return '{play: ' + (config.play != 1 ? 'true' : 'false') +
-            ', enqueue: ' + (config.enq != 1 ? 'true' : 'false') +
-            ', download: ' + (config.dl != 1 ? 'true' : 'false') + '}';
+        return ytwebconfig;
     });
     sinusbot.on('api:ytkey', function(ev) {
         return config.ytkey;
