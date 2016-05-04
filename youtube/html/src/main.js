@@ -95,15 +95,18 @@ $(document).ready(function() {
       }).done(function(data) {
         data.forEach(function(answer) {
           config = answer.data;
-          console.log("config:");
-          console.log(config);
           
-          if (config.ytkey.length == 39) {
-            gapi.client.setApiKey(config.ytkey);
+          if (config.apikey.length == 39) {
+            gapi.client.setApiKey(config.apikey);
             gapi.client.load("youtube", "v3", function() {});
+            
+            delete config.apikey;
           } else {
             console.log("invalid api key!");
           }
+          
+          console.log("config:");
+          console.log(config);
         });
       });
     });

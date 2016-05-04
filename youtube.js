@@ -4,7 +4,7 @@ registerPlugin({
     description: 'Youtube Webinterface for playing and downloading YouTube Tracks.',
     author: ' MaxS <max@schmitt.ovh> & irgendwer <Jonas@sandstorm-projects.de>',
     vars: {
-        ytkey: {
+        apikey: {
             title: 'Youtube API Key (see the tutorial for instructions)',
             type: 'string'
         },
@@ -63,10 +63,10 @@ registerPlugin({
         ytwebconfig.play = (config.play != 1);
         ytwebconfig.enqueue = (config.enq != 1);
         ytwebconfig.download = (config.dl != 1);
-        ytwebconfig.apikey = config.ytkey;
+        ytwebconfig.apikey = config.apikey;
         return ytwebconfig;
     });
     sinusbot.on('api:ytkey', function(ev) {
-        return config.ytkey;
+        return config.apikey;
     });
 });
