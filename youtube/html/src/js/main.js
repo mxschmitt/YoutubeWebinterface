@@ -154,7 +154,7 @@ function endplay(url) {
         return;
       }
       // The result will be an array with answers from the script
-      var answerList = $('#answers')
+      var answerList = $('#answers');
       answerList.html('');
       data.forEach(function(answer) {
         $('<li/>').appendTo(answerList).text(answer.script + ' returned ' + JSON.stringify(answer.data));
@@ -186,7 +186,7 @@ function endenqueue(url) {
         return;
       }
       // The result will be an array with answers from the script
-      var answerList = $('#answers')
+      var answerList = $('#answers');
       answerList.html('');
       data.forEach(function(answer) {
         $('<li/>').appendTo(answerList).text(answer.script + ' returned ' + JSON.stringify(answer.data));
@@ -291,15 +291,15 @@ function dynamicSort(property) {
 }
 
 function enablePlugin() {
-  sweetAlert('Failed...', "Be sure, that you've enabled the script in your Webinterface!", 'error')
+  sweetAlert('Failed...', "Be sure, that you've enabled the script in your Webinterface!", 'error');
 }
 
 function selectInstance() {
-  sweetAlert('Failed...', "Be sure, that you select an instance!", 'error')
+  sweetAlert('Failed...', "Be sure, that you select an instance!", 'error');
 }
 
 function noSelectedVideo() {
-  sweetAlert('Failed...', "Be sure, that you´ve entered a search term!", 'error')
+  sweetAlert('Failed...', "Be sure, that you´ve entered a search term!", 'error');
 }
 
 function setCookie(cname, cvalue, exdays) {
