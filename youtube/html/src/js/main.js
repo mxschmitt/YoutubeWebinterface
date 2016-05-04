@@ -76,13 +76,15 @@ $(document).ready(function() {
         data: "{}"
       }).done(function(data) {
         data.forEach(function(answer) {
-          if(typeof config == 'undefined' && typeof config.apikey == 'undefined') {
-            console.log("answer:");
-            console.log(answer.data);
-            config = answer.data;
-            if(ytapi_ready) {
-              console.log("init #2");
-              ytinit();
+          if (typeof config == 'undefined') {
+            if (typeof config.apikey == 'undefined') {
+              console.log("answer:");
+              console.log(answer.data);
+              config = answer.data;
+              if(ytapi_ready) {
+                console.log("init #2");
+                ytinit();
+              }
             }
           }
         });
