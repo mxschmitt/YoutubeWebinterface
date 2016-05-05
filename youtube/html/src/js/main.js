@@ -150,6 +150,7 @@ $(document).ready(function() {
               "title": item.snippet.title,
               "videoid": item.id.videoId
             }]));
+            bindThumbEvent();
           });
         });
         resetVideoHeight();
@@ -161,14 +162,6 @@ $(document).ready(function() {
   });
 
   $(window).on("resize", resetVideoHeight);
-
-  // load video when clicking on thumbnail
-  $(".youtube-thumb, .play-button").click(function() {
-    console.log("thumbnail click event");
-    var parent = $(this).parent().parent();
-    var url = "//www.youtube.com/embed/" + parent.data("videoid") + "?autoplay=1&autohide=2&border=0&wmode=opaque&enablejsapi=1&controls=0&showinfo=0";
-    parent.html('<iframe src="' + url + '" frameborder="0" scrolling="no" id="youtube-iframe"></iframe>');
-  });
 }); //Document Ready End
 
 /* get config from a instance */
@@ -318,6 +311,7 @@ function moreVideos() {
           "title": item.snippet.title,
           "videoid": item.id.videoId
         }]));
+        bindThumbEvent();
       });
     });
     resetVideoHeight();
@@ -395,4 +389,16 @@ function createAlertBox(type, text) {
   $('#alertscss > #text').text(text);
   $('#alertscss').fadeIn(400).delay(2000).fadeOut(400);
   return true;
+}
+
+function bindThumbEvent() {
+  // unbind previous event
+  $('.youtube-thumb, .play-button').unbind('click');
+
+  // load video when clicking on thumbnail
+  $('.youtube-thumb, .play-button').click(function() {
+    var parent = $(this).parent().parent();
+    var url = '//www.youtube.com/embed/' + parent.data('videoid') + '?autoplay=1&autohide=2&border=0&wmode=opaque&enablejsapi=1&showinfo=0';
+    parent.html('<iframe src="' + url + '" frameborder="0" scrolling="no" id="youtube-iframe"></iframe>');
+  });
 }
