@@ -150,7 +150,6 @@ $(document).ready(function() {
               "title": item.snippet.title,
               "videoid": item.id.videoId
             }]));
-            initLabel();
           });
         });
         resetVideoHeight();
@@ -160,7 +159,16 @@ $(document).ready(function() {
       sweetAlert('Failed...', "Be sure, that you´ve entered a search term!", 'error');
     }
   });
+
   $(window).on("resize", resetVideoHeight);
+
+  // load video when clicking on thumbnail
+  $(".youtube-thumb, .play-button").click(function() {
+    console.log("thumbnail click event");
+    var parent = $(this).parent().parent();
+    var url = "//www.youtube.com/embed/" + parent.data("videoid") + "?autoplay=1&autohide=2&border=0&wmode=opaque&enablejsapi=1&controls=0&showinfo=0";
+    parent.html('<iframe src="' + url + '" frameborder="0" scrolling="no" id="youtube-iframe"></iframe>');
+  });
 }); //Document Ready End
 
 /* get config from a instance */
@@ -310,7 +318,6 @@ function moreVideos() {
           "title": item.snippet.title,
           "videoid": item.id.videoId
         }]));
-        initLabel();
       });
     });
     resetVideoHeight();
@@ -388,27 +395,4 @@ function createAlertBox(type, text) {
   $('#alertscss > #text').text(text);
   $('#alertscss').fadeIn(400).delay(2000).fadeOut(400);
   return true;
-}
-function initLabel() {
-    console.log("triggered");
-    var v = document.getElementsByClassName("youtube-player");
-    for (var n = 0; n < v.length; n++) {
-        var p = document.createElement("div");
-        p.innerHTML = labnolThumb(v[n].dataset.id);
-        p.onclick = labnolIframe;
-        v[n].appendChild(p);
-    }
-}
- 
-function labnolThumb(id) {
-    return '<img class="youtube-thumb" src="//i.ytimg.com/vi/' + id + '/hqdefault.jpg"><div class="play-button"></div>';
-}
- 
-function labnolIframe() {
-    var iframe = document.createElement("iframe");
-    iframe.setAttribute("src", "//www.youtube.com/embed/" + this.parentNode.dataset.id + "?autoplay=1&autohide=2&border=0&wmode=opaque&enablejsapi=1&controls=0&showinfo=0");
-    iframe.setAttribute("frameborder", "0");
-    iframe.setAttribute("id", "youtube-iframe");
-    iframe.classList.add("ytframe");
-    this.parentNode.replaceChild(iframe, this);
 }
