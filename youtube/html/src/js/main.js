@@ -390,14 +390,17 @@ function createAlertBox(type, text) {
   return true;
 }
 function initLabel() {
-    console.log("triggered");
-    var v = document.getElementsByClassName("youtube-player");
-    for (var n = 0; n < v.length; n++) {
+        var v = document.getElementsByClassName("youtube-player");
+    $(".youtube-player").each(function(i, obj) {
+         if ($(obj).find("img").length > 0) {
+         } else {
         var p = document.createElement("div");
-        p.innerHTML = labnolThumb(v[n].dataset.id);
+        p.innerHTML = labnolThumb(v[i].dataset.id);
         p.onclick = labnolIframe;
-        v[n].appendChild(p);
-    }
+        v[i].appendChild(p);
+        }
+    });
+   
 }
  
 function labnolThumb(id) {
