@@ -150,9 +150,9 @@ $(document).ready(function() {
               "title": item.snippet.title,
               "videoid": item.id.videoId
             }]));
+            initLabel();
           });
         });
-        console.log(initLabel());
         resetVideoHeight();
         $("#loadmore").css("display", "block");
       });
@@ -310,6 +310,7 @@ function moreVideos() {
           "title": item.snippet.title,
           "videoid": item.id.videoId
         }]));
+        initLabel();
       });
     });
     resetVideoHeight();
