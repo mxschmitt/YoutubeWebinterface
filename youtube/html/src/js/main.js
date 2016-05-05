@@ -1,9 +1,9 @@
 var maxResults = 6;
-var nextPageToken, instanceid, config, ytapi_ready = false;
+var nextPageToken, instanceid, ytapikey, ytapi_state = 0;
 
 function tplawesome(e, t) {
   var res = e;
-  for(var n = 0; n < t.length; n++) {
+  for (var n = 0; n < t.length; n++) {
     res = res.replace(/\{\{(.*?)\}\}/g, function(e, r) {
       return t[n][r];
     });
@@ -16,27 +16,25 @@ function resetVideoHeight() {
 }
 
 function ytinit() {
-  ytapi_ready = true;
-  console.log("config:");
-  console.log(config);
+  if (ytapi_state == 0) {
+    ytapi_state = 1; // loaded
+  }
 
-  if(typeof config != 'undefined') {
-    if(typeof config.apikey != 'undefined') {
-      if(config.apikey.length == 39) {
-        gapi.client.setApiKey(config.apikey);
-        gapi.client.load("youtube", "v3", function() {});
-        console.log("youtube api initialized.");
-      } else {
-        console.log("invalid api key!");
-      }
+  if (typeof ytapikey != 'undefined') {
+    if (ytapikey.length == 39) {
+      gapi.client.setApiKey(ytapikey);
+      gapi.client.load("youtube", "v3", function() {});
+      ytapi_state = 2; // enabled
+      ytapikey = "";
+      console.log("youtube api enabled.");
     } else {
-        console.log("no api key set");
+      console.log("invalid api key!");
     }
   } else {
-    console.log("config is undefined, trying again later.");
+      // console.log("no api key set");
   }
 }
-//YT END Start Sinusbot Connection
+
 $(document).ready(function() {
   var instanceList = $('#dropdown');
   // Get the list of instances using the currently logged in user account
@@ -61,14 +59,29 @@ $(document).ready(function() {
     }
   }).done(function(data) {
     data = data.sort(dynamicSort("nick"));
-    data.forEach(function(instance) {
-      // When clicking an entry, we post a request to the script interface and return the result
+
+    // get instance from cookie
+    if(checkCookie('instanceid') == true) {
+      data.forEach(function(instance) {
+        if(instance.uuid == getCookie('instanceid')) {
+          instanceid = instance.uuid;
+          getConfig(instance.uuid);
+          $("#dropdb1").html(instance.nick);
+        }
+      });
+    }
+
+    data.forEach(function(instance) { // go through every instance
+      // append instance list
       $('<li/>').appendTo(instanceList).html('<a href="#">' + instance.nick + '</a>').click(function() {
         setCookie('instanceid', instance.uuid, 7);
+        getConfig(instance.uuid);
         instanceid = instance.uuid;
       });
+
+      // get ytapikey
       $.ajax({
-        url: '/api/v1/bot/i/' + instance.uuid + '/scriptEvent/ytwebconfig',
+        url: '/api/v1/bot/i/' + instance.uuid + '/scriptEvent/ytapikey',
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -77,23 +90,25 @@ $(document).ready(function() {
         data: "{}"
       }).done(function(data) {
         data.forEach(function(answer) {
-          if (typeof answer.data.apikey !== 'undefined') {
-            // console.log("answer:");
-            // console.log(answer.data);
-            config = answer.data;
-            if(ytapi_ready) {
-              console.log("init #2");
+          // console.log("ytapikey: " + answer.data);
+          if (typeof answer.data !== 'undefined') {
+            ytapikey = answer.data;
+
+            if (ytapi_state == 1) { // initialize ytapi if loaded but not already enabled
               ytinit();
             }
           }
         });
-      });
+      }); // end get ytapikey
     });
-    $('.dropd1 > li > a').click(function() {
+
+    $('.dropd1 > li > a').click(function() { // apply dropdown selection
       $("#dropdb1").html($(this).text() + ' <span class="caret"></span>');
     });
-    checkForInstance(data);
   });
+
+  /* infinite scroll */
+
   $(window).scroll(function() {
     if($(window).scrollTop() == $(document).height() - $(window).height()) {
       if(typeof nextPageToken !== 'undefined') {
@@ -101,11 +116,17 @@ $(document).ready(function() {
       }
     }
   });
+
+  /* load more button */
+
   $("#loadmore").click(function() {
     if(typeof nextPageToken !== 'undefined') {
       moreVideos();
     }
   });
+
+  /* search button */
+
   $("form").on("submit", function(e) {
     e.preventDefault();
     if($("#search").val()) {
@@ -139,6 +160,34 @@ $(document).ready(function() {
   });
   $(window).on("resize", resetVideoHeight);
 }); //Document Ready End
+
+/* get config from a instance */
+
+function getConfig(instance) {
+  $.ajax({
+    url: '/api/v1/bot/i/' + instance + '/scriptEvent/ytwebconfig',
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'bearer ' + window.localStorage.token
+    },
+    data: '{}'
+  }).done(function(data) {
+    data.forEach(function(answer) {
+      console.log("config:");
+      console.log(answer.data);
+
+      var css = '.play { display: ' + (answer.data.play ? 'inline-block' :  'none') + '; margin-left: 15px !important; }\n' +
+          '.play { display: ' + (answer.data.play ? 'inline-block' :  'none') + '; margin-left: 15px !important; }\n' +
+          '.play { display: ' + (answer.data.play ? 'inline-block' :  'none') + '; margin-left: 15px !important; }\n';
+
+      console.log("css: " + css);
+
+      $("#btn-style").html(css);
+    });
+  });
+}
+
 function endplay(url) {
   if(typeof instanceid !== 'undefined') {
     $.ajax({
@@ -239,19 +288,6 @@ function getRootUrl() {
   return window.location.origin ? window.location.origin + '/' : window.location.protocol + '/' + window.location.host + '/';
 }
 
-function checkForInstance(data) {
-  if(checkCookie('instanceid') == true) {
-    i = 0;
-    data.forEach(function(instance) {
-      if(instance.uuid == getCookie('instanceid')) {
-        instanceid = data[i].uuid;
-        $("#dropdb1").html(data[i].nick);
-      }
-      i++;
-    });
-  }
-}
-
 function moreVideos() {
   $("#loadmorecss").removeClass("none");
   var request = gapi.client.youtube.search.list({
@@ -350,10 +386,3 @@ function createAlertBox(type, text) {
   $('#alertscss').fadeIn(400).delay(2000).fadeOut(400);
   return true;
 }
-
-function injectStyles(rule) {
-  var div = $("<div />", {
-    html: '&shy;<style>' + rule + '</style>'
-  }).appendTo("body");    
-}
-//injectStyles('a:hover { color: red; }');

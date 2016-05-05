@@ -38,6 +38,7 @@ registerPlugin({
             return 'Playing is not enabled.';            
         }    
     });
+    
     sinusbot.on('api:ytenq', function(ev) {
         if (config.enq != 1) {
             sinusbot.qyt(ev.data);
@@ -48,6 +49,7 @@ registerPlugin({
             return 'Enqueuing is not enabled.';
         }
     });
+
     sinusbot.on('api:ytdl', function(ev) {
         if (config.dl != 1) {
             sinusbot.log('YTWeb Triggered with "downloaded" at '+ ev.data);
@@ -58,12 +60,16 @@ registerPlugin({
             return 'Downloading is not enabled.';
         }
     });
+
     sinusbot.on('api:ytwebconfig', function(ev) {
         var ytwebconfig = {};
         ytwebconfig.play = (config.play != 1);
         ytwebconfig.enqueue = (config.enq != 1);
         ytwebconfig.download = (config.dl != 1);
-        ytwebconfig.apikey = config.apikey;
         return ytwebconfig;
+    });
+
+    sinusbot.on('api:ytapikey', function(ev) {
+        return config.apikey;
     });
 });
