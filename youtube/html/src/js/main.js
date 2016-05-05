@@ -178,8 +178,8 @@ function getConfig(instance) {
       console.log(answer.data);
 
       var css = '.play { display: ' + (answer.data.play ? 'inline-block' :  'none') + '; margin-left: 15px !important; }\n' +
-          '.play { display: ' + (answer.data.play ? 'inline-block' :  'none') + '; margin-left: 15px !important; }\n' +
-          '.play { display: ' + (answer.data.play ? 'inline-block' :  'none') + '; margin-left: 15px !important; }\n';
+          '.download { display: ' + (answer.data.download ? 'inline-block' :  'none') + '; margin-left: 15px !important; }\n' +
+          '.enqueue { display: ' + (answer.data.enqueue ? 'inline-block' :  'none') + '; margin-left: 15px !important; }\n';
 
       console.log("css: " + css);
 
