@@ -26,12 +26,12 @@ function ytinit() {
       gapi.client.load("youtube", "v3", function() {});
       ytapi_state = 2; // enabled
       ytapikey = "";
-      console.log("youtube api enabled.");
+      // console.log("youtube api enabled.");
     } else {
-      console.log("invalid api key!");
+      // console.log("invalid api key!");
     }
   } else {
-      // console.log("no api key set");
+      // // console.log("no api key set");
   }
 }
 
@@ -90,7 +90,7 @@ $(document).ready(function() {
         data: "{}"
       }).done(function(data) {
         data.forEach(function(answer) {
-          // console.log("ytapikey: " + answer.data);
+          // // console.log("ytapikey: " + answer.data);
           if (typeof answer.data !== 'undefined') {
             ytapikey = answer.data;
 
@@ -174,14 +174,14 @@ function getConfig(instance) {
     data: '{}'
   }).done(function(data) {
     data.forEach(function(answer) {
-      console.log("config:");
-      console.log(answer.data);
+      // console.log("config:");
+      // console.log(answer.data);
 
       var css = '.play { display: ' + (answer.data.play ? 'inline-block' :  'none') + '; margin-left: 15px !important; }\n' +
           '.download { display: ' + (answer.data.download ? 'inline-block' :  'none') + '; margin-left: 15px !important; }\n' +
           '.enqueue { display: ' + (answer.data.enqueue ? 'inline-block' :  'none') + '; margin-left: 15px !important; }\n';
 
-      console.log("css: " + css);
+      // console.log("css: " + css);
 
       $("#btn-style").html(css);
     });
