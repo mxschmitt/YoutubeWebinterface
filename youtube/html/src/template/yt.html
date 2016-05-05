@@ -3,5 +3,7 @@
     <button type="button" class="btn play btn-danger" onclick="endplay('https://www.youtube.com/watch?v={{videoid}}'); ">Play Now</button>
     <button type="button" class="btn enqueue btn-success" onclick="endenqueue('https://www.youtube.com/watch?v={{videoid}}'); ">Enqueue</button>
     <button type="button" class="btn download btn-warning" onclick="enddownload('https://www.youtube.com/watch?v={{videoid}}'); ">Download</button>
-    <iframe class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ytframe" src="//www.youtube.com/embed/{{videoid}}" frameborder="0" allowfullscreen></iframe>
+    <div class="youtube-container">
+         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ytframe youtube-player" data-id="{{videoid}}"></div>
+    </div>
 </div>
