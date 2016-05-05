@@ -2,7 +2,7 @@ registerPlugin({
     name: 'Youtube Webinterface!',
     version: '1.0',
     description: 'Youtube Webinterface for playing and downloading YouTube Tracks.',
-    author: ' MaxS <max@schmitt.ovh> & irgendwer <Jonas@sandstorm-projects.de>',
+    author: 'maxibanki <max@schmitt.ovh> & irgendwer <Jonas@sandstorm-projects.de>',
     vars: {
         apikey: {
             title: 'Youtube API Key (see the tutorial for instructions)',
