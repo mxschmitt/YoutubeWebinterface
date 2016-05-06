@@ -16,9 +16,6 @@
 .none {
     display: none
 }
-.play {
-    margin-left: 15px !important
-}
 #loadmore {
     display: none;
     margin: 0 auto;
@@ -30,27 +27,13 @@
 }
 .videos {
     margin: 5px;
-    padding: 0 20px
+     padding-right: 15px;
+     padding-left: 20px;
 }
 .ytframe {
     margin: 0;
     height: 360px;
     width: 100%
-}
-@media (max-width: 992px) {
-    .videos {
-        width: calc(100% - 10px);
-        min-height: 650px
-    }
-}
-@media (min-width: 992px) {
-    .videos {
-        width: calc(50% - 10px);
-        height: 500px
-    }
-    .ytframe {
-        height: 289px
-    }
 }
 .youtube-container {
     display: block;
@@ -81,7 +64,6 @@ img.youtube-thumb {
     right: 0;
     top: 0;
     height: auto;
-    margin-left: 15px
 }
 div.play-button {
     height: 72px;
@@ -102,5 +84,23 @@ div.play-button {
     margin-left: 15px
 }
 .btnmarginfive {
-    margin: 5px
+    margin-left: 5px;
+    margin-bottom: 5px;
+}
+@media (max-width: 992px) {
+    .videos {
+        width: calc(100% - 10px);
+    }
+    .ytframe {
+        margin-bottom: 15px;
+    }
+}
+@media (min-width: 992px) {
+    .videos {
+        width: calc(50% - 10px);
+        height: 500px
+    }
+    .ytframe {
+        height: 289px
+    }
 }
