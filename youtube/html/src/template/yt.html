@@ -1,11 +1,11 @@
 <div class="thumbnail col-xs-12 col-sm-12 col-md-6 col-lg-6 videos">
-    <h2 style="margin-left: 10px;">{{title}}</h2>
-    <button type="button" class="btn play btn-danger" onclick="endplay('https://www.youtube.com/watch?v={{videoid}}'); ">Play Now</button>
-    <button type="button" class="btn enqueue btn-success" onclick="endenqueue('https://www.youtube.com/watch?v={{videoid}}'); ">Enqueue</button>
-    <button type="button" class="btn download btn-warning" onclick="enddownload('https://www.youtube.com/watch?v={{videoid}}'); ">Download</button>
+    <h3 style="margin-left: 10px;">{{title}}</h3>
+    <button type="button" class="btn play btn-danger btnmarginfive" onclick="endplay('https://www.youtube.com/watch?v={{videoid}}'); ">Play Now</button>
+    <button type="button" class="btn enqueue btn-success btnmarginfive" onclick="endenqueue('https://www.youtube.com/watch?v={{videoid}}'); ">Enqueue</button>
+    <button type="button" class="btn download btn-warning btnmarginfive" onclick="enddownload('https://www.youtube.com/watch?v={{videoid}}'); ">Download</button>
     <div class="youtube-container">
          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ytframe youtube-player" data-videoid="{{videoid}}">
-	         <div><img class="youtube-thumb" src="//i.ytimg.com/vi/{{videoid}}/hqdefault.jpg"><div class="play-button"></div></div>
+             <div><img class="youtube-thumb" src="//i.ytimg.com/vi/{{videoid}}/hqdefault.jpg"><div class="play-button"></div></div>
          </div>
     </div>
 </div>

@@ -3,7 +3,7 @@ var nextPageToken, instanceid, ytapikey, ytapi_state = 0;
 
 function tplawesome(e, t) {
   var res = e;
-  for (var n = 0; n < t.length; n++) {
+  for(var n = 0; n < t.length; n++) {
     res = res.replace(/\{\{(.*?)\}\}/g, function(e, r) {
       return t[n][r];
     });
@@ -16,27 +16,24 @@ function resetVideoHeight() {
 }
 
 function ytinit() {
-  if (ytapi_state == 0) {
+  if(ytapi_state == 0) {
     ytapi_state = 1; // loaded
   }
-
-  if (typeof ytapikey != 'undefined') {
-    if (ytapikey.length == 39) {
+  if(typeof ytapikey != 'undefined') {
+    if(ytapikey.length == 39) {
       gapi.client.setApiKey(ytapikey);
       gapi.client.load("youtube", "v3", function() {});
       ytapi_state = 2; // enabled
       ytapikey = "";
-       // console.log("youtube api enabled.");
+      // console.log("youtube api enabled.");
     } else {
       console.log("invalid api key!");
     }
   } else {
-      // console.log("no api key set");
+    // console.log("no api key set");
   }
 }
-
 $(document).ready(function() {
-    console.log("ready");
   var instanceList = $('#dropdown');
   // Get the list of instances using the currently logged in user account
   $.ajax({
@@ -60,7 +57,6 @@ $(document).ready(function() {
     }
   }).done(function(data) {
     data = data.sort(dynamicSort("nick"));
-
     // get instance from cookie
     if(checkCookie('instanceid') == true) {
       data.forEach(function(instance) {
@@ -71,7 +67,6 @@ $(document).ready(function() {
         }
       });
     }
-
     data.forEach(function(instance) { // go through every instance
       // append instance list
       $('<li/>').appendTo(instanceList).html('<a href="#">' + instance.nick + '</a>').click(function() {
@@ -79,7 +74,6 @@ $(document).ready(function() {
         getConfig(instance.uuid);
         instanceid = instance.uuid;
       });
-
       // get ytapikey
       $.ajax({
         url: '/api/v1/bot/i/' + instance.uuid + '/scriptEvent/ytapikey',
@@ -92,24 +86,20 @@ $(document).ready(function() {
       }).done(function(data) {
         data.forEach(function(answer) {
           // // console.log("ytapikey: " + answer.data);
-          if (typeof answer.data !== 'undefined') {
+          if(typeof answer.data !== 'undefined') {
             ytapikey = answer.data;
-
-            if (ytapi_state == 1) { // initialize ytapi if loaded but not already enabled
+            if(ytapi_state == 1) { // initialize ytapi if loaded but not already enabled
               ytinit();
             }
           }
         });
       }); // end get ytapikey
     });
-
     $('.dropd1 > li > a').click(function() { // apply dropdown selection
       $("#dropdb1").html($(this).text() + ' <span class="caret"></span>');
     });
   });
-
   /* infinite scroll */
-
   $(window).scroll(function() {
     if($(window).scrollTop() == $(document).height() - $(window).height()) {
       if(typeof nextPageToken !== 'undefined') {
@@ -117,17 +107,13 @@ $(document).ready(function() {
       }
     }
   });
-
   /* load more button */
-
   $("#loadmore").click(function() {
     if(typeof nextPageToken !== 'undefined') {
       moreVideos();
     }
   });
-
   /* search button */
-
   $("form").on("submit", function(e) {
     e.preventDefault();
     if($("#search").val()) {
@@ -160,12 +146,9 @@ $(document).ready(function() {
       sweetAlert('Failed...', "Be sure, that you´ve entered a search term!", 'error');
     }
   });
-
   $(window).on("resize", resetVideoHeight);
 }); //Document Ready End
-
 /* get config from a instance */
-
 function getConfig(instance) {
   $.ajax({
     url: '/api/v1/bot/i/' + instance + '/scriptEvent/ytwebconfig',
@@ -179,13 +162,8 @@ function getConfig(instance) {
     data.forEach(function(answer) {
       // console.log("config:");
       // console.log(answer.data);
-
-      var css = '.play { display: ' + (answer.data.play ? 'inline-block' : 'none') + "; margin-left: 15px !important; }\n" +
-          '.download { display: ' + (answer.data.download ? 'inline-block' : 'none') + "; margin-left: 15px !important; }\n" +
-          '.enqueue { display: ' + (answer.data.enqueue ? 'inline-block' : 'none') + "; margin-left: 15px !important; }\n";
-
+      var css = '.play { display: ' + (answer.data.play ? 'inline-block' : 'none') + "; margin-left: 15px !important; }\n" + '.download { display: ' + (answer.data.download ? 'inline-block' : 'none') + "; margin-left: 15px !important; }\n" + '.enqueue { display: ' + (answer.data.enqueue ? 'inline-block' : 'none') + "; margin-left: 15px !important; }\n";
       // console.log("css: " + css);
-
       $("#btn-style").html(css);
     });
   });
@@ -371,7 +349,6 @@ function createAlertBox(type, text) {
   $('div > #alertscss').removeClass("alert-success");
   $('div > #alertscss').removeClass("alert-danger");
   $('div > #alertscss').removeClass("alert-warning");
-
   if(type == 'success') {
     $('div > #alertscss').addClass("alert-success");
     $('#alertscss > #title').text("Success!");
@@ -384,7 +361,6 @@ function createAlertBox(type, text) {
   } else {
     return false;
   }
-
   // add text and animate
   $('#alertscss > #text').text(text);
   $('#alertscss').fadeIn(400).delay(2000).fadeOut(400);
@@ -394,11 +370,10 @@ function createAlertBox(type, text) {
 function bindThumbEvent() {
   // unbind previous event
   $('.youtube-thumb, .play-button').unbind('click');
-
   // load video when clicking on thumbnail
   $('.youtube-thumb, .play-button').click(function() {
     var parent = $(this).parent().parent();
     var url = '//www.youtube.com/embed/' + parent.data('videoid') + '?autoplay=1&autohide=2&border=0&wmode=opaque&enablejsapi=1&showinfo=0';
-    parent.html('<iframe src="' + url + '" frameborder="0" scrolling="no" id="youtube-iframe"></iframe>');
+    parent.html('<iframe src="' + url + '" frameborder="0" scrolling="no" id="youtube-iframe" allowfullscreen></iframe>');
   });
 }
