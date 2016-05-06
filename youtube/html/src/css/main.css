@@ -37,7 +37,7 @@
 }
 .youtube-container {
     display: block;
-    margin: 20px auto;
+    margin: 10px auto;
     width: 100%;
     max-width: 600px
 }
@@ -86,6 +86,9 @@ div.play-button {
 .btnmarginfive {
     margin-left: 5px;
     margin-bottom: 5px;
+}
+#spanover5px {
+    margin-left: -5px
 }
 @media (max-width: 992px) {
     .videos {

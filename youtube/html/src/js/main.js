@@ -159,13 +159,20 @@ function getConfig(instance) {
     },
     data: '{}'
   }).done(function(data) {
-    data.forEach(function(answer) {
+      console.log(data.length);
+      if (data.length == 0) {
+        var css = '.play { display: none' + "}\n" + '.download { display: none' + "}\n" + '.enqueue { display: none' + "}\n" + '#spanover5px { display: none' + "}\n";
+        console.log("under0");
+      } else {
+        var css = '.play { display: ' + (data[0].data.play ? 'inline-block' : 'none') + "}\n" + '.download { display: ' + (data[0].data.download ? 'inline-block' : 'none') + "}\n" + '.enqueue { display: ' + (data[0].data.enqueue ? 'inline-block' : 'none') + "}\n";
+      }
+
+      // console.log(data[0]);
       // console.log("config:");
       // console.log(answer.data);
-      var css = '.play { display: ' + (answer.data.play ? 'inline-block' : 'none') + "}\n" + '.download { display: ' + (answer.data.download ? 'inline-block' : 'none') + "}\n" + '.enqueue { display: ' + (answer.data.enqueue ? 'inline-block' : 'none') + "}\n";
       // console.log("css: " + css);
       $("#btn-style").html(css);
-    });
+
   });
 }
 
