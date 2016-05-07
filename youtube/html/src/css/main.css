@@ -89,6 +89,9 @@ div.play-button {
 #spanover5px {
     margin-left: -5px
 }
+.videos > h3 {
+    margin-top: 10px;
+}
 @media (max-width: 992px) {
     .videos {
         width: calc(100% - 10px);
@@ -104,5 +107,6 @@ div.play-button {
     }
     .ytframe {
         height: 289px
+        margin-bottom: 15px;
     }
 }
