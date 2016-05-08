@@ -1,3 +1,7 @@
+@font-face {
+    font-family: AlternateGothic2;
+    src: url('../fonts/AlternateGothic2.ttf');
+}
 .jumbotron {
     margin-top: 15px;
     background: url(../img/sinusbot-logo.png);
@@ -11,7 +15,10 @@
 }
 #yt {
     text-align: center;
-    margin-top: -10px
+    margin-top: -10px;
+    font-family: AlternateGothic2;
+    color: white;
+    font-size: 4em;
 }
 .none {
     display: none
