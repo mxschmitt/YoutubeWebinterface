@@ -85,7 +85,7 @@ $(document).ready(function() {
         data: "{}"
       }).done(function(data) {
         data.forEach(function(answer) {
-          // // console.log("ytapikey: " + answer.data);
+          // console.log("ytapikey: " + answer.data);
           if(typeof answer.data !== 'undefined') {
             ytapikey = answer.data;
             if(ytapi_state == 1) { // initialize ytapi if loaded but not already enabled
@@ -159,10 +159,9 @@ function getConfig(instance) {
     },
     data: '{}'
   }).done(function(data) {
-      console.log(data.length);
       if (data.length == 0) {
         var css = '.play { display: none' + "}\n" + '.download { display: none' + "}\n" + '.enqueue { display: none' + "}\n" + '#spanover5px { display: none' + "}\n";
-        console.log("under0");
+        console.log("config not set");
       } else {
         var css = '.play { display: ' + (data[0].data.play ? 'inline-block' : 'none') + "}\n" + '.download { display: ' + (data[0].data.download ? 'inline-block' : 'none') + "}\n" + '.enqueue { display: ' + (data[0].data.enqueue ? 'inline-block' : 'none') + "}\n";
       }
@@ -382,5 +381,26 @@ function bindThumbEvent() {
     var parent = $(this).parent().parent();
     var url = '//www.youtube.com/embed/' + parent.data('videoid') + '?autoplay=1&autohide=2&border=0&wmode=opaque&enablejsapi=1&showinfo=0';
     parent.html('<iframe src="' + url + '" frameborder="0" scrolling="no" id="youtube-iframe" allowfullscreen></iframe>');
+  });
+
+  var prevHeight = 0;
+  var prevElement;
+  var i = 0;
+  
+  $('.videos > h3').each(function() {
+    if (i % 2 == 0) {
+      prevHeight = $(this).innerHeight();
+      prevElement = this;
+    } else {
+      var currHeight = $(this).innerHeight();
+
+      if (prevHeight > currHeight) {
+        $(this).innerHeight(prevHeight);
+      } else if (prevHeight < currHeight) {
+        $(prevElement).innerHeight(currHeight);
+      }
+    }
+
+    i++;
   });
 }
