@@ -8,10 +8,10 @@
     background-size: 17%;
     background-repeat: no-repeat;
     background-color: #f3331F;
-    background-position: 99% 95%
+    background-position: 99% 95%;
 }
 #copyright {
-    display: inline
+    display: inline;
 }
 #yt {
     text-align: center;
@@ -21,16 +21,16 @@
     font-size: 4em;
 }
 .none {
-    display: none
+    display: none;
 }
 #loadmore {
     display: none;
     margin: 0 auto;
-    clear: both
+    clear: both;
 }
 #results {
     padding-left: 15px;
-    padding-right: 15px
+    padding-right: 15px;
 }
 .videos {
     margin: 5px;
@@ -40,13 +40,14 @@
 .ytframe {
     margin: 0;
     height: 360px;
-    width: 100%
+    width: 100%;
+    margin-bottom: 15px;
 }
 .youtube-container {
     display: block;
     margin: 10px auto;
     width: 100%;
-    max-width: 600px
+    max-width: 600px;
 }
 .youtube-player {
     display: block;
@@ -58,7 +59,7 @@
     height: 100%;
     cursor: hand;
     cursor: pointer;
-    display: block
+    display: block;
 }
 img.youtube-thumb {
     bottom: 0;
@@ -80,7 +81,7 @@ div.play-button {
     margin-left: -36px;
     margin-top: -36px;
     position: absolute;
-    background: url(../img/play.png) no-repeat
+    background: url(../img/play.png) no-repeat;
 }
 #youtube-iframe {
     width: 100%;
@@ -94,7 +95,7 @@ div.play-button {
     margin-bottom: 5px;
 }
 #spanover5px {
-    margin-left: -5px
+    margin-left: -5px;
 }
 .videos > h3 {
     margin-top: 10px;
@@ -103,17 +104,9 @@ div.play-button {
     .videos {
         width: calc(100% - 10px);
     }
-    .ytframe {
-        margin-bottom: 15px;
-    }
 }
 @media (min-width: 992px) {
     .videos {
         width: calc(50% - 10px);
-        height: 500px
-    }
-    .ytframe {
-        height: 289px
-        margin-bottom: 15px;
     }
 }
