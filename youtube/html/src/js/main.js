@@ -329,6 +329,10 @@ function selectInstance() {
   sweetAlert('Failed...', "Be sure, that you select an instance!", 'error');
 }
 
+function notEnoughPermissions() {
+  sweetAlert('Failed...', "Be sure, that you have enough permissions to execute that action!", 'error');
+}
+
 function setCookie(cname, cvalue, exdays) {
   var d = new Date();
   d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
@@ -424,7 +428,10 @@ function bindThumbEvent() {
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'bearer ' + window.localStorage.token
-      }
+      },
+    statusCode: {
+      401: function() { console.log("not enough permissions for getting the status");}
+    }
     }).done(function(data) { 
       changeValBtn = document.querySelector('.v-slider');
       inputRange = changeValBtn.parentNode.querySelector('input[type="range"]');
@@ -443,9 +450,9 @@ function bindThumbEvent() {
         $('.fa-random').removeClass('fontawesomeselected');
       }
        if (data.playing == true) {
-        $('#va-playpause').removeClass("fa-stop").addClass("fa-play");
-      } else {
         $('#va-playpause').removeClass("fa-play").addClass("fa-stop");
+      } else {
+        $('#va-playpause').removeClass("fa-stop").addClass("fa-play");
       }
     });
 }
@@ -468,7 +475,10 @@ function bindThumbEvent() {
                   headers: {
                     'Content-Type': 'application/json',
                     'Authorization': 'bearer ' + window.localStorage.token
-                  }
+                  },
+                  statusCode: {
+                   401: notEnoughPermissions()
+                 }
                 });
             }
         });
@@ -483,6 +493,9 @@ function vforward() {
     headers: {
       'Content-Type': 'application/json',
       'Authorization': 'bearer ' + window.localStorage.token
+    },
+    statusCode: {
+      401: notEnoughPermissions()
     }
   });
 }
@@ -493,6 +506,9 @@ function vbackward() {
     headers: {
       'Content-Type': 'application/json',
       'Authorization': 'bearer ' + window.localStorage.token
+    },
+    statusCode: {
+      401: notEnoughPermissions()
     }
   });
 }
@@ -505,6 +521,9 @@ function vplay() {
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'bearer ' + window.localStorage.token
+      },
+      statusCode: {
+      401: notEnoughPermissions()
       }
     });
  } else {
@@ -515,7 +534,10 @@ function vplay() {
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'bearer ' + window.localStorage.token
-      }
+      },
+      statusCode: {
+      401: notEnoughPermissions()
+       }
     });
  }
 }
@@ -533,7 +555,10 @@ $.ajax({
   headers: {
     'Content-Type': 'application/json',
     'Authorization': 'bearer ' + window.localStorage.token
-  }
+  },
+  statusCode: {
+      401: notEnoughPermissions()
+    }
 });
 }
 function vrepeat() {
@@ -550,6 +575,9 @@ $.ajax({
   headers: {
     'Content-Type': 'application/json',
     'Authorization': 'bearer ' + window.localStorage.token
-  }
+  },
+  statusCode: {
+      401: notEnoughPermissions()
+    }
 });
 };
