@@ -122,7 +122,10 @@ div.play-button {
     }
     .v-controls {
       margin: 5px;
-    }      
+    }
+    .panel-body {
+        text-align: center;
+    }
 }
 @media (min-width: 992px) {
     .videos {
@@ -130,5 +133,8 @@ div.play-button {
     }
     .v-controls {
       margin: 15px;
-    }       
+    }
+    .va-title {
+        margin-top: 10px;
+    }
 }
