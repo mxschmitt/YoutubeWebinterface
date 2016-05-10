@@ -1,5 +1,5 @@
 var maxResults = 6;
-var nextPageToken, instanceid, ytapikey, ytapi_state = 0;
+var nextPageToken, instanceid, ytapikey, InstanceStatus, ytapi_state = 0;
 
 function tplawesome(e, t) {
   var res = e;
@@ -73,6 +73,7 @@ $(document).ready(function() {
         setCookie('instanceid', instance.uuid, 7);
         getConfig(instance.uuid);
         instanceid = instance.uuid;
+        getInstanceStatus();
       });
       // get ytapikey
       $.ajax({
@@ -95,6 +96,10 @@ $(document).ready(function() {
         });
       }); // end get ytapikey
     });
+  getInstanceStatus();  
+  setInterval(function() {
+    getInstanceStatus();
+  }, 5000);
     $('.dropd1 > li > a').click(function() { // apply dropdown selection
       $("#dropdb1").html($(this).text() + ' <span class="caret"></span>');
     });
@@ -147,6 +152,7 @@ $(document).ready(function() {
     }
   });
   $(window).on("resize", resetVideoHeight);
+  initVolumeBar();
 }); //Document Ready End
 /* get config from a instance */
 function getConfig(instance) {
@@ -404,3 +410,146 @@ function bindThumbEvent() {
     i++;
   });
 }
+
+// Music Control Part
+
+
+//init Volume Slider + Volume control
+
+ //volume slider
+ function getInstanceStatus() {
+  InstanceStatus = $.ajax({
+      url: '/api/v1/bot/i/' + instanceid + '/status',
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'bearer ' + window.localStorage.token
+      }
+    }).done(function(data) { 
+      changeValBtn = document.querySelector('.v-slider');
+      inputRange = changeValBtn.parentNode.querySelector('input[type="range"]');
+      inputRange.value = data.volume;
+      inputRange.dispatchEvent(new Event('change'));
+      $('#v-artist').text(data.currentTrack.artist);
+      $('#v-title').text(data.currentTrack.title);
+      if (data.repeat == true) {
+        $('.fa-retweet').addClass('fontawesomeselected')
+      } else {
+        $('.fa-retweet').removeClass('fontawesomeselected');
+      }
+      if (data.shuffle == true) {
+        $('.fa-random').addClass('fontawesomeselected')
+      } else {
+        $('.fa-random').removeClass('fontawesomeselected');
+      }
+       if (data.playing == true) {
+        $('#va-playpause').removeClass("fa-stop").addClass("fa-play");
+      } else {
+        $('#va-playpause').removeClass("fa-play").addClass("fa-stop");
+      }
+    });
+}
+
+        function initVolumeBar() {
+
+        var selector = '[data-rangeSlider]',
+            elements = document.querySelectorAll(selector);
+        // Basic rangeSlider initialization
+        rangeSlider.create(elements, {
+
+            // Callback function
+            onInit: function () {
+            },
+            // Callback function
+            onSlideEnd: function (value, percent,  position) {
+              $.ajax({
+                  url: '/api/v1/bot/i/' + instanceid + '/volume/set/'+value,
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'bearer ' + window.localStorage.token
+                  }
+                });
+            }
+        });
+      }
+
+// Control events  
+
+function vforward() {
+  $.ajax({
+    url: '/api/v1/bot/i/' + instanceid + '/playNext',
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'bearer ' + window.localStorage.token
+    }
+  });
+}
+function vbackward() {
+  $.ajax({
+    url: '/api/v1/bot/i/' + instanceid + '/playPrevious',
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'bearer ' + window.localStorage.token
+    }
+  });
+}
+function vplay() {
+ if (InstanceStatus.responseJSON.playing == true) {
+    $('#va-playpause').removeClass("fa-stop").addClass("fa-play");
+    $.ajax({
+      url: '/api/v1/bot/i/' + instanceid + '/pause',
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'bearer ' + window.localStorage.token
+      }
+    });
+ } else {
+    $('#va-playpause').removeClass("fa-play").addClass("fa-stop");
+      $.ajax({
+      url: '/api/v1/bot/i/' + instanceid + '/play/byId/'+InstanceStatus.responseJSON.currentTrack.uuid,
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'bearer ' + window.localStorage.token
+      }
+    });
+ }
+}
+function vshuffle() {
+    if (InstanceStatus.responseJSON.shuffle == true) {
+      nbr = 0;
+      $('.fa-random').removeClass('fontawesomeselected') 
+    } else {
+      nbr = 1;
+      $('.fa-random').addClass('fontawesomeselected') 
+    }
+$.ajax({
+  url: '/api/v1/bot/i/' + instanceid + '/shuffle/'+nbr,
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    'Authorization': 'bearer ' + window.localStorage.token
+  }
+});
+}
+function vrepeat() {
+    if (InstanceStatus.responseJSON.repeat == true) {
+      nbr = 0;
+      $('.fa-retweet').removeClass('fontawesomeselected');
+    } else {
+      nbr = 1;
+      $('.fa-retweet').addClass('fontawesomeselected');
+    }
+$.ajax({
+  url: '/api/v1/bot/i/' + instanceid + '/repeat/'+nbr,
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    'Authorization': 'bearer ' + window.localStorage.token
+  }
+});
+};

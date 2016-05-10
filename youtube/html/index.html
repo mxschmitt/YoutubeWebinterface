@@ -14,11 +14,13 @@
   <link rel="stylesheet" href="src/css/bootstrap.min.css">
   <link rel="stylesheet" href="src/css/font-awesome.min.css">
   <link rel="stylesheet" href="src/css/sweetalert2.min.css">
+  <link rel="stylesheet" href="src/css/rangeSlider.min.css">
   <link rel="stylesheet" href="src/css/main.css">
   <style id="btn-style" type="text/css"></style>
   <!--                     CSS             -->
   <!--                     JavaScript             -->
   <script src="src/js/jquery.min.js"></script>
+  <script src="src/js/rangeSlider.min.js"></script>
   <script src="src/js/main.js"></script>
   <script src="https://apis.google.com/js/client.js?onload=ytinit"></script>
   <!--                     JavaScript             -->
@@ -27,7 +29,25 @@
 <body>
   <div class="container">
     <div class="jumbotron">
-      <h1 id="yt">Youtube Search:</h1> <br> </div>
+      <h1 id="yt">Youtube Search:</h1><br> </div>
+    <div class="panel panel-default">
+      <div class="panel-body">
+        <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+        <strong><span class="v-font" id="v-title">Loading...</span></strong><br>
+        <span class="v-font" id="v-artist">Loading...</span>
+        </div>
+        <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+          <i class="fa fa-retweet fa-2x v-controls" aria-hidden="true" onclick="vrepeat()"></i>
+          <i class="fa fa-fast-backward fa-2x v-controls" aria-hidden="true" onclick="vbackward()"></i>
+          <i class="fa fa-play fa-2x v-controls" id="va-playpause"aria-hidden="true" onlick="vplay"></i>
+          <i class="fa fa-fast-forward fa-2x v-controls" aria-hidden="true" onclick="vforward()"></i>
+          <i class="fa fa-random fa-2x v-controls" aria-hidden="true" onclick="vshuffle()"></i>
+        </div>
+      <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 v-slider">
+      <input type="range" min="0" max="100" data-rangeSlider>
+      </div>
+      </div>
+    </div>
     <div class="row">
       <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12"> <noscript><div class="alert alert-danger"> <strong>Achtung!</strong>&nbsp;<span>Um den vollen Funktionsumfang dieser Webseite zu erfahren, benötigen Sie JavaScript. Hier finden Sie die <a href="http://www.enable-javascript.com/de/" target="_blank">Anleitung wie Sie JavaScript in Ihrem Browser einschalten</a>.</span></div></noscript>
         <div class="alert alert-success none" id="alertscss"> <strong id="title"></strong>&nbsp;<span id="text"> </span> </div>

@@ -100,13 +100,35 @@ div.play-button {
 .videos > h3 {
     margin-top: 10px;
 }
+.v-controls:hover {
+  color: red;
+  cursor: pointer;
+}
+.fright {
+  float: right;
+}
+.v-font {
+  font-size: 1em;
+}
+.rangeSlider {
+  margin-top: 15px;
+}
+.fontawesomeselected {
+    color: red;
+}
 @media (max-width: 992px) {
     .videos {
         width: calc(100% - 10px);
     }
+    .v-controls {
+      margin: 5px;
+    }      
 }
 @media (min-width: 992px) {
     .videos {
         width: calc(50% - 10px);
     }
+    .v-controls {
+      margin: 15px;
+    }       
 }
