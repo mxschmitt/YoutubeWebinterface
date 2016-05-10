@@ -28,6 +28,7 @@ function ytinit() {
       // console.log("youtube api enabled.");
     } else {
       console.log("invalid api key!");
+      invalidApiKey();
     }
   } else {
     // console.log("no api key set");
@@ -49,7 +50,7 @@ $(document).ready(function() {
           type: 'warning',
           confirmButtonColor: '#D9230F',
           confirmButtonText: 'Webinterface',
-          closeOnConfirm: false,
+          closeOnConfirm: false
         }).then(function() {
           window.location = getRootUrl();
         });
@@ -96,6 +97,9 @@ $(document).ready(function() {
         });
       }); // end get ytapikey
     });
+    if (ytapikey != "") {
+       invalidApiKey();
+    }
   getInstanceStatus();  
   setInterval(function() {
     getInstanceStatus();
@@ -171,11 +175,6 @@ function getConfig(instance) {
       } else {
         var css = '.play { display: ' + (data[0].data.play ? 'inline-block' : 'none') + "}\n" + '.download { display: ' + (data[0].data.download ? 'inline-block' : 'none') + "}\n" + '.enqueue { display: ' + (data[0].data.enqueue ? 'inline-block' : 'none') + "}\n";
       }
-
-      // console.log(data[0]);
-      // console.log("config:");
-      // console.log(answer.data);
-      // console.log("css: " + css);
       $("#btn-style").html(css);
 
   });
@@ -331,6 +330,10 @@ function selectInstance() {
 
 function notEnoughPermissions() {
   sweetAlert('Failed...', "Be sure, that you have enough permissions to execute that action!", 'error');
+}
+
+function invalidApiKey() {
+  sweetAlert('Failed...', "Be sure, that your API Key is correct, and you have no Server API Key instead of a Browser Key!", 'error');
 }
 
 function setCookie(cname, cvalue, exdays) {
