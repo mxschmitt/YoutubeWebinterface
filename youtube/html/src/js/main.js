@@ -425,39 +425,43 @@ function bindThumbEvent() {
 
  //volume slider
  function getInstanceStatus() {
-  InstanceStatus = $.ajax({
-      url: '/api/v1/bot/i/' + instanceid + '/status',
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'bearer ' + window.localStorage.token
-      },
-    statusCode: {
-      401: function() { console.log("not enough permissions for getting the status");}
-    }
-    }).done(function(data) { 
-      changeValBtn = document.querySelector('.v-slider');
-      inputRange = changeValBtn.parentNode.querySelector('input[type="range"]');
-      inputRange.value = data.volume;
-      inputRange.dispatchEvent(new Event('change'));
-      $('#v-artist').text(data.currentTrack.artist);
-      $('#v-title').text(data.currentTrack.title);
-      if (data.repeat == true) {
-        $('.fa-retweet').addClass('fontawesomeselected')
-      } else {
-        $('.fa-retweet').removeClass('fontawesomeselected');
-      }
-      if (data.shuffle == true) {
-        $('.fa-random').addClass('fontawesomeselected')
-      } else {
-        $('.fa-random').removeClass('fontawesomeselected');
-      }
-       if (data.playing == true) {
-        $('#va-playpause').removeClass("fa-play").addClass("fa-stop");
-      } else {
-        $('#va-playpause').removeClass("fa-stop").addClass("fa-play");
-      }
-    });
+ 	if (typeof instanceid != 'undefined') {
+	  InstanceStatus = $.ajax({
+	      url: '/api/v1/bot/i/' + instanceid + '/status',
+	      method: 'GET',
+	      headers: {
+	        'Content-Type': 'application/json',
+	        'Authorization': 'bearer ' + window.localStorage.token
+	      },
+	    statusCode: {
+	      401: function() { console.log("not enough permissions for getting the status");}
+	    }
+	    }).done(function(data) { 
+	      changeValBtn = document.querySelector('.v-slider');
+	      inputRange = changeValBtn.parentNode.querySelector('input[type="range"]');
+	      inputRange.value = data.volume;
+	      inputRange.dispatchEvent(new Event('change'));
+	      $('#v-artist').text(data.currentTrack.artist);
+	      $('#v-title').text(data.currentTrack.title);
+	      if (data.repeat == true) {
+	        $('.fa-retweet').addClass('fontawesomeselected')
+	      } else {
+	        $('.fa-retweet').removeClass('fontawesomeselected');
+	      }
+
+	      if (data.shuffle == true) {
+	        $('.fa-random').addClass('fontawesomeselected')
+	      } else {
+	        $('.fa-random').removeClass('fontawesomeselected');
+	      }
+
+   			if (data.playing == true) {
+	        	$('#va-playpause').removeClass("fa-play").addClass("fa-stop");
+			} else {
+				$('#va-playpause').removeClass("fa-stop").addClass("fa-play");
+			}
+	    });
+	}
 }
 
         function initVolumeBar() {
