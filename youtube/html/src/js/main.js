@@ -484,8 +484,9 @@ function bindThumbEvent() {
                       notEnoughPermissions();
                         }
                     }
-                });
-              getInstanceStatus();
+                }).done(function(data) {
+                    getInstanceStatus();
+                    });
             }
         });
       }
