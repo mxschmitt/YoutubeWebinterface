@@ -97,13 +97,13 @@ $(document).ready(function() {
         });
       }); // end get ytapikey
     });
-    if (ytapikey) {
-       invalidApiKey();
+    if(ytapikey) {
+      invalidApiKey();
     }
-  getInstanceStatus();  
-  setInterval(function() {
     getInstanceStatus();
-  }, 5000);
+    setInterval(function() {
+      getInstanceStatus();
+    }, 5000);
     $('.dropd1 > li > a').click(function() { // apply dropdown selection
       $("#dropdb1").html($(this).text() + ' <span class="caret"></span>');
     });
@@ -169,14 +169,13 @@ function getConfig(instance) {
     },
     data: '{}'
   }).done(function(data) {
-      if (data.length == 0) {
-        var css = '.play { display: none' + "}\n" + '.download { display: none' + "}\n" + '.enqueue { display: none' + "}\n" + '#spanover5px { display: none' + "}\n";
-        console.log("config not set");
-      } else {
-        var css = '.play { display: ' + (data[0].data.play ? 'inline-block' : 'none') + "}\n" + '.download { display: ' + (data[0].data.download ? 'inline-block' : 'none') + "}\n" + '.enqueue { display: ' + (data[0].data.enqueue ? 'inline-block' : 'none') + "}\n";
-      }
-      $("#btn-style").html(css);
-
+    if(data.length == 0) {
+      var css = '.play { display: none' + "}\n" + '.download { display: none' + "}\n" + '.enqueue { display: none' + "}\n" + '#spanover5px { display: none' + "}\n";
+      console.log("config not set");
+    } else {
+      var css = '.play { display: ' + (data[0].data.play ? 'inline-block' : 'none') + "}\n" + '.download { display: ' + (data[0].data.download ? 'inline-block' : 'none') + "}\n" + '.enqueue { display: ' + (data[0].data.enqueue ? 'inline-block' : 'none') + "}\n";
+    }
+    $("#btn-style").html(css);
   });
 }
 
@@ -395,108 +394,98 @@ function bindThumbEvent() {
     var url = '//www.youtube.com/embed/' + parent.data('videoid') + '?autoplay=1&autohide=2&border=0&wmode=opaque&enablejsapi=1&showinfo=0';
     parent.html('<iframe src="' + url + '" frameborder="0" scrolling="no" id="youtube-iframe" allowfullscreen></iframe>');
   });
-
   var prevHeight = 0;
   var prevElement;
   var i = 0;
-  
   $('.videos > h3').each(function() {
-    if (i % 2 == 0) {
+    if(i % 2 == 0) {
       prevHeight = $(this).innerHeight();
       prevElement = this;
     } else {
       var currHeight = $(this).innerHeight();
-
-      if (prevHeight > currHeight) {
+      if(prevHeight > currHeight) {
         $(this).innerHeight(prevHeight);
-      } else if (prevHeight < currHeight) {
+      } else if(prevHeight < currHeight) {
         $(prevElement).innerHeight(currHeight);
       }
     }
-
     i++;
   });
 }
-
 // Music Control Part
-
-
 //init Volume Slider + Volume control
-
- //volume slider
- function getInstanceStatus() {
- 	if (typeof instanceid != 'undefined') {
-	  InstanceStatus = $.ajax({
-	      url: '/api/v1/bot/i/' + instanceid + '/status',
-	      method: 'GET',
-	      headers: {
-	        'Content-Type': 'application/json',
-	        'Authorization': 'bearer ' + window.localStorage.token
-	      },
-	    statusCode: {
-	      401: function() { console.log("not enough permissions for getting the status");}
-	    }
-	    }).done(function(data) { 
-	      changeValBtn = document.querySelector('.v-slider');
-	      inputRange = changeValBtn.parentNode.querySelector('input[type="range"]');
-	      inputRange.value = data.volume;
-	      inputRange.dispatchEvent(new Event('change'));
-	      $('#v-artist').text(data.currentTrack.artist);
-	      $('#v-title').text(data.currentTrack.title);
-	      if (data.repeat == true) {
-	        $('.fa-retweet').addClass('fontawesomeselected')
-	      } else {
-	        $('.fa-retweet').removeClass('fontawesomeselected');
-	      }
-
-	      if (data.shuffle == true) {
-	        $('.fa-random').addClass('fontawesomeselected')
-	      } else {
-	        $('.fa-random').removeClass('fontawesomeselected');
-	      }
-
-   			if (data.playing == true) {
-	        	$('#va-playpause').removeClass("fa-play").addClass("fa-stop");
-			} else {
-				$('#va-playpause').removeClass("fa-stop").addClass("fa-play");
-			}
-	    });
-	}
+//volume slider
+function getInstanceStatus() {
+  if (typeof instanceid != 'undefined') { // check if instance is selected
+    InstanceStatus = $.ajax({
+      url: '/api/v1/bot/i/' + instanceid + '/status',
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'bearer ' + window.localStorage.token
+      },
+      statusCode: {
+        401: function() {
+          console.log("not enough permissions for getting the status");
+        }
+      }
+    }).done(function(data) {
+      changeValBtn = document.querySelector('.v-slider');
+      inputRange = changeValBtn.parentNode.querySelector('input[type="range"]');
+      inputRange.value = data.volume;
+      inputRange.dispatchEvent(new Event('change'));
+      $('#v-artist').text(data.currentTrack.artist);
+      $('#v-title').text(data.currentTrack.title);
+      if(data.repeat == true) {
+        $('.fa-retweet').addClass('fontawesomeselected')
+      } else {
+        $('.fa-retweet').removeClass('fontawesomeselected');
+      }
+      if(data.shuffle == true) {
+        $('.fa-random').addClass('fontawesomeselected')
+      } else {
+        $('.fa-random').removeClass('fontawesomeselected');
+      }
+      if(data.playing == true) {
+        $('#va-playpause').removeClass("fa-play").addClass("fa-stop");
+      } else {
+        $('#va-playpause').removeClass("fa-stop").addClass("fa-play");
+      }
+    });
+  }
 }
 
-        function initVolumeBar() {
-
-        var selector = '[data-rangeSlider]',
-            elements = document.querySelectorAll(selector);
-        // Basic rangeSlider initialization
-        rangeSlider.create(elements, {
-
-            // Callback function
-            onInit: function () {
-            },
-            // Callback function
-            onSlideEnd: function (value, percent,  position) {
-              $.ajax({
-                  url: '/api/v1/bot/i/' + instanceid + '/volume/set/'+value,
-                  method: 'POST',
-                  headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': 'bearer ' + window.localStorage.token
-                  },
-                    statusCode: {
-                      401: function() {
-                      notEnoughPermissions();
-                        }
-                    }
-                }).done(function(data) {
-                    getInstanceStatus();
-                    });
-            }
-        });
-      }
-
+function initVolumeBar() {
+  var selector = '[data-rangeSlider]',
+    elements = document.querySelectorAll(selector);
+  // Basic rangeSlider initialization
+  rangeSlider.create(elements, {
+    // Callback function
+    onInit: function() {},
+    // Callback function
+    onSlideEnd: function(value, percent, position) {
+      $.ajax({
+        url: '/api/v1/bot/i/' + instanceid + '/volume/set/' + value,
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'bearer ' + window.localStorage.token
+        },
+        statusCode: {
+          401: function() {
+            notEnoughPermissions();
+          },
+          403: function() {
+            notEnoughPermissions();
+          }
+        }
+      }).done(function(data) {
+        getInstanceStatus();
+      });
+    }
+  });
+}
 // Control events  
-
 function vforward() {
   $.ajax({
     url: '/api/v1/bot/i/' + instanceid + '/playNext',
@@ -505,14 +494,18 @@ function vforward() {
       'Content-Type': 'application/json',
       'Authorization': 'bearer ' + window.localStorage.token
     },
-      statusCode: {
+    statusCode: {
       401: function() {
-      notEnoughPermissions();
-        }
+        notEnoughPermissions();
+      },
+      403: function() {
+        notEnoughPermissions();
+      }
     }
   });
   getInstanceStatus();
 }
+
 function vbackward() {
   $.ajax({
     url: '/api/v1/bot/i/' + instanceid + '/playPrevious',
@@ -522,15 +515,19 @@ function vbackward() {
       'Authorization': 'bearer ' + window.localStorage.token
     },
     statusCode: {
-        401: function() {
+      401: function() {
+        notEnoughPermissions();
+      },
+      403: function() {
         notEnoughPermissions();
       }
     }
   });
   getInstanceStatus();
 }
+
 function vplay() {
- if (InstanceStatus.responseJSON.playing == true) {
+  if(InstanceStatus.responseJSON.playing == true) {
     $('#va-playpause').removeClass("fa-stop").addClass("fa-play");
     $.ajax({
       url: '/api/v1/bot/i/' + instanceid + '/pause',
@@ -539,73 +536,87 @@ function vplay() {
         'Content-Type': 'application/json',
         'Authorization': 'bearer ' + window.localStorage.token
       },
-        statusCode: {
-            401: function() {
-            notEnoughPermissions();
-              }
-          }
+      statusCode: {
+        401: function() {
+          notEnoughPermissions();
+        },
+        403: function() {
+          notEnoughPermissions();
+        }
+      }
     });
- } else {
+  } else {
     $('#va-playpause').removeClass("fa-play").addClass("fa-stop");
-      $.ajax({
-      url: '/api/v1/bot/i/' + instanceid + '/play/byId/'+InstanceStatus.responseJSON.currentTrack.uuid,
+    $.ajax({
+      url: '/api/v1/bot/i/' + instanceid + '/play/byId/' + InstanceStatus.responseJSON.currentTrack.uuid,
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'bearer ' + window.localStorage.token
       },
       statusCode: {
-          401: function() {
+        401: function() {
           notEnoughPermissions();
+        },
+        403: function() {
+          notEnoughPermissions();
+        }
+      }
+    });
+  }
+  getInstanceStatus();
+}
+
+function vshuffle() {
+  if(InstanceStatus.responseJSON.shuffle == true) {
+    nbr = 0;
+    $('.fa-random').removeClass('fontawesomeselected')
+  } else {
+    nbr = 1;
+    $('.fa-random').addClass('fontawesomeselected')
+  }
+  $.ajax({
+    url: '/api/v1/bot/i/' + instanceid + '/shuffle/' + nbr,
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'bearer ' + window.localStorage.token
+    },
+    statusCode: {
+      401: function() {
+        notEnoughPermissions();
+      },
+      403: function() {
+        notEnoughPermissions();
       }
     }
-    });
- }
- getInstanceStatus();
+  });
+  getInstanceStatus();
 }
-function vshuffle() {
-    if (InstanceStatus.responseJSON.shuffle == true) {
-      nbr = 0;
-      $('.fa-random').removeClass('fontawesomeselected') 
-    } else {
-      nbr = 1;
-      $('.fa-random').addClass('fontawesomeselected') 
-    }
-$.ajax({
-  url: '/api/v1/bot/i/' + instanceid + '/shuffle/'+nbr,
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json',
-    'Authorization': 'bearer ' + window.localStorage.token
-  },
-  statusCode: {
-      401: function() {
-      notEnoughPermissions();
-        }
-    }
-});
-getInstanceStatus();
-}
+
 function vrepeat() {
-    if (InstanceStatus.responseJSON.repeat == true) {
-      nbr = 0;
-      $('.fa-retweet').removeClass('fontawesomeselected');
-    } else {
-      nbr = 1;
-      $('.fa-retweet').addClass('fontawesomeselected');
-    }
-$.ajax({
-  url: '/api/v1/bot/i/' + instanceid + '/repeat/'+nbr,
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json',
-    'Authorization': 'bearer ' + window.localStorage.token
-  },
-  statusCode: {
+  if(InstanceStatus.responseJSON.repeat == true) {
+    nbr = 0;
+    $('.fa-retweet').removeClass('fontawesomeselected');
+  } else {
+    nbr = 1;
+    $('.fa-retweet').addClass('fontawesomeselected');
+  }
+  $.ajax({
+    url: '/api/v1/bot/i/' + instanceid + '/repeat/' + nbr,
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'bearer ' + window.localStorage.token
+    },
+    statusCode: {
       401: function() {
-      notEnoughPermissions();
-        }
+        notEnoughPermissions();
+      },
+      403: function() {
+        notEnoughPermissions();
+      }
     }
-});
-getInstanceStatus();
+  });
+  getInstanceStatus();
 };
