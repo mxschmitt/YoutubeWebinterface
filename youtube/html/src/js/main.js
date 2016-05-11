@@ -97,7 +97,7 @@ $(document).ready(function() {
         });
       }); // end get ytapikey
     });
-    if (ytapikey != "") {
+    if (ytapikey) {
        invalidApiKey();
     }
   getInstanceStatus();  
@@ -479,9 +479,11 @@ function bindThumbEvent() {
                     'Content-Type': 'application/json',
                     'Authorization': 'bearer ' + window.localStorage.token
                   },
-                  statusCode: {
-                   401: notEnoughPermissions()
-                 }
+                    statusCode: {
+                      401: function() {
+                      notEnoughPermissions();
+                        }
+                    }
                 });
             }
         });
@@ -497,8 +499,10 @@ function vforward() {
       'Content-Type': 'application/json',
       'Authorization': 'bearer ' + window.localStorage.token
     },
-    statusCode: {
-      401: notEnoughPermissions()
+      statusCode: {
+      401: function() {
+      notEnoughPermissions();
+        }
     }
   });
 }
@@ -511,7 +515,9 @@ function vbackward() {
       'Authorization': 'bearer ' + window.localStorage.token
     },
     statusCode: {
-      401: notEnoughPermissions()
+        401: function() {
+        notEnoughPermissions();
+      }
     }
   });
 }
@@ -525,9 +531,11 @@ function vplay() {
         'Content-Type': 'application/json',
         'Authorization': 'bearer ' + window.localStorage.token
       },
-      statusCode: {
-      401: notEnoughPermissions()
-      }
+        statusCode: {
+            401: function() {
+            notEnoughPermissions();
+              }
+          }
     });
  } else {
     $('#va-playpause').removeClass("fa-play").addClass("fa-stop");
@@ -539,8 +547,10 @@ function vplay() {
         'Authorization': 'bearer ' + window.localStorage.token
       },
       statusCode: {
-      401: notEnoughPermissions()
-       }
+          401: function() {
+          notEnoughPermissions();
+      }
+    }
     });
  }
 }
@@ -560,7 +570,9 @@ $.ajax({
     'Authorization': 'bearer ' + window.localStorage.token
   },
   statusCode: {
-      401: notEnoughPermissions()
+      401: function() {
+      notEnoughPermissions();
+        }
     }
 });
 }
@@ -580,7 +592,9 @@ $.ajax({
     'Authorization': 'bearer ' + window.localStorage.token
   },
   statusCode: {
-      401: notEnoughPermissions()
+      401: function() {
+      notEnoughPermissions();
+        }
     }
 });
 };
