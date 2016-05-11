@@ -485,6 +485,7 @@ function bindThumbEvent() {
                         }
                     }
                 });
+              getInstanceStatus();
             }
         });
       }
@@ -505,6 +506,7 @@ function vforward() {
         }
     }
   });
+  getInstanceStatus();
 }
 function vbackward() {
   $.ajax({
@@ -520,6 +522,7 @@ function vbackward() {
       }
     }
   });
+  getInstanceStatus();
 }
 function vplay() {
  if (InstanceStatus.responseJSON.playing == true) {
@@ -553,6 +556,7 @@ function vplay() {
     }
     });
  }
+ getInstanceStatus();
 }
 function vshuffle() {
     if (InstanceStatus.responseJSON.shuffle == true) {
@@ -575,6 +579,7 @@ $.ajax({
         }
     }
 });
+getInstanceStatus();
 }
 function vrepeat() {
     if (InstanceStatus.responseJSON.repeat == true) {
@@ -597,4 +602,5 @@ $.ajax({
         }
     }
 });
+getInstanceStatus();
 };
