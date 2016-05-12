@@ -417,7 +417,7 @@ function bindThumbEvent() {
 //volume slider
 function getInstanceStatus() {
   if (typeof instanceid != 'undefined') { // check if instance is selected
-    InstanceStatus = $.ajax({
+    $.ajax({
       url: '/api/v1/bot/i/' + instanceid + '/status',
       method: 'GET',
       headers: {
@@ -430,6 +430,7 @@ function getInstanceStatus() {
         }
       }
     }).done(function(data) {
+      InstanceStatus = data;
       changeValBtn = document.querySelector('.v-slider');
       inputRange = changeValBtn.parentNode.querySelector('input[type="range"]');
       inputRange.value = data.volume;
@@ -527,7 +528,7 @@ function vbackward() {
 }
 
 function vplay() {
-  if(InstanceStatus.responseJSON.playing == true) {
+  if(InstanceStatus.playing == true) {
     $('#va-playpause').removeClass("fa-stop").addClass("fa-play");
     $.ajax({
       url: '/api/v1/bot/i/' + instanceid + '/pause',
@@ -548,7 +549,7 @@ function vplay() {
   } else {
     $('#va-playpause').removeClass("fa-play").addClass("fa-stop");
     $.ajax({
-      url: '/api/v1/bot/i/' + instanceid + '/play/byId/' + InstanceStatus.responseJSON.currentTrack.uuid,
+      url: '/api/v1/bot/i/' + instanceid + '/play/byId/' + InstanceStatus.currentTrack.uuid,
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -568,7 +569,7 @@ function vplay() {
 }
 
 function vshuffle() {
-  if(InstanceStatus.responseJSON.shuffle == true) {
+  if(InstanceStatus.shuffle == true) {
     nbr = 0;
     $('.fa-random').removeClass('fontawesomeselected')
   } else {
@@ -595,7 +596,7 @@ function vshuffle() {
 }
 
 function vrepeat() {
-  if(InstanceStatus.responseJSON.repeat == true) {
+  if(InstanceStatus.repeat == true) {
     nbr = 0;
     $('.fa-retweet').removeClass('fontawesomeselected');
   } else {
