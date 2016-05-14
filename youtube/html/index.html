@@ -10,8 +10,7 @@
   <link rel="icon" type="image/png" sizes="16x16" href="src/img/favicon-16x16.png">
   <link rel="apple-touch-icon" href="src/img/sinusbot-quad.png" />
   <!--                     CSS             -->
-  <link rel="stylesheet" href="src/css/bootstrap.min.css">
-  <link rel="stylesheet" href="src/css/font-awesome.min.css">
+  <script type="text/javascript">document.write('<link rel="stylesheet" href="/themes/'+window.localStorage.theme+'.css"><link rel="stylesheet"  href="/api/v1/themes/'+window.localStorage.theme+'.css">');</script>
   <link rel="stylesheet" href="src/css/sweetalert2.min.css">
   <link rel="stylesheet" href="src/css/rangeSlider.min.css">
   <link rel="stylesheet" href="src/css/main.css">
@@ -35,7 +34,7 @@
         <strong><span class="v-font" id="v-title">fetching data or you dont have an instance selected...</span></strong><br>
         <span class="v-font" id="v-artist">Loading...</span>
         </div>
-        <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4"><i class="fa fa-fw fa-retweet fa-2x v-controls" aria-hidden="true" onclick="vrepeat()"></i><i class="fa fa-fast-backward fa-2x v-controls" aria-hidden="true" onclick="vbackward()"></i><i class="fa fa-2x v-controls fa-play" id="va-playpause" aria-hidden="true" onclick="vplay()"></i><i class="fa fa-fast-forward fa-2x v-controls" aria-hidden="true" onclick="vforward()"></i><i class="fa fa-random fa-2x v-controls" aria-hidden="true" onclick="vshuffle()"></i></div>
+        <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 foot-controls"><i class="glyphicon glyphicon-retweet button-large v-controls" id="v-retweet" aria-hidden="true" onclick="vrepeat()"></i><i class="glyphicon glyphicon-fast-backward button-large v-controls" id="v-fast-backward" aria-hidden="true" onclick="vbackward()"></i><i class="glyphicon glyphicon-play button-large v-controls" id="va-play" aria-hidden="true" onclick="vplay()"></i><i class="glyphicon glyphicon-fast-forward button-large v-controls" id="v-fast-forward" aria-hidden="true" onclick="vforward()"></i><i class="glyphicon glyphicon-random button-large v-controls" id="v-random" aria-hidden="true" onclick="vshuffle()"></i></div>
       <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 v-slider">
       <input type="range" min="0" max="100" data-rangeSlider>
       </div>
@@ -45,7 +44,7 @@
       <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12"> <noscript><div class="alert alert-danger"> <strong>Achtung!</strong>&nbsp;<span>Um den vollen Funktionsumfang dieser Webseite zu erfahren, benötigen Sie JavaScript. Hier finden Sie die <a href="http://www.enable-javascript.com/de/" target="_blank">Anleitung wie Sie JavaScript in Ihrem Browser einschalten</a>.</span></div></noscript>
         <div class="alert alert-success none" id="alertscss"> <strong id="title"></strong>&nbsp;<span id="text"> </span> </div>
         <form action="#">
-          <div class="input-group"> <input type="text" class="form-control" id="search" placeholder="Suchbegriff..." autocomplete="off">
+          <div class="input-group"> <input type="text" class="form-control" id="search" placeholder="Search keyword..." autocomplete="off">
             <div class="input-group-btn"> <button type="button" class="btn btn-defaul dropdown-toggle" data-toggle="dropdown" id="dropdb1">Instance&nbsp;<span class="caret"></span></button>
               <ul class="dropdown-menu dropdown-menu-right dropd1" id="dropdown" role="menu"></ul>
             </div>

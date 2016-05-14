@@ -113,9 +113,6 @@ div.play-button {
 .rangeSlider {
   margin-top: 20px;
 }
-.fontawesomeselected {
-    color: red;
-}
 @media (max-width: 992px) {
     .videos {
         width: calc(100% - 10px);

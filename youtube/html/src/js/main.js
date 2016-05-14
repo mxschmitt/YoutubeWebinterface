@@ -412,11 +412,8 @@ function bindThumbEvent() {
     i++;
   });
 }
-// Music Control Part
-//init Volume Slider + Volume control
-//volume slider
 function getInstanceStatus() {
-  if (typeof instanceid != 'undefined') { // check if instance is selected
+  if (typeof instanceid != 'undefined') {
     $.ajax({
       url: '/api/v1/bot/i/' + instanceid + '/status',
       method: 'GET',
@@ -438,19 +435,19 @@ function getInstanceStatus() {
       $('#v-artist').text(data.currentTrack.artist);
       $('#v-title').text(data.currentTrack.title);
       if(data.repeat == true) {
-        $('.fa-retweet').addClass('fontawesomeselected')
+        $('#v-retweet').addClass('enabled')
       } else {
-        $('.fa-retweet').removeClass('fontawesomeselected');
+        $('#v-retweet').removeClass('enabled');
       }
       if(data.shuffle == true) {
-        $('.fa-random').addClass('fontawesomeselected')
+        $('#v-random').addClass('enabled')
       } else {
-        $('.fa-random').removeClass('fontawesomeselected');
+        $('#v-random').removeClass('enabled');
       }
       if(data.playing == true) {
-        $('#va-playpause').removeClass("fa-play").addClass("fa-stop");
+        $('#va-play').removeClass("glyphicon-play").addClass("glyphicon-stop");
       } else {
-        $('#va-playpause').removeClass("fa-stop").addClass("fa-play");
+        $('#va-play').removeClass("glyphicon-stop").addClass("glyphicon-play");
       }
     });
   }
@@ -459,11 +456,8 @@ function getInstanceStatus() {
 function initVolumeBar() {
   var selector = '[data-rangeSlider]',
     elements = document.querySelectorAll(selector);
-  // Basic rangeSlider initialization
   rangeSlider.create(elements, {
-    // Callback function
     onInit: function() {},
-    // Callback function
     onSlideEnd: function(value, percent, position) {
       $.ajax({
         url: '/api/v1/bot/i/' + instanceid + '/volume/set/' + value,
@@ -529,7 +523,7 @@ function vbackward() {
 
 function vplay() {
   if(InstanceStatus.playing == true) {
-    $('#va-playpause').removeClass("fa-stop").addClass("fa-play");
+    $('#va-play').removeClass("glyphicon-stop").addClass("glyphicon-play");
     $.ajax({
       url: '/api/v1/bot/i/' + instanceid + '/pause',
       method: 'POST',
@@ -547,7 +541,7 @@ function vplay() {
       }
     });
   } else {
-    $('#va-playpause').removeClass("fa-play").addClass("fa-stop");
+    $('#va-play').removeClass("glyphicon-play").addClass("glyphicon-stop");
     $.ajax({
       url: '/api/v1/bot/i/' + instanceid + '/play/byId/' + InstanceStatus.currentTrack.uuid,
       method: 'POST',
@@ -571,10 +565,10 @@ function vplay() {
 function vshuffle() {
   if(InstanceStatus.shuffle == true) {
     nbr = 0;
-    $('.fa-random').removeClass('fontawesomeselected')
+    $('#v-random').removeClass('enabled')
   } else {
     nbr = 1;
-    $('.fa-random').addClass('fontawesomeselected')
+    $('#v-random').addClass('enabled')
   }
   $.ajax({
     url: '/api/v1/bot/i/' + instanceid + '/shuffle/' + nbr,
@@ -598,10 +592,10 @@ function vshuffle() {
 function vrepeat() {
   if(InstanceStatus.repeat == true) {
     nbr = 0;
-    $('.fa-retweet').removeClass('fontawesomeselected');
+    $('#v-retweet').removeClass('enabled');
   } else {
     nbr = 1;
-    $('.fa-retweet').addClass('fontawesomeselected');
+    $('#v-retweet').addClass('enabled');
   }
   $.ajax({
     url: '/api/v1/bot/i/' + instanceid + '/repeat/' + nbr,
