@@ -9,7 +9,10 @@
   <link rel="icon" type="image/png" sizes="96x96" href="src/img/favicon-96x96.png">
   <link rel="icon" type="image/png" sizes="16x16" href="src/img/favicon-16x16.png">
   <link rel="apple-touch-icon" href="src/img/sinusbot-quad.png" />
-<script>window.localStorage.theme?document.write('<link rel="stylesheet" href="/themes/'+window.localStorage.theme+'.css"><link rel="stylesheet"  href="/api/v1/themes/'+window.localStorage.theme+'.css">'):document.write('<link rel="stylesheet" href="/themes/simplex.css"><link rel="stylesheet"  href="/api/v1/themes/simplex.css">')</script>
+  <script>
+    var theme = (window.localStorage.theme ? window.localStorage.theme : 'simplex');
+    document.write('<link rel="stylesheet" href="/themes/' + theme + '.css"><link rel="stylesheet" href="/api/v1/themes/' + theme + '.css">'):
+  </script>
   <link rel="stylesheet" href="src/css/sweetalert2.min.css">
   <link rel="stylesheet" href="src/css/rangeSlider.min.css">
   <link rel="stylesheet" href="src/css/main.css">
@@ -22,42 +25,40 @@
 <body>
   <div class="container">
     <div class="jumbotron">
-      <h1 id="yt">Youtube Search</h1><br> </div>
+      <h1 id="yt">Youtube Search</h1><br></div>
     <div class="panel panel-default">
       <div class="panel-body">
         <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 va-title">
-        <strong><span class="v-font" id="v-title">fetching data or you dont have an instance selected...</span></strong><br>
-        <span class="v-font" id="v-artist">Loading...</span>
+          <strong><span class="v-font" id="v-title"></span></strong><br>
+          <span class="v-font" id="v-artist"></span>
         </div>
-<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
-<table style="height: 60px; width: 100%; background-color: transparent !important" class="foot-controls">
-    <tbody>
-        <tr>
-            <td style="vertical-align: top;"><i class="glyphicon glyphicon-retweet button-repeat button-large v-controls" id="v-retweet" onclick="vrepeat()"></i>
-            </td>
-            <td style="vertical-align: top;"><i class="glyphicon glyphicon-fast-backward button-large v-controls" id="v-fast-backward" onclick="vbackward()"></i>
-            </td>
-            <td style="vertical-align: top;"><i class="glyphicon button-large glyphicon-stop button-large v-controls" id="va-play" onclick="vplay()"></i>
-            </td>
-            <td style="vertical-align: top;"><i class="glyphicon glyphicon-fast-forward button-large v-controls" id="v-fast-forward" onclick="vforward()"></i>
-            </td>
-            <td style="vertical-align: top;"><i class="glyphicon glyphicon-random button-repeat button-large v-controls" id="v-random" onclick="vshuffle()"></i>
-            </td>
-        </tr>
-    </tbody>
-</table>
-</div>
+        <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 foot-controls">
+          <i class="glyphicon glyphicon-retweet button-large v-controls" id="v-retweet" aria-hidden="true" onclick="vrepeat()"></i>
+          <i class="glyphicon glyphicon-fast-backward button-large v-controls" id="v-fast-backward" aria-hidden="true" onclick="vbackward()"></i>
+          <i class="glyphicon glyphicon-play button-large v-controls" id="va-play" aria-hidden="true" onclick="vplay()"></i>
+          <i class="glyphicon glyphicon-fast-forward button-large v-controls" id="v-fast-forward" aria-hidden="true" onclick="vforward()"></i>
+          <i class="glyphicon glyphicon-random button-large v-controls" id="v-random" aria-hidden="true" onclick="vshuffle()"></i>
+        </div>
       <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 v-slider">
-      <input type="range" min="0" max="100" data-rangeSlider>
+        <input type="range" min="0" max="100" data-rangeSlider>
       </div>
       </div>
     </div>
     <div class="row">
-      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12"> <noscript><div class="alert alert-danger"> <strong>Achtung!</strong>&nbsp;<span>Um den vollen Funktionsumfang dieser Webseite zu erfahren, benötigen Sie JavaScript. Hier finden Sie die <a href="http://www.enable-javascript.com/de/" target="_blank">Anleitung wie Sie JavaScript in Ihrem Browser einschalten</a>.</span></div></noscript>
-        <div class="alert alert-success none" id="alertscss"> <strong id="title"></strong>&nbsp;<span id="text"> </span> </div>
+      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <noscript>
+          <div class="alert alert-danger">
+            <strong>Achtung!</strong>&nbsp;<span>Um den vollen Funktionsumfang dieser Webseite zu erfahren, benötigen Sie JavaScript. Hier finden Sie die <a href="http://www.enable-javascript.com/de/" target="_blank">Anleitung wie Sie JavaScript in Ihrem Browser einschalten</a>.</span>
+          </div>
+        </noscript>
+        <div class="alert alert-success none" id="alertscss">
+          <strong id="title"></strong>&nbsp;<span id="text"></span>
+        </div>
         <form action="#">
-          <div class="input-group"> <input type="text" class="form-control" id="search" placeholder="Search keyword..." autocomplete="off">
-            <div class="input-group-btn"> <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" id="dropdb1">Instance&nbsp;<span class="caret"></span></button>
+          <div class="input-group">
+            <input type="text" class="form-control" id="search" placeholder="Search keyword..." autocomplete="off">
+            <div class="input-group-btn">
+              <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" id="dropdb1">Instance&nbsp;<span class="caret"></span></button>
               <ul class="dropdown-menu dropdown-menu-right dropd1" id="dropdown" role="menu"></ul>
             </div>
           </div>
@@ -65,15 +66,16 @@
         </form>
       </div>
       <div id="results"></div>
-      <div style="width: 100%"> <button type="button" class="btn btn-default" id="loadmore">Load more <span class="fa fa-spinner none" id="loadmorecss"></span></button> </div>
+      <div style="width: 100%"> <button type="button" class="btn btn-default" id="loadmore">Load more <span class="fa fa-spinner none" id="loadmorecss"></span></button></div>
     </div>
   </div>
   <footer class="footer">
     <div class="container">
       <hr>
-      <p class="text-muted">Developed by <a href="https://forum.sinusbot.com/members/maxibanki.1901/">maxibanki</a> and <a href="https://forum.sinusbot.com/members/irgendwer.1213/">irgendwer</a>.</p><br> </div>
+      <p class="text-muted">Developed by <a href="https://forum.sinusbot.com/members/maxibanki.1901/" target="_blank">maxibanki</a> and <a href="https://forum.sinusbot.com/members/irgendwer.1213/" target="_blank">irgendwer</a>.</p><br>
+    </div>
   </footer>
-<script src="src/js/bootstrap.min.js"></script>
-<script src="src/js/sweetalert2.js"></script>
+  <script src="src/js/bootstrap.min.js"></script>
+  <script src="src/js/sweetalert2.js"></script>
 </body>
 </html>
