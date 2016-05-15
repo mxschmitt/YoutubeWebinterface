@@ -101,8 +101,11 @@ div.play-button {
     margin-top: 10px;
 }
 .v-controls:hover {
-  color: red;
+  color: #f3331F;
   cursor: pointer;
+}
+.v-active {
+  color: #f3331F;
 }
 .fright {
   float: right;
