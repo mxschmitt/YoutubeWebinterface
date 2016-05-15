@@ -100,13 +100,6 @@ div.play-button {
 .videos > h3 {
     margin-top: 10px;
 }
-.v-controls:hover {
-  color: #f3331F;
-  cursor: pointer;
-}
-.v-active {
-  color: #f3331F;
-}
 .fright {
   float: right;
 }
@@ -116,12 +109,12 @@ div.play-button {
 .rangeSlider {
   margin-top: 20px;
 }
+.v-controls {
+    cursor: pointer;
+}
 @media (max-width: 992px) {
     .videos {
         width: calc(100% - 10px);
-    }
-    .v-controls {
-      margin: 5px;
     }
     .panel-body {
         text-align: center;
@@ -130,9 +123,6 @@ div.play-button {
 @media (min-width: 992px) {
     .videos {
         width: calc(50% - 10px);
-    }
-    .v-controls {
-      margin: 15px;
     }
     .va-title {
         margin-top: 10px;

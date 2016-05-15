@@ -435,14 +435,14 @@ function getInstanceStatus() {
       $('#v-artist').text(data.currentTrack.artist);
       $('#v-title').text(data.currentTrack.title);
       if(data.repeat == true) {
-        $('#v-retweet').addClass('v-active')
+        $('#v-retweet').addClass('enabled')
       } else {
-        $('#v-retweet').removeClass('v-active');
+        $('#v-retweet').removeClass('enabled');
       }
       if(data.shuffle == true) {
-        $('#v-random').addClass('v-active')
+        $('#v-random').addClass('enabled')
       } else {
-        $('#v-random').removeClass('v-active');
+        $('#v-random').removeClass('enabled');
       }
       if(data.playing == true) {
         $('#va-play').removeClass("glyphicon-play").addClass("glyphicon-stop");
@@ -565,10 +565,10 @@ function vplay() {
 function vshuffle() {
   if(InstanceStatus.shuffle == true) {
     nbr = 0;
-    $('#v-random').removeClass('v-active')
+    $('#v-random').removeClass('enabled')
   } else {
     nbr = 1;
-    $('#v-random').addClass('v-active')
+    $('#v-random').addClass('enabled')
   }
   $.ajax({
     url: '/api/v1/bot/i/' + instanceid + '/shuffle/' + nbr,
@@ -592,10 +592,10 @@ function vshuffle() {
 function vrepeat() {
   if(InstanceStatus.repeat == true) {
     nbr = 0;
-    $('#v-retweet').removeClass('v-active');
+    $('#v-retweet').removeClass('enabled');
   } else {
     nbr = 1;
-    $('#v-retweet').addClass('v-active');
+    $('#v-retweet').addClass('enabled');
   }
   $.ajax({
     url: '/api/v1/bot/i/' + instanceid + '/repeat/' + nbr,
