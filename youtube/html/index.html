@@ -9,7 +9,7 @@
   <link rel="icon" type="image/png" sizes="96x96" href="src/img/favicon-96x96.png">
   <link rel="icon" type="image/png" sizes="16x16" href="src/img/favicon-16x16.png">
   <link rel="apple-touch-icon" href="src/img/sinusbot-quad.png" />
-<script>window.localStorage.theme?document.write('<link rel="stylesheet" href="/themes/'+window.localStorage.theme+'.css"><link rel="stylesheet"  href="/api/v1/themes/'+window.localStorage.theme+'.css">'):document.write('<link rel="stylesheet" href="/themes/simplex.css"><link rel="stylesheet"  href="/api/v1/themes/simplex.css">')</script>
+<script>var theme=window.localStorage.theme?window.localStorage.theme:"simplex";+document.write('<link rel="stylesheet" href="/themes/'+theme+'.css"><link rel="stylesheet" href="/api/v1/themes/'+theme+'.css">');</script>
   <link rel="stylesheet" href="src/css/sweetalert2.min.css">
   <link rel="stylesheet" href="src/css/rangeSlider.min.css">
   <link rel="stylesheet" href="src/css/main.css">
@@ -26,8 +26,8 @@
     <div class="panel panel-default">
       <div class="panel-body">
         <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 va-title">
-        <strong><span class="v-font" id="v-title">fetching data or you dont have an instance selected...</span></strong><br>
-        <span class="v-font" id="v-artist">Loading...</span>
+        <strong><span class="v-font" id="v-title"></span></strong><br>
+        <span class="v-font" id="v-artist"></span>
         </div>
 <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
 <table style="height: 60px; width: 100%; background-color: transparent !important" class="foot-controls">

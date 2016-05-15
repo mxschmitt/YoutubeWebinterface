@@ -439,10 +439,16 @@ function getInstanceStatus() {
       } else {
         $('#v-retweet').removeClass('enabled');
       }
-      if(data.shuffle == true) {
+      if (data.playlistTrack == -1) {
         $('#v-random').addClass('enabled')
       } else {
-        $('#v-random').removeClass('enabled');
+          if (data.shuffle == true) {
+            nbr = 0;
+            $('#v-random').addClass('enabled')
+          } else {
+            nbr = 1;
+            $('#v-random').removeClass('enabled')
+          }
       }
       if(data.playing == true) {
         $('#va-play').removeClass("glyphicon-play").addClass("glyphicon-stop");
@@ -563,29 +569,37 @@ function vplay() {
 }
 
 function vshuffle() {
-  if(InstanceStatus.shuffle == true) {
-    nbr = 0;
-    $('#v-random').removeClass('enabled')
-  } else {
-    nbr = 1;
+  if (InstanceStatus.playlistTrack == -1) {
     $('#v-random').addClass('enabled')
-  }
-  $.ajax({
-    url: '/api/v1/bot/i/' + instanceid + '/shuffle/' + nbr,
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': 'bearer ' + window.localStorage.token
-    },
-    statusCode: {
-      401: function() {
-        notEnoughPermissions();
-      },
-      403: function() {
-        notEnoughPermissions();
+  } else {
+      if (InstanceStatus.shuffle == true) {
+        nbr = 0;
+        $('#v-random').addClass('enabled')
+      } else {
+        nbr = 1;
+        $('#v-random').removeClass('enabled')
       }
-    }
-  });
+  }
+  if (InstanceStatus.playlistTrack != -1) {
+    $.ajax({
+      url: '/api/v1/bot/i/' + instanceid + '/shuffle/' + nbr,
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'bearer ' + window.localStorage.token
+      },
+      statusCode: {
+        401: function() {
+          notEnoughPermissions();
+        },
+        403: function() {
+          notEnoughPermissions();
+        }
+      }
+    });
+  } else {
+    swal("Warning...", "Shuffle cannot be deactivated if no playlist is active.", "warning")
+  }
   getInstanceStatus();
 }
 

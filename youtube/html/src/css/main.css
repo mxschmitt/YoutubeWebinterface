@@ -112,6 +112,9 @@ div.play-button {
 .v-controls {
     cursor: pointer;
 }
+.swal2-content {
+    color: black;
+}
 @media (max-width: 992px) {
     .videos {
         width: calc(100% - 10px);
