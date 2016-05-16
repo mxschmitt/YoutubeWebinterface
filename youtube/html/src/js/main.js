@@ -103,34 +103,43 @@ $(document).ready(function() {
   /* search button */
   $("form").on("submit", function(e) {
     e.preventDefault();
-    if($("#search").val()) {
-      // prepare the request
-      var request = gapi.client.youtube.search.list({
-        part: "snippet",
-        type: "video",
-        q: encodeURIComponent($("#search").val()).replace(/%20/g, "+"),
-        maxResults: maxResults,
-        order: "relevance"
-      });
-      // execute the request
-      request.execute(function(response) {
-        var result = response.result;
-        nextPageToken = result.nextPageToken;
-        $("#results").html("");
-        $.each(result.items, function(index, item) {
-          $.get("src/template/yt.html", function(data) {
-            $("#results").append(tplawesome(data, [{
-              "title": item.snippet.title,
-              "videoid": item.id.videoId
-            }]));
-            bindThumbEvent();
+
+    if (typeof instanceid != 'undefined') {
+      if (ytapi_state == 2) {
+        if($("#search").val()) {
+          // prepare the request
+          var request = gapi.client.youtube.search.list({
+            part: "snippet",
+            type: "video",
+            q: encodeURIComponent($("#search").val()).replace(/%20/g, "+"),
+            maxResults: maxResults,
+            order: "relevance"
           });
-        });
-        resetVideoHeight();
-        $("#loadmore").css("display", "block");
-      });
+          // execute the request
+          request.execute(function(response) {
+            var result = response.result;
+            nextPageToken = result.nextPageToken;
+            $("#results").html("");
+            $.each(result.items, function(index, item) {
+              $.get("src/template/yt.html", function(data) {
+                $("#results").append(tplawesome(data, [{
+                  "title": item.snippet.title,
+                  "videoid": item.id.videoId
+                }]));
+                bindThumbEvent();
+              });
+            });
+            resetVideoHeight();
+            $("#loadmore").css("display", "block");
+          });
+        } else {
+          sweetAlert('Error', "You have to type something in the searchbar", 'error');
+        }
+      } else {
+        sweetAlert('YouTube Api Error', "Please make sure that you've set a valid api key in the config and <u>enabled the script on the selected instance</u>.", 'error');
+      }
     } else {
-      sweetAlert('Failed...', "Be sure, that you´ve entered a search term!", 'error');
+      sweetAlert('Error', "Please select an instance before searching", 'error');
     }
   });
   $(window).on("resize", resetVideoHeight);
