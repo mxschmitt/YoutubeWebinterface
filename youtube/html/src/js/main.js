@@ -20,15 +20,15 @@ function ytinit() {
     ytapi_state = 1; // loaded
   }
   if(typeof ytapikey != 'undefined') {
-    if(ytapikey.length == 39) {
+    if (ytapikey.length == 39) {
       gapi.client.setApiKey(ytapikey);
       gapi.client.load("youtube", "v3", function() {});
-      ytapi_state = 2; // enabled
+      ytapi_state = 2;
       ytapikey = "";
-      // console.log("youtube api enabled.");
+      console.log("youtube api enabled.");
     } else {
       console.log("invalid api key!");
-      invalidApiKey();
+      sweetAlert('Failed...', "Be sure, that your API Key is correct, and you have no Server API Key instead of a Browser Key!", 'error');
     }
   } else {
     // console.log("no api key set");
@@ -57,49 +57,27 @@ $(document).ready(function() {
       }
     }
   }).done(function(data) {
-    data = data.sort(dynamicSort("nick"));
+    data = data.sort(dynamicSort("name"));
     // get instance from cookie
     if(checkCookie('instanceid') == true) {
       data.forEach(function(instance) {
         if(instance.uuid == getCookie('instanceid')) {
           instanceid = instance.uuid;
           getConfig(instance.uuid);
-          $("#dropdb1").html(instance.nick);
+          $("#dropdb1").html(instance.name?instance.name:instance.nick);
         }
       });
     }
     data.forEach(function(instance) { // go through every instance
       // append instance list
-      $('<li/>').appendTo(instanceList).html('<a href="#">' + instance.nick + '</a>').click(function() {
+      $('<li/>').appendTo(instanceList).html('<a href="#">' + (instance.name?instance.name:instance.nick) + '</a>').click(function() {
         setCookie('instanceid', instance.uuid, 7);
         getConfig(instance.uuid);
         instanceid = instance.uuid;
         getInstanceStatus();
       });
-      // get ytapikey
-      $.ajax({
-        url: '/api/v1/bot/i/' + instance.uuid + '/scriptEvent/ytapikey',
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'bearer ' + window.localStorage.token
-        },
-        data: "{}"
-      }).done(function(data) {
-        data.forEach(function(answer) {
-          // console.log("ytapikey: " + answer.data);
-          if(typeof answer.data !== 'undefined') {
-            ytapikey = answer.data;
-            if(ytapi_state == 1) { // initialize ytapi if loaded but not already enabled
-              ytinit();
-            }
-          }
-        });
-      }); // end get ytapikey
     });
-    if(ytapikey) {
-      invalidApiKey();
-    }
+
     getInstanceStatus();
     setInterval(function() {
       getInstanceStatus();
@@ -125,34 +103,43 @@ $(document).ready(function() {
   /* search button */
   $("form").on("submit", function(e) {
     e.preventDefault();
-    if($("#search").val()) {
-      // prepare the request
-      var request = gapi.client.youtube.search.list({
-        part: "snippet",
-        type: "video",
-        q: encodeURIComponent($("#search").val()).replace(/%20/g, "+"),
-        maxResults: maxResults,
-        order: "relevance"
-      });
-      // execute the request
-      request.execute(function(response) {
-        var result = response.result;
-        nextPageToken = result.nextPageToken;
-        $("#results").html("");
-        $.each(result.items, function(index, item) {
-          $.get("src/template/yt.html", function(data) {
-            $("#results").append(tplawesome(data, [{
-              "title": item.snippet.title,
-              "videoid": item.id.videoId
-            }]));
-            bindThumbEvent();
+
+    if (typeof instanceid != 'undefined') {
+      if (ytapi_state == 2) {
+        if($("#search").val()) {
+          // prepare the request
+          var request = gapi.client.youtube.search.list({
+            part: "snippet",
+            type: "video",
+            q: encodeURIComponent($("#search").val()).replace(/%20/g, "+"),
+            maxResults: maxResults,
+            order: "relevance"
           });
-        });
-        resetVideoHeight();
-        $("#loadmore").css("display", "block");
-      });
+          // execute the request
+          request.execute(function(response) {
+            var result = response.result;
+            nextPageToken = result.nextPageToken;
+            $("#results").html("");
+            $.each(result.items, function(index, item) {
+              $.get("src/template/yt.html", function(data) {
+                $("#results").append(tplawesome(data, [{
+                  "title": item.snippet.title,
+                  "videoid": item.id.videoId
+                }]));
+                bindThumbEvent();
+              });
+            });
+            resetVideoHeight();
+            $("#loadmore").css("display", "block");
+          });
+        } else {
+          sweetAlert('Error', "You have to type something in the searchbar", 'error');
+        }
+      } else {
+        sweetAlert('YouTube Api Error', "Please make sure that you've set a valid api key in the config and <u>enabled the script on the selected instance</u>.", 'error');
+      }
     } else {
-      sweetAlert('Failed...', "Be sure, that you´ve entered a search term!", 'error');
+      sweetAlert('Error', "Please select an instance before searching", 'error');
     }
   });
   $(window).on("resize", resetVideoHeight);
@@ -173,6 +160,10 @@ function getConfig(instance) {
       var css = '.play { display: none' + "}\n" + '.download { display: none' + "}\n" + '.enqueue { display: none' + "}\n" + '#spanover5px { display: none' + "}\n";
       console.log("config not set");
     } else {
+      ytapikey = data[0].data.ytapikey;
+      if (ytapi_state == 1) { // initialize ytapi if loaded but not already enabled
+        ytinit();
+      }
       var css = '.play { display: ' + (data[0].data.play ? 'inline-block' : 'none') + "}\n" + '.download { display: ' + (data[0].data.download ? 'inline-block' : 'none') + "}\n" + '.enqueue { display: ' + (data[0].data.enqueue ? 'inline-block' : 'none') + "}\n";
     }
     $("#btn-style").html(css);
@@ -331,10 +322,6 @@ function notEnoughPermissions() {
   sweetAlert('Failed...', "Be sure, that you have enough permissions to execute that action!", 'error');
 }
 
-function invalidApiKey() {
-  sweetAlert('Failed...', "Be sure, that your API Key is correct, and you have no Server API Key instead of a Browser Key!", 'error');
-}
-
 function setCookie(cname, cvalue, exdays) {
   var d = new Date();
   d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
@@ -432,8 +419,15 @@ function getInstanceStatus() {
       inputRange = changeValBtn.parentNode.querySelector('input[type="range"]');
       inputRange.value = data.volume;
       inputRange.dispatchEvent(new Event('change'));
-      $('#v-artist').text(data.currentTrack.artist);
-      $('#v-title').text(data.currentTrack.title);
+      
+      if (data.currentTrack != null && typeof data.currentTrack.title != 'undefined') {
+        $('#v-title').text(data.currentTrack.title ? data.currentTrack.title : '');
+        $('#v-artist').text(data.currentTrack.artist ? data.currentTrack.artist : '');
+      } else {
+        $('#v-title').text('');
+        $('#v-artist').text('');
+      }
+
       if(data.repeat == true) {
         $('#v-retweet').addClass('enabled')
       } else {
