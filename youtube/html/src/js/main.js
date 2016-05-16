@@ -64,7 +64,7 @@ $(document).ready(function() {
         if(instance.uuid == getCookie('instanceid')) {
           instanceid = instance.uuid;
           getConfig(instance.uuid);
-          $("#dropdb1").html(instance.nick);
+          $("#dropdb1").html(instance.name);
         }
       });
     }
