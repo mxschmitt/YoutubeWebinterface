@@ -423,8 +423,15 @@ function getInstanceStatus() {
       inputRange = changeValBtn.parentNode.querySelector('input[type="range"]');
       inputRange.value = data.volume;
       inputRange.dispatchEvent(new Event('change'));
-      $('#v-artist').text(data.currentTrack.artist);
-      $('#v-title').text(data.currentTrack.title);
+      
+      if (data.currentTrack != null && typeof data.currentTrack.title != 'undefined') {
+        $('#v-title').text(data.currentTrack.title ? data.currentTrack.title : '');
+        $('#v-artist').text(data.currentTrack.artist ? data.currentTrack.artist : '');
+      } else {
+        $('#v-title').text('');
+        $('#v-artist').text('');
+      }
+
       if(data.repeat == true) {
         $('#v-retweet').addClass('enabled')
       } else {
