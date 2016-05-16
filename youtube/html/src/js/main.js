@@ -64,13 +64,13 @@ $(document).ready(function() {
         if(instance.uuid == getCookie('instanceid')) {
           instanceid = instance.uuid;
           getConfig(instance.uuid);
-          $("#dropdb1").html(instance.name);
+          $("#dropdb1").html(instance.name?instance.name:instance.nick);
         }
       });
     }
     data.forEach(function(instance) { // go through every instance
       // append instance list
-      $('<li/>').appendTo(instanceList).html('<a href="#">' + instance.name + '</a>').click(function() {
+      $('<li/>').appendTo(instanceList).html('<a href="#">' + (instance.name?instance.name:instance.nick) + '</a>').click(function() {
         setCookie('instanceid', instance.uuid, 7);
         getConfig(instance.uuid);
         instanceid = instance.uuid;
