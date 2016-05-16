@@ -20,12 +20,12 @@ function ytinit() {
     ytapi_state = 1; // loaded
   }
   if(typeof ytapikey != 'undefined') {
-    if(ytapikey.length == 39) {
+    if (ytapikey.length == 39) {
       gapi.client.setApiKey(ytapikey);
       gapi.client.load("youtube", "v3", function() {});
-      ytapi_state = 2; // enabled
+      ytapi_state = 2;
       ytapikey = "";
-      // console.log("youtube api enabled.");
+      console.log("youtube api enabled.");
     } else {
       console.log("invalid api key!");
       invalidApiKey();
@@ -76,30 +76,8 @@ $(document).ready(function() {
         instanceid = instance.uuid;
         getInstanceStatus();
       });
-      // get ytapikey
-      $.ajax({
-        url: '/api/v1/bot/i/' + instance.uuid + '/scriptEvent/ytapikey',
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'bearer ' + window.localStorage.token
-        },
-        data: "{}"
-      }).done(function(data) {
-        data.forEach(function(answer) {
-          // console.log("ytapikey: " + answer.data);
-          if(typeof answer.data !== 'undefined') {
-            ytapikey = answer.data;
-            if(ytapi_state == 1) { // initialize ytapi if loaded but not already enabled
-              ytinit();
-            }
-          }
-        });
-      }); // end get ytapikey
     });
-    if(ytapikey) {
-      invalidApiKey();
-    }
+
     getInstanceStatus();
     setInterval(function() {
       getInstanceStatus();
@@ -173,6 +151,10 @@ function getConfig(instance) {
       var css = '.play { display: none' + "}\n" + '.download { display: none' + "}\n" + '.enqueue { display: none' + "}\n" + '#spanover5px { display: none' + "}\n";
       console.log("config not set");
     } else {
+      ytapikey = data[0].data.ytapikey;
+      if (ytapi_state == 1) { // initialize ytapi if loaded but not already enabled
+        ytinit();
+      }
       var css = '.play { display: ' + (data[0].data.play ? 'inline-block' : 'none') + "}\n" + '.download { display: ' + (data[0].data.download ? 'inline-block' : 'none') + "}\n" + '.enqueue { display: ' + (data[0].data.enqueue ? 'inline-block' : 'none') + "}\n";
     }
     $("#btn-style").html(css);
