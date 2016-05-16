@@ -70,7 +70,7 @@ $(document).ready(function() {
     }
     data.forEach(function(instance) { // go through every instance
       // append instance list
-      $('<li/>').appendTo(instanceList).html('<a href="#">' + instance.nick + '</a>').click(function() {
+      $('<li/>').appendTo(instanceList).html('<a href="#">' + instance.name + '</a>').click(function() {
         setCookie('instanceid', instance.uuid, 7);
         getConfig(instance.uuid);
         instanceid = instance.uuid;
