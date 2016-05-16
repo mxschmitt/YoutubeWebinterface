@@ -57,7 +57,7 @@ $(document).ready(function() {
       }
     }
   }).done(function(data) {
-    data = data.sort(dynamicSort("nick"));
+    data = data.sort(dynamicSort("name"));
     // get instance from cookie
     if(checkCookie('instanceid') == true) {
       data.forEach(function(instance) {
