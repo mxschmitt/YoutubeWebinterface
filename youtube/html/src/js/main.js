@@ -28,7 +28,7 @@ function ytinit() {
       console.log("youtube api enabled.");
     } else {
       console.log("invalid api key!");
-      invalidApiKey();
+      sweetAlert('Failed...', "Be sure, that your API Key is correct, and you have no Server API Key instead of a Browser Key!", 'error');
     }
   } else {
     // console.log("no api key set");
@@ -320,10 +320,6 @@ function selectInstance() {
 
 function notEnoughPermissions() {
   sweetAlert('Failed...', "Be sure, that you have enough permissions to execute that action!", 'error');
-}
-
-function invalidApiKey() {
-  sweetAlert('Failed...', "Be sure, that your API Key is correct, and you have no Server API Key instead of a Browser Key!", 'error');
 }
 
 function setCookie(cname, cvalue, exdays) {
