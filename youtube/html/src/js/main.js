@@ -20,7 +20,7 @@ function ytinit() {
     ytapi_state = 1; // loaded
   }
   if(typeof ytapikey != 'undefined') {
-    if (ytapikey.length == 39) {
+    if(ytapikey.length == 39) {
       gapi.client.setApiKey(ytapikey);
       gapi.client.load("youtube", "v3", function() {});
       ytapi_state = 2;
@@ -58,26 +58,25 @@ $(document).ready(function() {
     }
   }).done(function(data) {
     data = data.sort(dynamicSort("name"));
-    // get instance from cookie
-    if(checkCookie('instanceid') == true) {
+    // get instance from localstorage
+    if(window.localStorage.instanceId.length == 36) {
       data.forEach(function(instance) {
-        if(instance.uuid == getCookie('instanceid')) {
+        if(instance.uuid == window.localStorage.instanceId) {
           instanceid = instance.uuid;
           getConfig(instance.uuid);
-          $("#dropdb1").html(instance.name?instance.name:instance.nick);
+          $("#dropdb1").html(instance.name ? instance.name : instance.nick);
         }
       });
     }
     data.forEach(function(instance) { // go through every instance
       // append instance list
-      $('<li/>').appendTo(instanceList).html('<a href="#">' + (instance.name?instance.name:instance.nick) + '</a>').click(function() {
-        setCookie('instanceid', instance.uuid, 7);
+      $('<li/>').appendTo(instanceList).html('<a href="#">' + (instance.name ? instance.name : instance.nick) + '</a>').click(function() {
+        window.localStorage.instanceId = instance.uuid;
         getConfig(instance.uuid);
         instanceid = instance.uuid;
         getInstanceStatus();
       });
     });
-
     getInstanceStatus();
     setInterval(function() {
       getInstanceStatus();
@@ -103,9 +102,8 @@ $(document).ready(function() {
   /* search button */
   $("form").on("submit", function(e) {
     e.preventDefault();
-
-    if (typeof instanceid != 'undefined') {
-      if (ytapi_state == 2) {
+    if(typeof instanceid != 'undefined') {
+      if(ytapi_state == 2) {
         if($("#search").val()) {
           // prepare the request
           var request = gapi.client.youtube.search.list({
@@ -161,7 +159,7 @@ function getConfig(instance) {
       console.log("config not set");
     } else {
       ytapikey = data[0].data.ytapikey;
-      if (ytapi_state == 1) { // initialize ytapi if loaded but not already enabled
+      if(ytapi_state == 1) { // initialize ytapi if loaded but not already enabled
         ytinit();
       }
       var css = '.play { display: ' + (data[0].data.play ? 'inline-block' : 'none') + "}\n" + '.download { display: ' + (data[0].data.download ? 'inline-block' : 'none') + "}\n" + '.enqueue { display: ' + (data[0].data.enqueue ? 'inline-block' : 'none') + "}\n";
@@ -322,33 +320,6 @@ function notEnoughPermissions() {
   sweetAlert('Failed...', "Be sure, that you have enough permissions to execute that action!", 'error');
 }
 
-function setCookie(cname, cvalue, exdays) {
-  var d = new Date();
-  d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
-  var expires = "expires=" + d.toGMTString();
-  document.cookie = cname + "=" + cvalue + "; " + expires;
-}
-
-function getCookie(cname) {
-  var name = cname + "=";
-  var ca = document.cookie.split(';');
-  for(var i = 0; i < ca.length; i++) {
-    var c = ca[i];
-    while(c.charAt(0) == ' ') c = c.substring(1);
-    if(c.indexOf(name) == 0) return c.substring(name.length, c.length);
-  }
-  return "";
-}
-
-function checkCookie(cname) {
-  var user = getCookie(cname);
-  if(user != "") {
-    return true;
-  } else {
-    return false;
-  }
-}
-
 function createAlertBox(type, text) {
   // reset classes
   $('div > #alertscss').removeClass("alert-success");
@@ -399,8 +370,9 @@ function bindThumbEvent() {
     i++;
   });
 }
+
 function getInstanceStatus() {
-  if (typeof instanceid != 'undefined') {
+  if(typeof instanceid != 'undefined') {
     $.ajax({
       url: '/api/v1/bot/i/' + instanceid + '/status',
       method: 'GET',
@@ -419,30 +391,28 @@ function getInstanceStatus() {
       inputRange = changeValBtn.parentNode.querySelector('input[type="range"]');
       inputRange.value = data.volume;
       inputRange.dispatchEvent(new Event('change'));
-      
-      if (data.currentTrack != null && typeof data.currentTrack.title != 'undefined') {
+      if(data.currentTrack != null && typeof data.currentTrack.title != 'undefined') {
         $('#v-title').text(data.currentTrack.title ? data.currentTrack.title : '');
         $('#v-artist').text(data.currentTrack.artist ? data.currentTrack.artist : '');
       } else {
         $('#v-title').text('');
         $('#v-artist').text('');
       }
-
       if(data.repeat == true) {
         $('#v-retweet').addClass('enabled')
       } else {
         $('#v-retweet').removeClass('enabled');
       }
-      if (data.playlistTrack == -1) {
+      if(data.playlistTrack == -1) {
         $('#v-random').addClass('enabled')
       } else {
-          if (data.shuffle == true) {
-            nbr = 0;
-            $('#v-random').addClass('enabled')
-          } else {
-            nbr = 1;
-            $('#v-random').removeClass('enabled')
-          }
+        if(data.shuffle == true) {
+          nbr = 0;
+          $('#v-random').addClass('enabled')
+        } else {
+          nbr = 1;
+          $('#v-random').removeClass('enabled')
+        }
       }
       if(data.playing == true) {
         $('#va-play').removeClass("glyphicon-play").addClass("glyphicon-stop");
@@ -563,18 +533,18 @@ function vplay() {
 }
 
 function vshuffle() {
-  if (InstanceStatus.playlistTrack == -1) {
+  if(InstanceStatus.playlistTrack == -1) {
     $('#v-random').addClass('enabled')
   } else {
-      if (InstanceStatus.shuffle == true) {
-        nbr = 0;
-        $('#v-random').addClass('enabled')
-      } else {
-        nbr = 1;
-        $('#v-random').removeClass('enabled')
-      }
+    if(InstanceStatus.shuffle == true) {
+      nbr = 0;
+      $('#v-random').addClass('enabled')
+    } else {
+      nbr = 1;
+      $('#v-random').removeClass('enabled')
+    }
   }
-  if (InstanceStatus.playlistTrack != -1) {
+  if(InstanceStatus.playlistTrack != -1) {
     $.ajax({
       url: '/api/v1/bot/i/' + instanceid + '/shuffle/' + nbr,
       method: 'POST',
