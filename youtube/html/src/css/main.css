@@ -4,7 +4,7 @@
 }
 .jumbotron {
     margin-top: 15px;
-    background: url(../img/sinusbot-logo.png);
+    background: url(/img/sinusbot-logo.png);
     background-size: 17%;
     background-repeat: no-repeat;
     background-color: #f3331F;
