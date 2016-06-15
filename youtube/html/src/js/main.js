@@ -124,7 +124,9 @@ $(document).ready(function() {
                             $.get("src/template/yt.html", function(data) {
                                 $("#results").append(tplawesome(data, [{
                                     "title": item.snippet.title,
-                                    "videoid": item.id.videoId
+                                    "channelname": item.snippet.channelTitle,
+                                    "thumbnail": item.snippet.thumbnails.high.url,
+                                    "channelhref": "//www.youtube.com/channel/" + item.snippet.channelId
                                 }]));
                                 bindThumbEvent();
                             });
@@ -288,7 +290,9 @@ function moreVideos() {
             $.get("src/template/yt.html", function(data) {
                 $("#results").append(tplawesome(data, [{
                     "title": item.snippet.title,
-                    "videoid": item.id.videoId
+                    "channelname": item.snippet.channelTitle,
+                    "thumbnail": item.snippet.thumbnails.high.url,
+                    "channelhref": "//www.youtube.com/channel/" + item.snippet.channelId
                 }]));
                 bindThumbEvent();
             });

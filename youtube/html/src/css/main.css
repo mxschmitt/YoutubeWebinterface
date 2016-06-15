@@ -122,6 +122,9 @@ div.play-button {
     .panel-body {
         text-align: center;
     }
+    .channelname {
+        font-size: 1.4em;
+    }
 }
 @media (min-width: 992px) {
     .videos {
@@ -129,5 +132,12 @@ div.play-button {
     }
     .va-title {
         margin-top: 10px;
+    }
+    .channelname {
+        position: inherit;
+        float: right;
+        right: 5px;
+        top: 5px;
+        font-size: 1.4em;
     }
 }
