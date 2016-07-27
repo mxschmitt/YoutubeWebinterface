@@ -123,9 +123,9 @@ $(document).ready(function() {
                         $.each(result.items, function(index, item) {
                             $.get("src/template/yt.html", function(data) {
                                 $("#results").append(tplawesome(data, [{
-                                    "title": item.snippet.title,
-                                    "channelname": item.snippet.channelTitle,
-                                    "thumbnail": item.snippet.thumbnails.high.url,
+                                    "title": decodeURIComponent(item.snippet.title),
+                                    "channelname": decodeURIComponent(item.snippet.channelTitle),
+                                    "thumbnail": decodeURIComponent(item.snippet.thumbnails.high.url),
                                     "channelhref": "//www.youtube.com/channel/" + item.snippet.channelId
                                 }]));
                                 bindThumbEvent();
@@ -289,9 +289,9 @@ function moreVideos() {
         $.each(result.items, function(index, item) {
             $.get("src/template/yt.html", function(data) {
                 $("#results").append(tplawesome(data, [{
-                    "title": item.snippet.title,
-                    "channelname": item.snippet.channelTitle,
-                    "thumbnail": item.snippet.thumbnails.high.url,
+                    "title": decodeURIComponent(item.snippet.title),
+                    "channelname": decodeURIComponent(item.snippet.channelTitle),
+                    "thumbnail": decodeURIComponent(item.snippet.thumbnails.high.url),
                     "channelhref": "//www.youtube.com/channel/" + item.snippet.channelId
                 }]));
                 bindThumbEvent();
