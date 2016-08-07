@@ -111,7 +111,7 @@ $(document).ready(function() {
                     var request = gapi.client.youtube.search.list({
                         part: "snippet",
                         type: "video",
-                        q: encodeURIComponent($("#search").val()).replace(/%20/g, "+"),
+                        q: $("#search").val().replace(" ", "+"),
                         maxResults: maxResults,
                         order: "relevance"
                     });
@@ -277,7 +277,7 @@ function moreVideos() {
     var request = gapi.client.youtube.search.list({
         part: "snippet",
         type: "video",
-        q: encodeURIComponent($("#search").val()).replace(/%20/g, "+"),
+        q: $("#search").val().replace(" ", "+"),
         maxResults: maxResults,
         pageToken: nextPageToken,
         order: "relevance"
