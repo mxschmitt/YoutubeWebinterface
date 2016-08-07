@@ -124,6 +124,7 @@ $(document).ready(function() {
                             $.get("src/template/yt.html", function(data) {
                                 $("#results").append(tplawesome(data, [{
                                     "title": decodeURIComponent(item.snippet.title),
+                                    "videoid": decodeURIComponent(item.id.videoId),
                                     "channelname": decodeURIComponent(item.snippet.channelTitle),
                                     "thumbnail": decodeURIComponent(item.snippet.thumbnails.high.url),
                                     "channelhref": "//www.youtube.com/channel/" + item.snippet.channelId
@@ -290,6 +291,7 @@ function moreVideos() {
             $.get("src/template/yt.html", function(data) {
                 $("#results").append(tplawesome(data, [{
                     "title": decodeURIComponent(item.snippet.title),
+                    "videoid": decodeURIComponent(item.id.videoId),
                     "channelname": decodeURIComponent(item.snippet.channelTitle),
                     "thumbnail": decodeURIComponent(item.snippet.thumbnails.high.url),
                     "channelhref": "//www.youtube.com/channel/" + item.snippet.channelId
