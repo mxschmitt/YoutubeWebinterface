@@ -1,6 +1,6 @@
 registerPlugin({
     name: 'Youtube Webinterface!',
-    version: '1.5',
+    version: '1.6',
     description: 'Youtube Webinterface for playing and downloading YouTube Tracks.',
     author: 'maxibanki <max@schmitt.ovh> & irgendwer <dev@sandstorm-projects.de>',
     vars: {
@@ -26,6 +26,51 @@ registerPlugin({
     },
     enableWeb: true
 }, function(sinusbot, config, info) {
+    
+sinusbot.registerHandler({
+        isHandlerFor: function(url) {
+            if (url.substring(0, 4) == 'ytdl') {
+                sinusbot.log(url);
+                return true;
+            }
+            if (/youtube\.com/.test(url)) {
+                sinusbot.log(url);
+                return true;
+            }
+            sinusbot.log('NOPE: ' + url);
+            return false;
+        },
+        getTrackInfo: function(url, cb) {
+            sinusbot.log(url);
+            if (/youtube\.com/.test(url)) {
+                return cb({ urlType: 'ytdl', url: url });
+            }
+            return cb({ urlType: 'ytdl', url: url.substring(17) });
+        },
+        getSearchResult: function(search, cb) {
+            http({ timeout: 5000, url: 'https://www.googleapis.com/youtube/v3/search?part=snippet&q=' + encodeURIComponent(search) + '&maxResults=20&type=video,playlist&key=' + encodeURIComponent(config.apikey) }, function(err, data) {
+                if (err || !data || data.statusCode != 200) {
+                    return cb(null);
+                }
+                var result = [];
+                var data = JSON.parse(data.data);
+                if (!data || !data.items) {
+                    sinusbot.log('Error in json');
+                    return cb(null);
+                }
+                data.items.forEach(function(entry) {
+                    result.push({
+                        title: entry.snippet.title,
+                        artist: entry.snippet.channelTitle,
+                        coverUrl: entry.snippet.thumbnails.default.url,
+                        url: 'ytdl://ytdl/?url=' + encodeURIComponent(entry.id.videoId)
+                    });
+                });
+                return cb(result);
+            });
+        }
+});
+
     sinusbot.log("YTWeb Webinterface Ready");
 
     if (typeof config.apikey != 'undefined') {
