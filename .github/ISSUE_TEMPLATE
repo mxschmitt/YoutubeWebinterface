@@ -1,0 +1,30 @@
+[Short description of problem here]
+
+**Reproduction Steps:**
+
+[First Step]
+[Second Step]
+[Other Steps...]
+
+**Expected behavior:**
+
+[Describe expected behavior here]
+
+**Observed behavior:**
+
+[Describe observed behavior here]
+
+**Sinusbot version:** [Enter the exact Sinusbot version here]
+**OS and version:** [Enter OS name and version here]
+**Used Browser and version:** [Enter Browser name and version here]
+
+**Browser Console Logs:**
+***Chrome:***
+
+ 1. Press `Ctrl + Shift + I` at the same time in a Browser window
+ 2. Select in the appearing menu `Console`
+ 3. Reload the page using `Ctrl + Shift + R`
+ 4. Copy might be appearing errors into the issue with ````
+
+**Diagnostic **
+Execute the script on [this page](https://forum.sinusbot.com/threads/diagsinusbot-sh-sinusbot-diagnostic-script.831/#post-4418) and post the output here.
