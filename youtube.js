@@ -23,12 +23,23 @@ registerPlugin({
         type: 'select',
         options: ['on', 'off']
     }, {
+        name: 'ytAlllowed',
+        title: 'Allowed group Ids split by comma without space who are allowed to use the "!playlist <playlistlink>" command.',
+        type: 'string'
+    }, {
         name: 'scApiKey',
         title: 'Soundcloud API Key (see the tutorial for instructions)',
         type: 'string'
-    }, ],
+    }],
     enableWeb: true
 }, function(sinusbot, config, info) {
+
+    var engine = require('engine');
+    var store = require('store');
+    var event = require('event');
+    var media = require('media');
+
+    engine.log("YTWeb Webinterface Ready");
 
     if (config.ytApiKey || sinusbot.getVar("ytapikey")) {
         sinusbot.registerHandler({
@@ -59,9 +70,9 @@ registerPlugin({
             },
             getSearchResult: function(search, cb) {
                 engine.log("Youtube triggered.");
-                http({
+                sinusbot.http({
                     timeout: 5000,
-                    url: 'https://www.googleapis.com/youtube/v3/search?part=snippet&q=' + encodeURIComponent(search) + '&maxResults=20&type=video,playlist&key=' + encodeURIComponent(config.apikey)
+                    url: 'https://www.googleapis.com/youtube/v3/search?part=snippet&q=' + encodeURIComponent(search) + '&maxResults=20&type=video,playlist&key=' + encodeURIComponent(store.get("ytapikey"))
                 }, function(err, data) {
                     if (err || !data || data.statusCode != 200) {
                         return cb(null);
@@ -111,7 +122,7 @@ registerPlugin({
             },
             getSearchResult: function(search, cb) {
                 engine.log("Soundcloud triggered");
-                http({
+                sinusbot.http({
                     timeout: 5000,
                     url: 'http://api.soundcloud.com/tracks.json?client_id=' + config.scApiKey + '&q=' + encodeURIComponent(search) + '&limit=20'
                 }, function(err, data) {
@@ -140,12 +151,45 @@ registerPlugin({
         engine.log("Soundcloud API Key is not set, so it isn't working atm.");
     }
 
-var engine = require('engine');
-var store = require('store');
-var event = require('event');
-var media = require('media');
+    event.on('chat', function(msg) {
+        if (msg.text.startsWith("!playlist ")) {
+                    engine.log(JSON.stringify(msg.client.getServerGroups()));
+//             msg.client.getServerGroups().forEach(function(group) {
+//                 engine.log(group);
+//                 if (config.ytAlllowed.split(",").indexOf(group) === -1) {
+//                     return;
+//                 }
+//             });
+            var url = msg.text.substr("!playlist ".length);
+            url = url.replace("[URL]", "").replace("[/URL]", "");
+            url = url.substr(url.indexOf("list=") + "list=".length);
+            if (url.indexOf("&") > 0) {
+                url = url.substr(0, url.indexOf("&"));
+            }
 
-    engine.log("YTWeb Webinterface Ready");
+            if (url.length == 34) {
+                sinusbot.http({
+                    "method": "GET",
+                    "url": "https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=5&playlistId=" + encodeURIComponent(url) + "&key=" + encodeURIComponent(store.get("ytapikey")),
+                    "timeout": 6000,
+                }, function(error, response) {
+                    if (response.statusCode != 200) {
+                        sinusbot.log(error);
+                        return;
+                    }
+
+                    var Response = JSON.parse(response.data);
+                    engine.log(Response.items.length + " results.");
+
+                    Response.items.forEach(function(item) {
+                        msg.client.chat('Adding [B]' + item.snippet.title + '[/B] to queue.');
+                    });
+                });
+            } else {
+                msg.client.chat("Error: Invalid url (list = " + url + ")");
+            }
+        }
+    });
 
     if (typeof config.ytApiKey != 'undefined') {
         store.set("ytapikey", config.ytApiKey);
@@ -192,4 +236,9 @@ var media = require('media');
         ytwebconfig.ytapikey = store.get("ytapikey");
         return ytwebconfig;
     });
+
+    String.prototype.startsWith = function(str) {
+        return this.indexOf(str) == 0;
+    }
+
 });
