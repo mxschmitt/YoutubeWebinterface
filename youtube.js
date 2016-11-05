@@ -228,7 +228,7 @@ registerPlugin({
         }
     });
 
-    sinusbot.on('api:ytwebconfig', function(ev) {
+    event.on('api:ytwebconfig', function(ev) {
         var ytwebconfig = {};
         ytwebconfig.play = (config.play != 1);
         ytwebconfig.enqueue = (config.enq != 1);
