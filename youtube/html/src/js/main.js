@@ -151,7 +151,7 @@ $(document).ready(function() {
 /* get config from a instance */
 function getConfig(instance) {
     $.ajax({
-        url: '/api/v1/bot/i/' + instance + '/scriptEvent/ytwebconfig',
+        url: '/api/v1/bot/i/' + instance + '/event/ytwebconfig',
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -176,7 +176,7 @@ function getConfig(instance) {
 function endplay(url) {
     if (typeof instanceid !== 'undefined') {
         $.ajax({
-            url: '/api/v1/bot/i/' + instanceid + '/scriptEvent/ytplay',
+            url: '/api/v1/bot/i/' + instanceid + '/event/ytplay',
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -208,7 +208,7 @@ function endplay(url) {
 function endenqueue(url) {
     if (typeof instanceid !== 'undefined') {
         $.ajax({
-            url: '/api/v1/bot/i/' + instanceid + '/scriptEvent/ytenq',
+            url: '/api/v1/bot/i/' + instanceid + '/event/ytenq',
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -240,7 +240,7 @@ function endenqueue(url) {
 function enddownload(url) {
     if (typeof instanceid !== 'undefined') {
         $.ajax({
-            url: '/api/v1/bot/i/' + instanceid + '/scriptEvent/ytdl',
+            url: '/api/v1/bot/i/' + instanceid + '/event/ytdl',
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
