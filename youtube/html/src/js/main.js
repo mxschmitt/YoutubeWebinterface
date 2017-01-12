@@ -4,7 +4,7 @@ var nextPageToken, instanceid, ytapikey, InstanceStatus, ytapi_state = 0;
 function tplawesome(e, t) {
     var res = e;
     for (var n = 0; n < t.length; n++) {
-        res = res.replace(/\{\{(.*?)\}\}/g, function(e, r) {
+        res = res.replace(/\{\{(.*?)\}\}/g, function (e, r) {
             return t[n][r];
         });
     }
@@ -22,7 +22,7 @@ function ytinit() {
     if (typeof ytapikey != 'undefined') {
         if (ytapikey.length == 39) {
             gapi.client.setApiKey(ytapikey);
-            gapi.client.load("youtube", "v3", function() {});
+            gapi.client.load("youtube", "v3", function () { });
             ytapi_state = 2;
             ytapikey = "";
             console.log("youtube api enabled.");
@@ -34,7 +34,7 @@ function ytinit() {
         // console.log("no api key set");
     }
 }
-$(document).ready(function() {
+$(document).ready(function () {
     var instanceList = $('#dropdown');
     // Get the list of instances using the currently logged in user account
     $.ajax({
@@ -43,7 +43,7 @@ $(document).ready(function() {
             'Authorization': 'bearer ' + window.localStorage.token
         },
         statusCode: {
-            401: function() {
+            401: function () {
                 swal({
                     title: 'Error',
                     text: "In order for you to access this you have to be logged in.",
@@ -51,17 +51,17 @@ $(document).ready(function() {
                     confirmButtonColor: '#D9230F',
                     confirmButtonText: 'Webinterface',
                     closeOnConfirm: false
-                }).then(function() {
+                }).then(function () {
                     window.location = getRootUrl();
                 });
             }
         }
-    }).done(function(data) {
+    }).done(function (data) {
         data = data.sort(dynamicSort("name"));
         // get instance from localstorage
         if (window.localStorage.instanceId != undefined) {
             if (window.localStorage.instanceId.length == 36) {
-                data.forEach(function(instance) {
+                data.forEach(function (instance) {
                     if (instance.uuid == window.localStorage.instanceId) {
                         instanceid = instance.uuid;
                         getConfig(instance.uuid);
@@ -70,9 +70,9 @@ $(document).ready(function() {
                 });
             }
         }
-        data.forEach(function(instance) { // go through every instance
+        data.forEach(function (instance) { // go through every instance
             // append instance list
-            $('<li/>').appendTo(instanceList).html('<a href="#">' + (instance.name ? instance.name : instance.nick) + '</a>').click(function() {
+            $('<li/>').appendTo(instanceList).html('<a href="#">' + (instance.name ? instance.name : instance.nick) + '</a>').click(function () {
                 window.localStorage.instanceId = instance.uuid;
                 getConfig(instance.uuid);
                 instanceid = instance.uuid;
@@ -80,15 +80,15 @@ $(document).ready(function() {
             });
         });
         getInstanceStatus();
-        setInterval(function() {
+        setInterval(function () {
             getInstanceStatus();
         }, 5000);
-        $('.dropd1 > li > a').click(function() { // apply dropdown selection
+        $('.dropd1 > li > a').click(function () { // apply dropdown selection
             $("#dropdb1").html($(this).text() + ' <span class="caret"></span>');
         });
     });
     /* infinite scroll */
-    $(window).scroll(function() {
+    $(window).scroll(function () {
         if ($(window).scrollTop() == $(document).height() - $(window).height()) {
             if (typeof nextPageToken !== 'undefined') {
                 moreVideos();
@@ -96,13 +96,13 @@ $(document).ready(function() {
         }
     });
     /* load more button */
-    $("#loadmore").click(function() {
+    $("#loadmore").click(function () {
         if (typeof nextPageToken !== 'undefined') {
             moreVideos();
         }
     });
     /* search button */
-    $("form").on("submit", function(e) {
+    $("form").on("submit", function (e) {
         e.preventDefault();
         if (typeof instanceid != 'undefined') {
             if (ytapi_state == 2) {
@@ -116,12 +116,12 @@ $(document).ready(function() {
                         order: "relevance"
                     });
                     // execute the request
-                    request.execute(function(response) {
+                    request.execute(function (response) {
                         var result = response.result;
                         nextPageToken = result.nextPageToken;
                         $("#results").html("");
-                        $.each(result.items, function(index, item) {
-                            $.get("src/template/yt.html", function(data) {
+                        $.each(result.items, function (index, item) {
+                            $.get("src/template/yt.html", function (data) {
                                 $("#results").append(tplawesome(data, [{
                                     "title": decodeURIComponent(item.snippet.title),
                                     "videoid": decodeURIComponent(item.id.videoId),
@@ -151,14 +151,14 @@ $(document).ready(function() {
 /* get config from a instance */
 function getConfig(instance) {
     $.ajax({
-        url: '/api/v1/bot/i/' + instance + '/scriptEvent/ytwebconfig',
+        url: '/api/v1/bot/i/' + instance + '/event/ytwebconfig',
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
             'Authorization': 'bearer ' + window.localStorage.token
         },
         data: '{}'
-    }).done(function(data) {
+    }).done(function (data) {
         if (data.length == 0) {
             var css = '.play { display: none' + "}\n" + '.download { display: none' + "}\n" + '.enqueue { display: none' + "}\n" + '#spanover5px { display: none' + "}\n";
             console.log("config not set");
@@ -176,14 +176,14 @@ function getConfig(instance) {
 function endplay(url) {
     if (typeof instanceid !== 'undefined') {
         $.ajax({
-            url: '/api/v1/bot/i/' + instanceid + '/scriptEvent/ytplay',
+            url: '/api/v1/bot/i/' + instanceid + '/event/ytplay',
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'bearer ' + window.localStorage.token
             },
             data: JSON.stringify(url)
-        }).done(function(data) {
+        }).done(function (data) {
             if (data.length == 0) {
                 enablePlugin();
                 return;
@@ -191,7 +191,7 @@ function endplay(url) {
             // The result will be an array with answers from the script
             var answerList = $('#answers');
             answerList.html('');
-            data.forEach(function(answer) {
+            data.forEach(function (answer) {
                 $('<li/>').appendTo(answerList).text(answer.script + ' returned ' + JSON.stringify(answer.data));
             });
             if (data[0].data.includes('not enabled')) {
@@ -208,14 +208,14 @@ function endplay(url) {
 function endenqueue(url) {
     if (typeof instanceid !== 'undefined') {
         $.ajax({
-            url: '/api/v1/bot/i/' + instanceid + '/scriptEvent/ytenq',
+            url: '/api/v1/bot/i/' + instanceid + '/event/ytenq',
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'bearer ' + window.localStorage.token
             },
             data: JSON.stringify(url)
-        }).done(function(data) {
+        }).done(function (data) {
             if (data.length == 0) {
                 enablePlugin();
                 return;
@@ -223,7 +223,7 @@ function endenqueue(url) {
             // The result will be an array with answers from the script
             var answerList = $('#answers');
             answerList.html('');
-            data.forEach(function(answer) {
+            data.forEach(function (answer) {
                 $('<li/>').appendTo(answerList).text(answer.script + ' returned ' + JSON.stringify(answer.data));
             });
             if (data[0].data.includes('not enabled')) {
@@ -240,14 +240,14 @@ function endenqueue(url) {
 function enddownload(url) {
     if (typeof instanceid !== 'undefined') {
         $.ajax({
-            url: '/api/v1/bot/i/' + instanceid + '/scriptEvent/ytdl',
+            url: '/api/v1/bot/i/' + instanceid + '/event/ytdl',
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'bearer ' + window.localStorage.token
             },
             data: JSON.stringify(url)
-        }).done(function(data) {
+        }).done(function (data) {
             if (data.length == 0) {
                 enablePlugin();
                 return;
@@ -255,7 +255,7 @@ function enddownload(url) {
             // The result will be an array with answers from the script
             var answerList = $('#answers')
             answerList.html('');
-            data.forEach(function(answer) {
+            data.forEach(function (answer) {
                 $('<li/>').appendTo(answerList).text(answer.script + ' returned ' + JSON.stringify(answer.data));
             });
             if (data[0].data.includes('not enabled')) {
@@ -284,11 +284,11 @@ function moreVideos() {
         order: "relevance"
     });
     // execute the request
-    request.execute(function(response) {
+    request.execute(function (response) {
         var result = response.result;
         nextPageToken = result.nextPageToken;
-        $.each(result.items, function(index, item) {
-            $.get("src/template/yt.html", function(data) {
+        $.each(result.items, function (index, item) {
+            $.get("src/template/yt.html", function (data) {
                 $("#results").append(tplawesome(data, [{
                     "title": decodeURIComponent(item.snippet.title),
                     "videoid": decodeURIComponent(item.id.videoId),
@@ -310,7 +310,7 @@ function dynamicSort(property) {
         sortOrder = -1;
         property = property.substr(1);
     }
-    return function(a, b) {
+    return function (a, b) {
         var result = (a[property] < b[property]) ? -1 : (a[property] > b[property]) ? 1 : 0;
         return result * sortOrder;
     }
@@ -355,7 +355,7 @@ function bindThumbEvent() {
     // unbind previous event
     $('.youtube-thumb, .play-button').unbind('click');
     // load video when clicking on thumbnail
-    $('.youtube-thumb, .play-button').click(function() {
+    $('.youtube-thumb, .play-button').click(function () {
         var parent = $(this).parent().parent();
         var url = '//www.youtube.com/embed/' + parent.data('videoid') + '?autoplay=1&autohide=2&border=0&wmode=opaque&enablejsapi=1&showinfo=0';
         parent.html('<iframe src="' + url + '" frameborder="0" scrolling="no" id="youtube-iframe" allowfullscreen></iframe>');
@@ -363,7 +363,7 @@ function bindThumbEvent() {
     var prevHeight = 0;
     var prevElement;
     var i = 0;
-    $('.videos > h3').each(function() {
+    $('.videos > h3').each(function () {
         if (i % 2 == 0) {
             prevHeight = $(this).innerHeight();
             prevElement = this;
@@ -389,11 +389,11 @@ function getInstanceStatus() {
                 'Authorization': 'bearer ' + window.localStorage.token
             },
             statusCode: {
-                401: function() {
+                401: function () {
                     console.log("not enough permissions for getting the status");
                 }
             }
-        }).done(function(data) {
+        }).done(function (data) {
             InstanceStatus = data;
             changeValBtn = document.querySelector('.v-slider');
             inputRange = changeValBtn.parentNode.querySelector('input[type="range"]');
@@ -435,8 +435,8 @@ function initVolumeBar() {
     var selector = '[data-rangeSlider]',
         elements = document.querySelectorAll(selector);
     rangeSlider.create(elements, {
-        onInit: function() {},
-        onSlideEnd: function(value, percent, position) {
+        onInit: function () { },
+        onSlideEnd: function (value, percent, position) {
             $.ajax({
                 url: '/api/v1/bot/i/' + instanceid + '/volume/set/' + value,
                 method: 'POST',
@@ -445,14 +445,14 @@ function initVolumeBar() {
                     'Authorization': 'bearer ' + window.localStorage.token
                 },
                 statusCode: {
-                    401: function() {
+                    401: function () {
                         notEnoughPermissions();
                     },
-                    403: function() {
+                    403: function () {
                         notEnoughPermissions();
                     }
                 }
-            }).done(function(data) {
+            }).done(function (data) {
                 getInstanceStatus();
             });
         }
@@ -468,10 +468,10 @@ function vforward() {
             'Authorization': 'bearer ' + window.localStorage.token
         },
         statusCode: {
-            401: function() {
+            401: function () {
                 notEnoughPermissions();
             },
-            403: function() {
+            403: function () {
                 notEnoughPermissions();
             }
         }
@@ -488,10 +488,10 @@ function vbackward() {
             'Authorization': 'bearer ' + window.localStorage.token
         },
         statusCode: {
-            401: function() {
+            401: function () {
                 notEnoughPermissions();
             },
-            403: function() {
+            403: function () {
                 notEnoughPermissions();
             }
         }
@@ -510,10 +510,10 @@ function vplay() {
                 'Authorization': 'bearer ' + window.localStorage.token
             },
             statusCode: {
-                401: function() {
+                401: function () {
                     notEnoughPermissions();
                 },
-                403: function() {
+                403: function () {
                     notEnoughPermissions();
                 }
             }
@@ -528,10 +528,10 @@ function vplay() {
                 'Authorization': 'bearer ' + window.localStorage.token
             },
             statusCode: {
-                401: function() {
+                401: function () {
                     notEnoughPermissions();
                 },
-                403: function() {
+                403: function () {
                     notEnoughPermissions();
                 }
             }
@@ -561,10 +561,10 @@ function vshuffle() {
                 'Authorization': 'bearer ' + window.localStorage.token
             },
             statusCode: {
-                401: function() {
+                401: function () {
                     notEnoughPermissions();
                 },
-                403: function() {
+                403: function () {
                     notEnoughPermissions();
                 }
             }
@@ -591,10 +591,10 @@ function vrepeat() {
             'Authorization': 'bearer ' + window.localStorage.token
         },
         statusCode: {
-            401: function() {
+            401: function () {
                 notEnoughPermissions();
             },
-            403: function() {
+            403: function () {
                 notEnoughPermissions();
             }
         }
