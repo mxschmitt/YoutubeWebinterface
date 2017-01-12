@@ -3,7 +3,7 @@ registerPlugin({
     version: '1.5',
     description: 'Youtube Webinterface for playing and downloading YouTube Tracks.',
     author: 'maxibanki <max@schmitt.ovh> & irgendwer <dev@sandstorm-projects.de>',
-    backend: ["ts3", "discord"],
+    backends: ['ts3', 'discord'],
     vars: {
         apikey: {
             title: 'Youtube API Key (see the tutorial for instructions)',
