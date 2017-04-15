@@ -123,11 +123,11 @@ $(document).ready(function () {
                         $.each(result.items, function (index, item) {
                             $.get("src/template/yt.html", function (data) {
                                 $("#results").append(tplawesome(data, [{
-                                    "title": decodeURIComponent(item.snippet.title),
-                                    "videoid": decodeURIComponent(item.id.videoId),
-                                    "channelname": decodeURIComponent(item.snippet.channelTitle),
-                                    "thumbnail": decodeURIComponent(item.snippet.thumbnails.high.url),
-                                    "channelhref": "//www.youtube.com/channel/" + item.snippet.channelId
+                                    title: decodeURIComponentSafe(item.snippet.title),
+                                    videoid: decodeURIComponentSafe(item.id.videoId),
+                                    channelname: decodeURIComponentSafe(item.snippet.channelTitle),
+                                    thumbnail: decodeURIComponentSafe(item.snippet.thumbnails.high.url),
+                                    channelhref: "//www.youtube.com/channel/" + item.snippet.channelId
                                 }]));
                                 bindThumbEvent();
                             });
@@ -159,15 +159,16 @@ function getConfig(instance) {
         },
         data: '{}'
     }).done(function (data) {
+        var css;
         if (data.length == 0) {
-            var css = '.play { display: none' + "}\n" + '.download { display: none' + "}\n" + '.enqueue { display: none' + "}\n" + '#spanover5px { display: none' + "}\n";
+            css = '.play { display: none' + "}\n" + '.download { display: none' + "}\n" + '.enqueue { display: none' + "}\n" + '#spanover5px { display: none' + "}\n";
             console.log("config not set");
         } else {
             ytapikey = data[0].data.ytapikey;
             if (ytapi_state == 1) { // initialize ytapi if loaded but not already enabled
                 ytinit();
             }
-            var css = '.play { display: ' + (data[0].data.play ? 'inline-block' : 'none') + "}\n" + '.download { display: ' + (data[0].data.download ? 'inline-block' : 'none') + "}\n" + '.enqueue { display: ' + (data[0].data.enqueue ? 'inline-block' : 'none') + "}\n";
+            css = '.play { display: ' + (data[0].data.play ? 'inline-block' : 'none') + "}\n" + '.download { display: ' + (data[0].data.download ? 'inline-block' : 'none') + "}\n" + '.enqueue { display: ' + (data[0].data.enqueue ? 'inline-block' : 'none') + "}\n";
         }
         $("#btn-style").html(css);
     });
@@ -290,11 +291,11 @@ function moreVideos() {
         $.each(result.items, function (index, item) {
             $.get("src/template/yt.html", function (data) {
                 $("#results").append(tplawesome(data, [{
-                    "title": decodeURIComponent(item.snippet.title),
-                    "videoid": decodeURIComponent(item.id.videoId),
-                    "channelname": decodeURIComponent(item.snippet.channelTitle),
-                    "thumbnail": decodeURIComponent(item.snippet.thumbnails.high.url),
-                    "channelhref": "//www.youtube.com/channel/" + item.snippet.channelId
+                    title: decodeURIComponentSafe(item.snippet.title),
+                    videoid: decodeURIComponentSafe(item.id.videoId),
+                    channelname: decodeURIComponentSafe(item.snippet.channelTitle),
+                    thumbnail: decodeURIComponentSafe(item.snippet.thumbnails.high.url),
+                    channelhref: "//www.youtube.com/channel/" + item.snippet.channelId
                 }]));
                 bindThumbEvent();
             });
@@ -600,4 +601,21 @@ function vrepeat() {
         }
     });
     getInstanceStatus();
-};
+}
+
+function decodeURIComponentSafe(uri) {
+    var out = new String(),
+        arr = uri.split(/(%(?:d0|d1)%.{2})/),
+        i = 0,
+        l,
+        x;
+    for (l = arr.length; i < l; i++) {
+        try {
+            x = decodeURIComponent(arr[i]);
+        } catch (err) {
+            x = arr[i];
+        }
+        out += x;
+    }
+    return out;
+}
