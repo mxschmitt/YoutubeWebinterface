@@ -1,9 +1,10 @@
 registerPlugin({
     name: 'Youtube Webinterface!',
-    version: '1.6',
+    version: '2.0',
     description: 'Youtube Webinterface for playing and downloading YouTube Tracks.',
-    author: 'maxibanki <max@schmitt.ovh> & irgendwer <dev@sandstorm-projects.de>',
+    author: 'maxibanki <max@schmitt.mx> & irgendwer <dev@sandstorm-projects.de>',
     backends: ['ts3', 'discord'],
+    enableWeb: true,
     vars: [{
         name: 'ytApiKey',
         title: 'Youtube API Key (see the tutorial for instructions)',
@@ -31,9 +32,8 @@ registerPlugin({
         name: 'scApiKey',
         title: 'Soundcloud API Key (see the tutorial for instructions)',
         type: 'string'
-    }],
-    enableWeb: true
-}, function (sinusbot, config, info) {
+    }]
+}, function (sinusbot, config) {
     var errorMessages = {
         NoPermission: "Do you have enough permissions for this action?",
         DLDisabled: "Downloading is not enabled.",
@@ -160,35 +160,38 @@ registerPlugin({
      */
     event.on('chat', function (ev) {
         if (ev.text.startsWith("!playlist ")) {
-            var url = ev.text.substr("!playlist ".length);
-            url = url.replace("[URL]", "").replace("[/URL]", "");
-            url = url.substr(url.indexOf("list=") + "list=".length);
-            if (url.indexOf("&") > 0) {
-                url = url.substr(0, url.indexOf("&"));
+            var playlistID,
+                playlistURL,
+                amount = 10;
+            var _tmpSplit = ev.text.replace("[URL]", "").replace("[/URL]", "").split(" ");
+            playlistURL = _tmpSplit[1]
+            if (_tmpSplit.length > 2) {
+                amount = _tmpSplit[2];
             }
-            url = url.trim();
-            if (url.length == 34) {
+            playlistID = getGetParameter(playlistURL, "list");
+            if (playlistID.length == 34) {
                 var autorized = false;
                 ev.client.getServerGroups().forEach(function (group) {
                     if (config.ytAlllowed.split(",").indexOf(group) === -1) {
-                        var autorized = true;
+                        autorized = true;
                         return true;
                     }
                 });
                 if (autorized) {
                     sinusbot.http({
-                        "method": "GET",
-                        "url": "https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=20&playlistId=" + encodeURIComponent(url) + "&key=" + encodeURIComponent(store.get("ytapikey")),
-                        "timeout": 6000,
+                        method: "GET",
+                        url: "https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=" + amount + "&playlistId=" + encodeURIComponent(playlistID) + "&key=" + encodeURIComponent(store.get("ytapikey")),
+                        timeout: 6000,
                     }, function (error, response) {
                         if (response.statusCode != 200) {
-                            sinusbot.log(error);
+                            engine.log(error);
                             return;
                         }
                         var Response = JSON.parse(response.data);
                         engine.log(Response.items.length + " results.");
 
                         Response.items.forEach(function (item) {
+                            media.Enqueueyt("https://www.youtube.com/watch?v=" + item.snippet.resourceId.videoId);
                             ev.client.chat('Adding [B]' + item.snippet.title + '[/B] to queue.');
                         });
                     });
@@ -196,8 +199,11 @@ registerPlugin({
                     ev.client.chat("Not autorized!");
                 }
             } else {
-                ev.client.chat("Error: Invalid url (list = " + url + ")");
+                ev.client.chat("Error: Invalid url (list = " + playlistID + ")");
             }
+        } else if ((ev.text === "!ytplaylist") || (ev.text === "!ytplaylist help")) {
+            ev.client.chat("When you authorized (set your groupID in the script settings) you can enqueue a complete playlist via a chat message.");
+            ev.client.chat("E.g. '!playlist https://www.youtube.com/playlist?list=PLKOXXePgWciOO61ZUSzTDQQGyD_546BGA'");
         }
     });
 
@@ -207,17 +213,18 @@ registerPlugin({
 
     event.on('api:ytplay', function (ev) {
         var res = new Response();
-        if (!ev.user || !ev.user.privileges || (ev.user.privileges & 0x00001000) == 0) {
+        engine.log(ev.user().privileges)
+        if (!ev.user() || !ev.user().privileges || (ev.user().privileges & 0x00001000) == 0) {
             res.setError(errorMessages.NoPermission);
             return res.getData();
         }
         if (config.play != 1) {
-            media.yt(ev.data);
-            engine.log('YTWeb Triggered with "played" at ' + ev.data);
+            media.yt(ev.data());
+            engine.log('YTWeb Triggered with "played" at ' + ev.data());
             res.setData("The Video will be sucessfully played now.");
             return res.getData();
         } else {
-            engine.log('YTWeb tried to play ' + ev.data + ' but it was deactivated.');
+            engine.log('YTWeb tried to play ' + ev.data() + ' but it was deactivated.');
             res.setError(errorMessages.PlayDisabled);
             return res.getData();
         }
@@ -225,17 +232,17 @@ registerPlugin({
 
     event.on('api:ytenq', function (ev) {
         var res = new Response();
-        if (!ev.user || !ev.user.privileges || (ev.user.privileges & 0x00004000) == 0) {
+        if (!ev.user() || !ev.user().privileges || (ev.user().privileges & 0x00004000) == 0) {
             res.setError(errorMessages.NoPermission);
             return res.getData();
         }
         if (config.enq != 1) {
-            media.qyt(ev.data);
-            engine.log('YTWeb Triggered with "enque" at ' + ev.data);
+            media.Enqueueyt(ev.data());
+            engine.log('YTWeb Triggered with "enque" at ' + ev.data());
             res.setData("The Video will be sucessfully enqueued now.");
             return res.getData();
         } else {
-            engine.log('YTWeb tried to play ' + ev.data + ' but it was deactivated.');
+            engine.log('YTWeb tried to play ' + ev.data() + ' but it was deactivated.');
             res.setError(errorMessages.EQDisabled);
             return res.getData();
         }
@@ -243,17 +250,17 @@ registerPlugin({
 
     event.on('api:ytdl', function (ev) {
         var res = new Response();
-        if (!ev.user || !ev.user.privileges || (ev.user.privileges & 0x00000004) == 0) {
+        if (!ev.user || !ev.user().privileges || (ev.user().privileges & 0x00000004) == 0) {
             res.setError(errorMessages.NoPermission);
             return res.getData();
         }
         if (config.dl != 1) {
-            media.ytdl(ev.data, false);
-            engine.log('YTWeb Triggered with "downloaded" at ' + ev.data);
+            media.ytdl(ev.data(), false);
+            engine.log('YTWeb Triggered with "downloaded" at ' + ev.data());
             res.setData("The Video will be sucessfully downloaded now.");
             return res.getData();
         } else {
-            engine.log('YTWeb tried to download ' + ev.data + ' but it was deactivated.');
+            engine.log('YTWeb tried to download ' + ev.data() + ' but it was deactivated.');
             res.setError(errorMessages.DLDisabled);
             return res.getData();
         }
@@ -261,11 +268,13 @@ registerPlugin({
 
     event.on('api:ytwebconfig', function (ev) {
         return {
-            play: (config.play != 1),
-            enqueue: (config.enq != 1),
-            download: (config.dl != 1),
-            ytapikey: store.get("ytapikey")
-        };
+            data: {
+                play: config.play != 1,
+                enqueue: config.enq != 1,
+                download: config.dl != 1,
+                ytapikey: store.get("ytapikey")
+            }
+        }
     });
 
     String.prototype.startsWith = function (str) {
@@ -279,11 +288,22 @@ registerPlugin({
             this.data = data;
         }
         this.getData = function () {
-            return JSON.stringify(this);
+            return {
+                data: this.data,
+                success: this.success
+            }
         }
         this.setError = function (error) {
             this.success = false;
             this.data = error;
         }
+    }
+
+    function getGetParameter(url, name) {
+        name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
+        var regexS = "[\\?&]" + name + "=([^&#]*)";
+        var regex = new RegExp(regexS);
+        var results = regex.exec(url);
+        return results == null ? null : results[1];
     }
 });
