@@ -1,0 +1,15 @@
+<div class="thumbnail col-xs-12 col-sm-12 col-md-6 col-lg-6 videos">
+    <h3>{{title}}</h3>
+    <span id="spanover5px"></span>
+    <button type="button" class="btn play btn-danger btnmarginfive" onclick="endplay('https://www.youtube.com/watch?v={{videoid}}'); ">Play Now</button>
+    <button type="button" class="btn enqueue btn-success btnmarginfive" onclick="endenqueue('https://www.youtube.com/watch?v={{videoid}}'); ">Enqueue</button>
+    <button type="button" class="btn download btn-warning btnmarginfive" onclick="enddownload('https://www.youtube.com/watch?v={{videoid}}'); ">Download</button>
+    <a href="{{channelhref}}" alt="achannelname" class="channelname"><span class="label label-primary btnmarginfive">{{channelname}}</span></a>
+    <div class="youtube-container">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ytframe youtube-player" data-videoid="{{videoid}}">
+            <div><img class="youtube-thumb" src="{{thumbnail}}">
+                <div class="play-button"></div>
+            </div>
+        </div>
+    </div>
+</div>

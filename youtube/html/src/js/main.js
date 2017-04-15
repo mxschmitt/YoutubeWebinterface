@@ -121,7 +121,7 @@ $(document).ready(function () {
                         nextPageToken = result.nextPageToken;
                         $("#results").html("");
                         $.each(result.items, function (index, item) {
-                            $.get("src/template/yt.html", function (data) {
+                            $.get("src/templates/yt.html", function (data) {
                                 $("#results").append(tplawesome(data, [{
                                     title: decodeURIComponentSafe(item.snippet.title),
                                     videoid: decodeURIComponentSafe(item.id.videoId),
@@ -289,7 +289,7 @@ function moreVideos() {
         var result = response.result;
         nextPageToken = result.nextPageToken;
         $.each(result.items, function (index, item) {
-            $.get("src/template/yt.html", function (data) {
+            $.get("src/templates/yt.html", function (data) {
                 $("#results").append(tplawesome(data, [{
                     title: decodeURIComponentSafe(item.snippet.title),
                     videoid: decodeURIComponentSafe(item.id.videoId),
