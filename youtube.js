@@ -11,17 +11,17 @@ registerPlugin({
         type: 'string'
     }, {
         name: 'play',
-        title: 'enable playing (just working with YouTube)',
+        title: 'enable playing (default activated)',
         type: 'select',
         options: ['on', 'off']
     }, {
         name: 'dl',
-        title: 'enable downloading (just working with YouTube)',
+        title: 'enable downloading (default activated)',
         type: 'select',
         options: ['on', 'off']
     }, {
         name: 'enq',
-        title: 'enable enqueuing (just working with YouTube)',
+        title: 'enable enqueuing (default activated)',
         type: 'select',
         options: ['on', 'off']
     }, {
@@ -29,16 +29,25 @@ registerPlugin({
         title: 'Allowed group Ids split by comma without space who are allowed to use the "!playlist <playlistlink>" command.',
         type: 'string'
     }, {
-        name: 'scApiKey',
-        title: 'Soundcloud API Key (see the tutorial for instructions)',
-        type: 'string'
-    }]
+        name: 'ytDirectSearch',
+        title: 'Enable the direct search for youtube via the normal webinterface. Enable it only on 1 instance!',
+        type: 'checkbox'
+    }
+        /*
+        , {
+                name: 'scApiKey',
+                title: 'Soundcloud API Key (see the tutorial for instructions)',
+                type: 'string'
+            }
+        */
+    ]
 }, function (sinusbot, config) {
     var errorMessages = {
         NoPermission: "Do you have enough permissions for this action?",
         DLDisabled: "Downloading is not enabled.",
         EQDisabled: "Enqueuing is not enabled.",
-        PlayDisabled: "Playing is not enabled."
+        PlayDisabled: "Playing is not enabled.",
+        NoAPIKey: "No Youtube API Key set."
     }
     var engine = require('engine');
     var store = require('store');
@@ -47,117 +56,111 @@ registerPlugin({
 
     engine.log("YTWeb Webinterface Ready");
 
-    /*
-     if (config.ytApiKey || sinusbot.getVar("ytapikey")) {
-         sinusbot.registerHandler({
-             isHandlerFor: function (url) {
-                 if (url.substring(0, 6) == 'ytwiyt') {
-                     engine.log(url);
-                     return true;
-                 }
-                 if (/youtube\.com/.test(url)) {
-                     engine.log(url);
-                     return true;
-                 }
-                 engine.log('NOPE: ' + url);
-                 return false;
-             },
-             getTrackInfo: function (url, cb) {
-                 engine.log(url);
-                 if (/youtube\.com/.test(url)) {
-                     return cb({
-                         urlType: 'ytdl',
-                         url: url
-                     });
-                 }
-                 return cb({
-                     urlType: 'ytdl',
-                     url: url.substring(19)
-                 });
-             },
-             getSearchResult: function (search, cb) {
-                 engine.log("Youtube triggered.");
-                 sinusbot.http({
-                     timeout: 5000,
-                     url: 'https://www.googleapis.com/youtube/v3/search?part=snippet&q=' + encodeURIComponent(search) + '&maxResults=20&type=video,playlist&key=' + encodeURIComponent(store.get("ytapikey"))
-                 }, function (err, data) {
-                     if (err || !data || data.statusCode != 200) {
-                         return cb(null);
-                     }
-                     var result = [];
-                     var data = JSON.parse(data.data);
-                     if (!data || !data.items) {
-                         engine.log('Error in json');
-                         return cb(null);
-                     }
-                     data.items.forEach(function (entry) {
-                         result.push({
-                             title: '[YouTube]' + entry.snippet.title,
-                             artist: entry.snippet.channelTitle,
-                             coverUrl: entry.snippet.thumbnails.default.url,
-                             url: 'ytwiyt://ytdl/?url=' + encodeURIComponent(entry.id.videoId)
-                         });
-                     });
-                     return cb(result);
-                 });
-             }
-         });
-     } else {
-         engine.log("Youtube API Key is not set, so it isn't working atm.");
-     }
- 
- 
-     if (config.scApiKey) {
-         sinusbot.registerHandler({
-             isHandlerFor: function (url) {
-                 if (url.substring(0, 6) == 'ytwisc') {
-                     return true;
-                 }
-                 if (/soundcloud\.com/.test(url)) {
-                     return true;
-                 }
-                 engine.log('Soundcloud: NOPE: ' + url);
-                 return false;
-             },
-             getTrackInfo: function (url, cb) {
-                 if (/soundcloud\.com/.test(url)) {
-                     return cb({
-                         urlType: 'ytdl',
-                         url: url.substring(19)
-                     });
-                 }
-             },
-             getSearchResult: function (search, cb) {
-                 engine.log("Soundcloud triggered");
-                 sinusbot.http({
-                     timeout: 5000,
-                     url: 'http://api.soundcloud.com/tracks.json?client_id=' + config.scApiKey + '&q=' + encodeURIComponent(search) + '&limit=20'
-                 }, function (err, data) {
-                     if (err || !data || data.statusCode != 200) {
-                         return cb(null);
-                     }
-                     var result = [];
-                     var data = JSON.parse(data.data);
-                     if (!data) {
-                         engine.log('Error in json');
-                         return cb(null);
-                     }
-                     data.forEach(function (entry) {
-                         result.push({
-                             title: '[SoundCloud]' + entry.title,
-                             artist: entry.user.username,
-                             coverUrl: entry.artwork_url,
-                             url: 'ytwisc://ytdl/?url=' + entry.permalink_url,
-                         });
-                     });
-                     return cb(result);
-                 });
-             }
-         });
-     } else {
-         engine.log("Soundcloud API Key is not set, so it isn't working atm.");
-     }
-     */
+    if (config.ytDirectSearch && (config.ytApiKey || sinusbot.getVar("ytapikey"))) {
+        sinusbot.registerHandler({
+            isHandlerFor: function (url) {
+                if (url.substring(0, 6) == 'ytwiyt') {
+                    return true;
+                }
+                if (/youtube\.com/.test(url)) {
+                    return true;
+                }
+                return false;
+            },
+            getTrackInfo: function (url, cb) {
+                if (/youtube\.com/.test(url)) {
+                    return cb({
+                        urlType: 'ytdl',
+                        url: url
+                    });
+                }
+                return cb({
+                    urlType: 'ytdl',
+                    url: url.substring(19)
+                });
+            },
+            getSearchResult: function (search, cb) {
+                engine.log("Youtube triggered.");
+                sinusbot.http({
+                    timeout: 6000,
+                    url: 'https://www.googleapis.com/youtube/v3/search?part=snippet&q=' + encodeURIComponent(search) + '&maxResults=20&type=video&key=' + encodeURIComponent(store.get("ytapikey"))
+                }, function (err, data) {
+                    if (err || !data || data.statusCode != 200) {
+                        return cb(null);
+                    }
+                    var result = [];
+                    var data = JSON.parse(data.data);
+                    if (!data || !data.items) {
+                        engine.log('Error in json');
+                        return cb(null);
+                    }
+                    data.items.forEach(function (entry) {
+                        result.push({
+                            title: entry.snippet.title,
+                            artist: entry.snippet.channelTitle,
+                            coverUrl: entry.snippet.thumbnails.default.url,
+                            url: 'ytwiyt://ytdl/?url=' + encodeURIComponent(entry.id.videoId)
+                        });
+                    });
+                    return cb(result);
+                });
+            }
+        });
+    } else {
+        engine.log(errorMessages.NoAPIKey);
+    }
+
+    // if (config.scApiKey) {
+    //     sinusbot.registerHandler({
+    //         isHandlerFor: function (url) {
+    //             if (url.substring(0, 6) == 'ytwisc') {
+    //                 return true;
+    //             }
+    //             if (/soundcloud\.com/.test(url)) {
+    //                 return true;
+    //             }
+    //             engine.log('Soundcloud: NOPE: ' + url);
+    //             return false;
+    //         },
+    //         getTrackInfo: function (url, cb) {
+    //             if (/soundcloud\.com/.test(url)) {
+    //                 return cb({
+    //                     urlType: 'ytdl',
+    //                     url: url.substring(19)
+    //                 });
+    //             }
+    //         },
+    //         getSearchResult: function (search, cb) {
+    //             engine.log("Soundcloud triggered");
+    //             sinusbot.http({
+    //                 timeout: 6000,
+    //                 url: 'http://api.soundcloud.com/tracks.json?client_id=' + config.scApiKey + '&q=' + encodeURIComponent(search) + '&limit=20'
+    //             }, function (err, data) {
+    //                 if (err || !data || data.statusCode != 200) {
+    //                     return cb(null);
+    //                 }
+    //                 var result = [];
+    //                 var data = JSON.parse(data.data);
+    //                 if (!data) {
+    //                     engine.log('Error in json');
+    //                     return cb(null);
+    //                 }
+    //                 data.forEach(function (entry) {
+    //                     result.push({
+    //                         title: '[SoundCloud]' + entry.title,
+    //                         artist: entry.user.username,
+    //                         coverUrl: entry.artwork_url,
+    //                         url: 'ytwisc://ytdl/?url=' + entry.permalink_url,
+    //                     });
+    //                 });
+    //                 return cb(result);
+    //             });
+    //         }
+    //     });
+    // } else {
+    //     engine.log("Soundcloud API Key is not set, so it isn't working atm.");
+    // }
+
     event.on('chat', function (ev) {
         if (ev.text.startsWith("!playlist ")) {
             var playlistID,
