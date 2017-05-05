@@ -194,7 +194,7 @@ registerPlugin({
                         engine.log(Response.items.length + " results.");
 
                         Response.items.forEach(function (item) {
-                            media.Enqueueyt("https://www.youtube.com/watch?v=" + item.snippet.resourceId.videoId);
+                            media.enqueueYt("https://www.youtube.com/watch?v=" + item.snippet.resourceId.videoId);
                             ev.client.chat('Adding [B]' + item.snippet.title + '[/B] to queue.');
                         });
                     });
@@ -240,7 +240,7 @@ registerPlugin({
             return res.getData();
         }
         if (config.enq != 1) {
-            media.Enqueueyt(ev.data());
+            media.enqueueYt(ev.data());
             engine.log('YTWeb Triggered with "enque" at ' + ev.data());
             res.setData("The Video will be sucessfully enqueued now.");
             return res.getData();
