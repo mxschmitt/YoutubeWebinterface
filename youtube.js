@@ -32,15 +32,7 @@ registerPlugin({
         name: 'ytDirectSearch',
         title: 'Enable the direct search for youtube via the normal webinterface. Enable it only on 1 instance!',
         type: 'checkbox'
-    }
-        /*
-        , {
-                name: 'scApiKey',
-                title: 'Soundcloud API Key (see the tutorial for instructions)',
-                type: 'string'
-            }
-        */
-    ]
+    }]
 }, function (sinusbot, config) {
     var errorMessages = {
         NoPermission: "Do you have enough permissions for this action?",
@@ -109,57 +101,6 @@ registerPlugin({
     } else {
         engine.log(errorMessages.NoAPIKey);
     }
-
-    // if (config.scApiKey) {
-    //     sinusbot.registerHandler({
-    //         isHandlerFor: function (url) {
-    //             if (url.substring(0, 6) == 'ytwisc') {
-    //                 return true;
-    //             }
-    //             if (/soundcloud\.com/.test(url)) {
-    //                 return true;
-    //             }
-    //             engine.log('Soundcloud: NOPE: ' + url);
-    //             return false;
-    //         },
-    //         getTrackInfo: function (url, cb) {
-    //             if (/soundcloud\.com/.test(url)) {
-    //                 return cb({
-    //                     urlType: 'ytdl',
-    //                     url: url.substring(19)
-    //                 });
-    //             }
-    //         },
-    //         getSearchResult: function (search, cb) {
-    //             engine.log("Soundcloud triggered");
-    //             sinusbot.http({
-    //                 timeout: 6000,
-    //                 url: 'http://api.soundcloud.com/tracks.json?client_id=' + config.scApiKey + '&q=' + encodeURIComponent(search) + '&limit=20'
-    //             }, function (err, data) {
-    //                 if (err || !data || data.statusCode != 200) {
-    //                     return cb(null);
-    //                 }
-    //                 var result = [];
-    //                 var data = JSON.parse(data.data);
-    //                 if (!data) {
-    //                     engine.log('Error in json');
-    //                     return cb(null);
-    //                 }
-    //                 data.forEach(function (entry) {
-    //                     result.push({
-    //                         title: '[SoundCloud]' + entry.title,
-    //                         artist: entry.user.username,
-    //                         coverUrl: entry.artwork_url,
-    //                         url: 'ytwisc://ytdl/?url=' + entry.permalink_url,
-    //                     });
-    //                 });
-    //                 return cb(result);
-    //             });
-    //         }
-    //     });
-    // } else {
-    //     engine.log("Soundcloud API Key is not set, so it isn't working atm.");
-    // }
 
     event.on('chat', function (ev) {
         if (ev.text.startsWith("!playlist ")) {

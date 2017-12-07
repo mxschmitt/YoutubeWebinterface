@@ -167,6 +167,8 @@ function getConfig(instance) {
             ytapikey = data[0].data.ytapikey;
             if (ytapi_state == 1) { // initialize ytapi if loaded but not already enabled
                 ytinit();
+            } else if (ytapi_state == 2) {
+                console.log("youtube api already enabled.")
             }
             css = '.play { display: ' + (data[0].data.play ? 'inline-block' : 'none') + "}\n" + '.download { display: ' + (data[0].data.download ? 'inline-block' : 'none') + "}\n" + '.enqueue { display: ' + (data[0].data.enqueue ? 'inline-block' : 'none') + "}\n";
         }
