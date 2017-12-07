@@ -160,7 +160,7 @@ function getConfig(instance) {
         data: '{}'
     }).done(function (data) {
         var css;
-        if (data.length == 0) {
+        if (!data || data.length == 0) {
             css = '.play { display: none' + "}\n" + '.download { display: none' + "}\n" + '.enqueue { display: none' + "}\n" + '#spanover5px { display: none' + "}\n";
             console.log("config not set");
         } else {
