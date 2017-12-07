@@ -7,7 +7,7 @@
     background: url(/img/sinusbot-logo.png);
     background-size: 17%;
     background-repeat: no-repeat;
-    background-color: #f3331F;
+    background-color: #d9230f;
     background-position: 99% 95%;
 }
 #copyright {
@@ -44,18 +44,14 @@
 }
 .youtube-container {
     display: block;
-    margin: 10px auto;
     width: 100%;
-    max-width: 600px;
 }
 .youtube-player {
     padding-bottom: 56.25%;
+    margin-top: 15px;
     overflow: hidden;
     height: 100%;
     cursor: pointer;
-}
-.youtube-container {
-    margin: 10px auto
 }
 img.youtube-thumb {
     bottom: 0;
@@ -92,6 +88,11 @@ div.play-button {
 }
 #spanover5px {
     margin-left: -5px;
+}
+#backButton {
+    position: absolute;
+    left: 0;
+    top: 0;
 }
 .videos > h3 {
     margin-top: 10px;
