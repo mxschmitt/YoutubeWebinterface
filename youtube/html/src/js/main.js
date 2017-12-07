@@ -125,7 +125,7 @@ $(document).ready(function () {
                                 $("#results").append(tplawesome(data, [{
                                     title: decodeURIComponentSafe(item.snippet.title),
                                     videoid: decodeURIComponentSafe(item.id.videoId),
-                                    channelname: decodeURIComponentSafe(item.snippet.channelTitle),
+                                    channelname: decodeURIComponentSafe(item.snippet.channelTitle.substring(0, 40)),
                                     thumbnail: decodeURIComponentSafe(item.snippet.thumbnails.high.url),
                                     channelhref: "//www.youtube.com/channel/" + item.snippet.channelId
                                 }]));
@@ -295,7 +295,7 @@ function moreVideos() {
                 $("#results").append(tplawesome(data, [{
                     title: decodeURIComponentSafe(item.snippet.title),
                     videoid: decodeURIComponentSafe(item.id.videoId),
-                    channelname: decodeURIComponentSafe(item.snippet.channelTitle),
+                    channelname: decodeURIComponentSafe(item.snippet.channelTitle.substring(0, 40)),
                     thumbnail: decodeURIComponentSafe(item.snippet.thumbnails.high.url),
                     channelhref: "//www.youtube.com/channel/" + item.snippet.channelId
                 }]));
