@@ -114,14 +114,14 @@ registerPlugin({
             }
             playlistID = getGetParameter(playlistURL, "list");
             if (playlistID.length == 34) {
-                var autorized = false;
+                var authorized = false;
                 ev.client.getServerGroups().forEach(function (group) {
                     if (config.ytAlllowed.split(",").indexOf(group) === -1) {
-                        autorized = true;
+                        authorized = true;
                         return true;
                     }
                 });
-                if (autorized) {
+                if (authorized) {
                     sinusbot.http({
                         method: "GET",
                         url: "https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=" + amount + "&playlistId=" + encodeURIComponent(playlistID) + "&key=" + encodeURIComponent(store.get("ytapikey")),
@@ -140,7 +140,7 @@ registerPlugin({
                         });
                     });
                 } else {
-                    ev.client.chat("Not autorized!");
+                    ev.client.chat("Not authorized!");
                 }
             } else {
                 ev.client.chat("Error: Invalid url (list = " + playlistID + ")");
