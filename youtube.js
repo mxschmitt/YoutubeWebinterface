@@ -136,7 +136,7 @@ registerPlugin({
                         engine.log(response.items.length + " results.");
                         response.items.forEach(function (item) {
                             ev.client.chat('Adding [B]' + item.snippet.title + '[/B] to queue.');
-                            timeout += 500;
+                            timeout += 10000;
                             setTimeout(function () {
                                 media.enqueueYt("https://www.youtube.com/watch?v=" + item.snippet.resourceId.videoId);
                             }, timeout);
