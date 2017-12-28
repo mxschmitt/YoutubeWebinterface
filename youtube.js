@@ -1,6 +1,6 @@
 registerPlugin({
     name: 'Youtube Webinterface!',
-    version: '2.0',
+    version: '2.1',
     description: 'Youtube Webinterface for playing and downloading YouTube Tracks.',
     author: 'maxibanki <max@schmitt.mx> & irgendwer <dev@sandstorm-projects.de>',
     backends: ['ts3', 'discord'],
@@ -136,7 +136,7 @@ registerPlugin({
                         engine.log(response.items.length + " results.");
                         response.items.forEach(function (item) {
                             ev.client.chat('Adding [B]' + item.snippet.title + '[/B] to queue.');
-                            timeout += 500;
+                            timeout += 10000;
                             setTimeout(function () {
                                 media.enqueueYt("https://www.youtube.com/watch?v=" + item.snippet.resourceId.videoId);
                             }, timeout);
