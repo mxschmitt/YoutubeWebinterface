@@ -1,6 +1,6 @@
 registerPlugin({
     name: 'Youtube Webinterface!',
-    version: '2.0',
+    version: '2.1',
     description: 'Youtube Webinterface for playing and downloading YouTube Tracks.',
     author: 'maxibanki <max@schmitt.mx> & irgendwer <dev@sandstorm-projects.de>',
     backends: ['ts3', 'discord'],
