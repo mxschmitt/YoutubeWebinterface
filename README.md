@@ -4,5 +4,5 @@ check out the [github.io page](http://maxibanki.github.io/YoutubeWebinterface/) 
 
 Developed by [@maxibanki](https://github.com/maxibanki) / [maxibanki](https://forum.sinusbot.com/members/maxibanki.1901/) and [@irgendwr](https://github.com/irgendwr) / [irgendwer](https://forum.sinusbot.com/members/irgendwer.1213/).
 
-Copyright (c) 2017, Max
+Copyright (c) 2018, Max Schmitt
 All rights reserved.
