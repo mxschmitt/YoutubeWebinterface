@@ -48,7 +48,7 @@ registerPlugin({
 
     engine.log("YTWeb Webinterface Ready");
 
-    if (config.ytDirectSearch && (config.ytApiKey || sinusbot.getVar("ytapikey"))) {
+    if (config.ytDirectSearch && (config.ytApiKey || store.get("ytapikey"))) {
         sinusbot.registerHandler({
             isHandlerFor: function (url) {
                 if (url.substring(0, 6) == 'ytwiyt') {
