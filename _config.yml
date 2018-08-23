@@ -1,0 +1,8 @@
+title: Youtube Webinterface for Sinusbot
+description: JavaScript based graphical YouTube Search Webinterface for the Sinusbot
+google_analytics: 
+show_downloads: true
+theme: jekyll-theme-architect
+
+gems:
+  - jekyll-mentions
