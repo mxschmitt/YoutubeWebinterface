@@ -161,8 +161,8 @@ registerPlugin({
 
     event.on('api:ytplay', ev => {
         const res = new Response();
-        engine.log(ev.user().privileges)
-        if (!ev.user() || !ev.user().privileges || (ev.user().privileges & 0x00001000) == 0) {
+        // Check for PRIV_PLAYBACK
+        if (!ev.user() || !ev.user().privileges || (ev.user().privileges() & 0x1000) == 0) {
             res.setError(errorMessages.NoPermission);
             return res.getData();
         }
@@ -180,7 +180,8 @@ registerPlugin({
 
     event.on('api:ytenq', ev => {
         const res = new Response();
-        if (!ev.user() || !ev.user().privileges || (ev.user().privileges & 0x00004000) == 0) {
+        // Check for PRIV_ENQUEUE
+        if (!ev.user() || !ev.user().privileges || (ev.user().privileges() & 0x2000) == 0) {
             res.setError(errorMessages.NoPermission);
             return res.getData();
         }
@@ -198,7 +199,8 @@ registerPlugin({
 
     event.on('api:ytdl', ev => {
         const res = new Response();
-        if (!ev.user || !ev.user().privileges || (ev.user().privileges & 0x00000004) == 0) {
+        // Check for PRIV_UPLOAD_FILE
+        if (!ev.user || !ev.user().privileges || (ev.user().privileges() & 0x4) == 0) {
             res.setError(errorMessages.NoPermission);
             return res.getData();
         }
