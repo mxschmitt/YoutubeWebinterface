@@ -46,6 +46,7 @@ registerPlugin({
     const store = require('store');
     const event = require('event');
     const media = require('media');
+    const http = require('http');
 
     engine.log("YTWeb Webinterface Ready");
 
@@ -123,7 +124,7 @@ registerPlugin({
                     }
                 });
                 if (authorized) {
-                    sinusbot.http({
+                    http.simpleRequest({
                         method: "GET",
                         url: `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=${amount}&playlistId=${encodeURIComponent(playlistID)}&key=${encodeURIComponent(store.get("ytapikey"))}`,
                         timeout: 6000,
@@ -224,10 +225,6 @@ registerPlugin({
             ytapikey: store.get("ytapikey")
         }
     }));
-
-    String.prototype.startsWith = function (str) {
-        return this.indexOf(str) == 0;
-    }
 
     var Response = function () {
         this.success = true;
