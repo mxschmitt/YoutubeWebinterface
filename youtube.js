@@ -137,7 +137,7 @@ registerPlugin({
                         let timeout = 0;
                         engine.log(`${response.items.length} results.`);
                         response.items.forEach(({snippet}) => {
-                            client.chat(`Adding [B]${snippet.title}[/B] to queue.`);
+                            client.chat(`Adding ${format.bold(snippet.title)} to queue.`);
                             timeout += 10000;
                             setTimeout(() => {
                                 media.enqueueYt(`https://www.youtube.com/watch?v=${snippet.resourceId.videoId}`);
