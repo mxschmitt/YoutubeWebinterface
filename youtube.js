@@ -29,12 +29,14 @@ registerPlugin({
         name: 'ytAlllowed',
         title: 'Allowed group Ids split by comma without space who are allowed to use the "!playlist <playlistlink>" command.',
         type: 'string'
-    }, {
-        name: 'ytDirectSearch',
-        title: 'Enable the direct search for youtube via the normal webinterface. Enable it only on 1 instance!',
-        type: 'checkbox'
-    }]
-}, (sinusbot, config) => {
+    },
+        // {
+        //     name: 'ytDirectSearch',
+        //     title: 'Enable the direct search for youtube via the normal webinterface. Enable it only on 1 instance!',
+        //     type: 'checkbox'
+        // }
+    ]
+}, (_, config) => {
     const errorMessages = {
         NoPermission: "Do you have enough permissions for this action?",
         DLDisabled: "Downloading is not enabled.",
@@ -50,61 +52,61 @@ registerPlugin({
 
     engine.log("YTWeb Webinterface Ready");
 
-    if (config.ytDirectSearch && (config.ytApiKey || store.get("ytapikey"))) {
-        sinusbot.registerHandler({
-            isHandlerFor(url) {
-                if (url.substring(0, 6) == 'ytwiyt') {
-                    return true;
-                }
-                if (/youtube\.com/.test(url)) {
-                    return true;
-                }
-                return false;
-            },
-            getTrackInfo(url, cb) {
-                if (/youtube\.com/.test(url)) {
-                    return cb({
-                        urlType: 'ytdl',
-                        url
-                    });
-                }
-                return cb({
-                    urlType: 'ytdl',
-                    url: url.substring(19)
-                });
-            },
-            getSearchResult(search, cb) {
-                engine.log("Youtube triggered.");
-                sinusbot.http({
-                    timeout: 6000,
-                    url: `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${encodeURIComponent(search)}&maxResults=20&type=video&key=${encodeURIComponent(store.get("ytapikey"))}`
-                }, (err, data) => {
-                    if (err || !data || data.statusCode != 200) {
-                        return cb(null);
-                    }
-                    const result = [];
-                    var data = JSON.parse(data.data);
-                    if (!data || !data.items) {
-                        engine.log('Error in json');
-                        return cb(null);
-                    }
-                    data.items.forEach(({snippet, id}) => {
-                        result.push({
-                            title: snippet.title,
-                            artist: snippet.channelTitle,
-                            coverUrl: snippet.thumbnails.default.url,
-                            url: `ytwiyt://ytdl/?url=${encodeURIComponent(id.videoId)}`
-                        });
-                    });
-                    return cb(result);
-                });
-            }
-        });
-    } else {
-        engine.log(errorMessages.NoAPIKey);
-    }
+    // if (config.ytDirectSearch && (config.ytApiKey || store.get("ytapikey"))) {
+    //     sinusbot.registerHandler({
+    //         isHandlerFor(url) {
+    //             if (url.substring(0, 6) == 'ytwiyt') {
+    //                 return true;
+    //             }
+    //             if (/youtube\.com/.test(url)) {
+    //                 return true;
+    //             }
+    //             return false;
+    //         },
+    //         getTrackInfo(url, cb) {
+    //             if (/youtube\.com/.test(url)) {
+    //                 return cb({
+    //                     urlType: 'ytdl',
+    //                     url
+    //                 });
+    //             }
+    //             return cb({
+    //                 urlType: 'ytdl',
+    //                 url: url.substring(19)
+    //             });
+    //         },
+    //         getSearchResult(search, cb) {
+    //             engine.log("Youtube triggered.");
+    //             sinusbot.http({
+    //                 timeout: 6000,
+    //                 url: `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${encodeURIComponent(search)}&maxResults=20&type=video&key=${encodeURIComponent(store.get("ytapikey"))}`
+    //             }, (err, data) => {
+    //                 if (err || !data || data.statusCode != 200) {
+    //                     return cb(null);
+    //                 }
+    //                 const result = [];
+    //                 var data = JSON.parse(data.data);
+    //                 if (!data || !data.items) {
+    //                     engine.log('Error in json');
+    //                     return cb(null);
+    //                 }
+    //                 data.items.forEach(({snippet, id}) => {
+    //                     result.push({
+    //                         title: snippet.title,
+    //                         artist: snippet.channelTitle,
+    //                         coverUrl: snippet.thumbnails.default.url,
+    //                         url: `ytwiyt://ytdl/?url=${encodeURIComponent(id.videoId)}`
+    //                     });
+    //                 });
+    //                 return cb(result);
+    //             });
+    //         }
+    //     });
+    // } else {
+    //     engine.log(errorMessages.NoAPIKey);
+    // }
 
-    event.on('chat', ({text, client}) => {
+    event.on('chat', ({ text, client }) => {
         if (text.startsWith("!playlist ")) {
             let playlistID;
             let playlistURL;
@@ -128,7 +130,7 @@ registerPlugin({
                         method: "GET",
                         url: `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=${amount}&playlistId=${encodeURIComponent(playlistID)}&key=${encodeURIComponent(store.get("ytapikey"))}`,
                         timeout: 6000,
-                    }, (error, {statusCode, data}) => {
+                    }, (error, { statusCode, data }) => {
                         if (statusCode != 200) {
                             engine.log(error);
                             return;
@@ -136,7 +138,7 @@ registerPlugin({
                         const response = JSON.parse(data);
                         let timeout = 0;
                         engine.log(`${response.items.length} results.`);
-                        response.items.forEach(({snippet}) => {
+                        response.items.forEach(({ snippet }) => {
                             client.chat(`Adding ${format.bold(snippet.title)} to queue.`);
                             timeout += 10000;
                             setTimeout(() => {
@@ -226,22 +228,24 @@ registerPlugin({
         }
     }));
 
-    var Response = function () {
-        this.success = true;
-        this.data = null;
-        this.setData = function (data) {
+    class Response {
+        constructor() {
+            this.success = true;
+            this.data = null;
+        }
+        setData(data) {
             this.data = data;
         }
-        this.getData = function () {
+        getData() {
             return {
                 data: this.data,
                 success: this.success
             }
         }
-        this.setError = function (error) {
+        setError(error) {
             this.success = false;
             this.data = error;
-        }
+        };
     }
 
     function getGetParameter(url, name) {
