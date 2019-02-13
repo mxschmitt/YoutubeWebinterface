@@ -49,6 +49,7 @@ registerPlugin({
     const event = require('event');
     const media = require('media');
     const http = require('http');
+    const format = require('format');
 
     engine.log("YTWeb Webinterface Ready");
 
