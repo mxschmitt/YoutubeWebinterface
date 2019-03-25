@@ -121,7 +121,7 @@ registerPlugin({
             if (playlistID.length == 34) {
                 let authorized = false;
                 client.getServerGroups().forEach(group => {
-                    if (!config.ytAlllowed.split(",").includes(group)) {
+                    if (config.ytAlllowed.split(",").includes(group.id())) {
                         authorized = true;
                         return true;
                     }
